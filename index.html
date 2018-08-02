@@ -232,6 +232,173 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/02/Spring Cloud Note-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/02/Spring Cloud Note-3/" itemprop="url">Spring Cloud | Note-3</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T00:00:00+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Spring-Cloud微服务-Note-3"><a href="#Spring-Cloud微服务-Note-3" class="headerlink" title="Spring Cloud微服务 | Note(3)"></a>Spring Cloud微服务 | Note(3)</h3><p>@2018年8月2日 15:13:33</p>
+<h4 id="单块架构进化为微服务架构"><a href="#单块架构进化为微服务架构" class="headerlink" title="单块架构进化为微服务架构"></a>单块架构进化为微服务架构</h4><h5 id="单块架构"><a href="#单块架构" class="headerlink" title="单块架构"></a>单块架构</h5><p><img src="C:\Users\lenovo\AppData\Local\Temp\1533195168009.png" alt="1533195168009"></p>
+<h6 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h6><p>功能划分清晰；层次关系良好；层层独立；部署简单；相对技术单一；成本低</p>
+<h6 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h6><p>功能太大；升级风险高；维护成本增加；交付周期变长（按系统交付）；可伸缩性差；监控困难</p>
+<hr>
+<h5 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h5><p>随着系统的壮大，单块架构需要转化，转化成每一个服务单元模块，以API交互，平台无关，高内聚低耦合</p>
+<p><img src="C:\Users\lenovo\AppData\Local\Temp\1533195708067.png" alt="1533195708067"></p>
+<hr>
+<h5 id="微服务设计原则（颗粒度设计原则）"><a href="#微服务设计原则（颗粒度设计原则）" class="headerlink" title="微服务设计原则（颗粒度设计原则）"></a>微服务设计原则（颗粒度设计原则）</h5><p>Q：什么是微服务</p>
+<p>A：服务可以运行在自己进程中（独立部署），轻量级交互机制，例如HTTP交互，服务A和B之间，没有太多的技术关联，可以使用不同的数据存储形式（MySQL或NoSQL）</p>
+<h6 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h6><p>1.拆分足够微（颗粒度）：足够小足以即可（亚马逊两个披萨原则，不能太小，不能太大，满足管理成本）</p>
+<p>2.轻量级通信：微服务函数之间的调用需要体现跨域、跨主机，同步（REST），异步（消息中间件）</p>
+<p>3.领域驱动原则：服务需要体现领域业务模型，减少微服务通用语言的复杂性，使团队理解服务上下文边界（明确了解开发的业务功能）</p>
+<p>4.单一职责原则：颗粒度粗（高耦合，不利于维护，修改重合）；高内聚，低耦合，对其它服务的依赖要低，单一界限上下文，通过公开的API访问</p>
+<p>5.DevOps以及两个披萨：开发团队小而精，且具有全栈能力，降低沟通成本</p>
+<p>6.不限于技术栈：与平台无关，根据场景、业务具体选择技术栈</p>
+<hr>
+<h5 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h5><h6 id="服务拆分："><a href="#服务拆分：" class="headerlink" title="服务拆分："></a>服务拆分：</h6><p>​    ·关注服务的颗粒度，颗粒度才用领域驱动设计进行指导，专注某一领域的功能；</p>
+<h6 id="服务注册："><a href="#服务注册：" class="headerlink" title="服务注册："></a>服务注册：</h6><p>​    ·每个微服务，服务之间的通讯实现；服务注册机制（服务注册中心）；通过心跳机制获取状态，并且通过状态通知其他服务；</p>
+<h6 id="服务发现："><a href="#服务发现：" class="headerlink" title="服务发现："></a>服务发现：</h6><p>​    ·通过服务名称等找到所需的服务</p>
+<h6 id="服务消费："><a href="#服务消费：" class="headerlink" title="服务消费："></a>服务消费：</h6><p>​    ·调用其他服务的过程；消费者（调用者），提供商（被调用）</p>
+<h6 id="统一入口："><a href="#统一入口：" class="headerlink" title="统一入口："></a>统一入口：</h6><p>​    ·给服务提供方便的服务名称</p>
+<h6 id="配置管理："><a href="#配置管理：" class="headerlink" title="配置管理："></a>配置管理：</h6><p>​    ·定制功能的配置文件不同；</p>
+<h6 id="熔断机制："><a href="#熔断机制：" class="headerlink" title="熔断机制："></a>熔断机制：</h6><p>​    ·系统的防护；阻挡所有的访问，断开某些服务，返回提示信息，保护系统；</p>
+<h6 id="自动拓展："><a href="#自动拓展：" class="headerlink" title="自动拓展："></a>自动拓展：</h6><p>​    ·服务根据负荷状况，进行自动扩展；</p>
+<hr>
+<h5 id="微服务拆分："><a href="#微服务拆分：" class="headerlink" title="微服务拆分："></a>微服务拆分：</h5><h6 id="意义："><a href="#意义：" class="headerlink" title="意义："></a>意义：</h6><p>​    ·易于实现；利于维护；易于部署，轻量级（Spring Boot内嵌tomcat）；易于更新（服务都是隔离的，易于修改、更新、部署）</p>
+<h6 id="正向的反馈闭环："><a href="#正向的反馈闭环：" class="headerlink" title="正向的反馈闭环："></a>正向的反馈闭环：</h6><p><img src="C:\Users\lenovo\AppData\Local\Temp\1533197427183.png" alt="1533197427183"></p>
+<h6 id="拆分方法："><a href="#拆分方法：" class="headerlink" title="拆分方法："></a>拆分方法：</h6><p>横向拆分：根据不同的业务功能，拆分成不同的微服务</p>
+<p>​    ·数据采集，数据存储，数据查询，数据展示</p>
+<p>纵向拆分：把业务中的不同的功能，模块进行拆分</p>
+<p>​    ·<img src="C:\Users\lenovo\AppData\Local\Temp\1533197559770.png" alt="1533197559770"></p>
+<p>使用DDD（驱动设计原则）：反映领域的业务模型</p>
+<p>​    ·天气数据采集限界上下文：数据采集，数据存储</p>
+<p>​    ·天气预报限界上下文：数据展示</p>
+<p>​    ·天气数据API限界上下文：数据查询</p>
+<p>​    ·城市数据API限界上下文：数据查询</p>
+<hr>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p><a href="https://www.cnblogs.com/wintersun/p/6219259.html" target="_blank" rel="noopener">微服务架构设计</a></p>
+<p><a href="https://www.nginx.com/blog/introduction-to-microservices/" target="_blank" rel="noopener">NGINX-BLOG</a></p>
+<p><a href="http://www.dockone.io/article/394" target="_blank" rel="noopener">微服务架构的优势与不足</a></p>
+<p><a href="http://dockone.io/article/482" target="_blank" rel="noopener">使用API Gateway</a></p>
+<p><a href="http://www.dockone.io/article/549" target="_blank" rel="noopener">深入微服务架构的进程间通信</a></p>
+<p><a href="http://www.dockone.io/article/771" target="_blank" rel="noopener">服务发现的可行方案以及实践案例</a></p>
+<p><a href="http://www.dockone.io/article/936" target="_blank" rel="noopener">微服务的事件驱动数据管理</a></p>
+<p><a href="http://www.dockone.io/article/1066" target="_blank" rel="noopener">选择微服务部署策略</a></p>
+<p><a href="http://www.dockone.io/article/1266" target="_blank" rel="noopener">从单体式架构迁移到微服务架构</a></p>
+<p>@2018年8月2日 16:20:46</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/02/Spring Cloud Note-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1344,183 +1511,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/29/Blog System  Note-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="REX CHEN">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="REEEEX">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/29/Blog System  Note-2/" itemprop="url">Blog System | Note-2</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-29T00:00:00+08:00">
-                2018-07-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Blog-System-Note-2"><a href="#Blog-System-Note-2" class="headerlink" title="Blog System | Note-2"></a>Blog System | Note-2</h3><p>@2018年7月29日 14:38:38    Knowledge From Imooc</p>
-<h4 id="数据持久化"><a href="#数据持久化" class="headerlink" title="数据持久化"></a>数据持久化</h4><h5 id="JPA"><a href="#JPA" class="headerlink" title="JPA"></a>JPA</h5><p>​    用于管理Java EE和Java SE环境中的持久化，以及对象/关系(O/R)映射的Java API；</p>
-<h5 id="实体-Entity"><a href="#实体-Entity" class="headerlink" title="实体@Entity"></a>实体@Entity</h5><p>​    表示数据库中的表，每个实体实体对应于表中的行；</p>
-<p>​    类必须有一个public或protected的无参构造函数；</p>
-<p>​    实体实例被当作值以分离对象方式进行传递，则该类必须实现Serializable接口；</p>
-<p>​    唯一的标识：主键或复合主键；</p>
-<h5 id="关系-Relation"><a href="#关系-Relation" class="headerlink" title="关系 Relation"></a>关系 Relation</h5><p>​    一对一：@OneToOne</p>
-<p>​    一对多：@OneToMany</p>
-<p>​    多对一：@ManyToOne</p>
-<p>​    多对多：@ManyToMany</p>
-<h5 id="管理实体的接口-EntityManager"><a href="#管理实体的接口-EntityManager" class="headerlink" title="管理实体的接口 EntityManager"></a>管理实体的接口 EntityManager</h5><p>​    定义用于持久性上下文进行交互的方法；</p>
-<p>​    创建和删除持久实体实例，通过实体的主键查找实体；</p>
-<p>​    允许在实体上运行查询；</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取EntityManager实例</span></span><br><span class="line"><span class="meta">@PersistenceUnit</span> <span class="comment">// 持久化单元</span></span><br><span class="line">EntityManagerFactory emf;</span><br><span class="line">EntityManager em;</span><br><span class="line"><span class="meta">@Resource</span></span><br><span class="line">UserTransaction utx;</span><br><span class="line">...</span><br><span class="line">em = emf.createEntityManager();</span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    utx.begin();</span><br><span class="line">    em.persist(SomeEntity);</span><br><span class="line">    em.merge(AnotherEntity);</span><br><span class="line">    em.remove(ThirdEntity);</span><br><span class="line">    utx.commit();</span><br><span class="line">&#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">    utx.rollback();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查找实体</span></span><br><span class="line"><span class="meta">@PersistenceContext</span></span><br><span class="line">EntityManager em;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">enterOrder</span><span class="params">(<span class="keyword">int</span> custID,CustomerOrder newOrder)</span></span>&#123;</span><br><span class="line">    Customer cust = em.find(Customer,custID);</span><br><span class="line">    cust.getOrders().add(newOrder);</span><br><span class="line">    newOrder.setCustomer(cust);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="Spring-Data-JPA"><a href="#Spring-Data-JPA" class="headerlink" title="Spring Data JPA"></a>Spring Data JPA</h5><p>​    更大的Spring Data家族的一部分；</p>
-<p>​    对基于JPA的数据访问层的增强支持；</p>
-<p>​    更容易构建基于Spring数据访问技术栈的程序；</p>
-<h5 id="常用接口"><a href="#常用接口" class="headerlink" title="常用接口"></a>常用接口</h5><p>​    CrudRepository</p>
-<p>​    PagingAndSortingRepository</p>
-<p>​    自定义接口：根据方法名创建查询 public interface UserRepository extends Repository&lt;User,Long&gt;{}</p>
-<h5 id="应用"><a href="#应用" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Id</span></span><br><span class="line"><span class="meta">@GeneratedValue</span>(strategy= GenerationType.IDENTITY)</span><br><span class="line"><span class="comment">// Controller</span></span><br><span class="line">findAll();</span><br><span class="line">findOne();</span><br><span class="line">delete();</span><br><span class="line">save();</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># 使用H2控制台：</span><br><span class="line">spring.h2.console.enabled=<span class="keyword">true</span></span><br><span class="line">#查看</span><br><span class="line">localhost:<span class="number">8080</span>/h2-console</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># DataSource</span><br><span class="line">spring.datasource.url=...</span><br><span class="line">spring.datasource.username=...</span><br><span class="line">spring.datasource.password=...</span><br><span class="line">spring.datasource.driver-<span class="class"><span class="keyword">class</span>-<span class="title">name</span></span>=com.mysql.jdbc.Driver</span><br><span class="line"># JPA</span><br><span class="line">spring.jpa.show-sql=<span class="keyword">true</span></span><br><span class="line">spring.jpa.hibernate.ddl-auto=create-drop</span><br></pre></td></tr></table></figure>
-<h4 id="全文搜索"><a href="#全文搜索" class="headerlink" title="全文搜索"></a>全文搜索</h4><h5 id="全文搜索-1"><a href="#全文搜索-1" class="headerlink" title="全文搜索"></a>全文搜索</h5><p>​    概念：将文件中所有文本与搜索项匹配的文字资料检索方法</p>
-<p>​    Knowledge About(<a href="#link1">数据结构</a> &amp;&amp; <a href="#link2">非结构化数据的检索</a>)</p>
-<p>​    实现原理：建立文本库、建立索引、执行搜索、过滤结果</p>
-<p>​    实现技术：Lucene、ElasticSearch（ES）、Solr</p>
-<h5 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h5><p>​    高度可扩展的开源全文搜索和分析引擎；</p>
-<p>​    快速的、近实时性的对大数据进行存储、搜索和分析；</p>
-<p>​    用于支持有复杂的数据搜索需求的企业级应用；</p>
-<p>特点：分布式（分布到多个分片上）、高可用（由分布式所得）、多类型（多种数据类型）、多API、面向文档（不需要事先定义模式）、异步写入（性能高于同步）、近实时、基于Lucene、Apache协议</p>
-<h5 id="核心概念："><a href="#核心概念：" class="headerlink" title="核心概念："></a>核心概念：</h5><p>近实时：</p>
-<p>​    搜索文档到可搜索之间的时间，轻微的延时，1s左右；</p>
-<p>​    每隔n秒刷新数据；</p>
-<p>​    索引建立后，不会直接写入磁盘，存在文件系统缓存中，根据刷新策略，定期同步到磁盘中；</p>
-<p>集群：</p>
-<p>​    一个或多个节点的集合，保存应用的全部数据， 并提供基于全部节点的集成式的索引和搜索功能；</p>
-<p>​    每个集群有唯一名称；</p>
-<p>节点：</p>
-<p>​    集群中的一台服务器，用于保存数据，并且参与整个集群的索引和搜索；</p>
-<p>索引（5个分片，1个副本）：</p>
-<p>​    加快搜索速度，相似文档的集合；</p>
-<p>​    在单个集群中，根据需要，定义任意数量的索引；</p>
-<p>类型：</p>
-<p>​    对一个索引中的文档中，做进一步的细分，根据公共属性划分；</p>
-<p>文档：</p>
-<p>​    进行索引的基本单位，JSON格式；</p>
-<p>分片：</p>
-<p>​    超出单个节点处理的范围，将索引分成多个分片（含副本），存储索引的部分数据；</p>
-<p>副本：</p>
-<p>​    分片的故障不可避免，为了可靠性，设置分片副本，分配到不同节点上；</p>
-<p>​    增加吞吐量，分配到不同副本中；</p>
-<h5 id="应用-1"><a href="#应用-1" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加 Spring Daat Elasticsearch 的依赖</span></span><br><span class="line">compile(<span class="string">'org.springframework.boot:spring-boot-starter-data-elasticsearch'</span>)</span><br><span class="line"><span class="comment">// 添加 JNA 的依赖</span></span><br><span class="line">compile(<span class="string">'net.java.dev.jna:jna:4.3.0'</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># Elasticsearch 服务地址</span><br><span class="line">spring.data.elasticsearch.cluster-nodes=localhost:<span class="number">9300</span></span><br><span class="line"># 设置连接超时时间</span><br><span class="line">spring.data.elasticsearch.properties.transport.tcp.connect_timeout=<span class="number">120</span>s</span><br><span class="line"></span><br><span class="line"><span class="comment">// domain</span></span><br><span class="line"><span class="meta">@Document</span>(indexName=<span class="string">"blog"</span>,type=<span class="string">"blog"</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">// repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">EsBlogRepository</span> <span class="keyword">extends</span> <span class="title">ElasticsearchRepository</span>&lt;<span class="title">EsBlog</span>,<span class="title">String</span>&gt; </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line">进行controller之前，需要启动elasticsearch服务器</span><br><span class="line">PS：注意jar包的版本，以及elasticsearch服务器的版本问题</span><br><span class="line"></span><br><span class="line"><span class="comment">// controller</span></span><br><span class="line"><span class="meta">@GetMapping</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;EsBlog&gt; <span class="title">list</span><span class="params">(@RequestParam(value = <span class="string">"title"</span>)</span>String title,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"summary"</span>)</span>String summary,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"content"</span>)</span>String content,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageIndex"</span>,defaultValue = <span class="string">"0"</span>)</span><span class="keyword">int</span> pageIndex,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageSize"</span>,defaultValue = <span class="string">"10"</span>)</span><span class="keyword">int</span> pageSize)</span>&#123;</span><br><span class="line">    <span class="comment">// 数据在测试用例中初始化</span></span><br><span class="line">    Pageable pageable = <span class="keyword">new</span> PageRequest(pageIndex, pageSize);</span><br><span class="line">    Page&lt;EsBlog&gt; page = esBlogRepository.find...(title,summary,content,pageable);</span><br><span class="line">    <span class="keyword">return</span> page.getContent();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><h5 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a><a name="link1">数据结构</a></h5><p>​    结构化：具有固定格式或有限长度的数据（数据库、元数据）</p>
-<p>​    非结构化：不定长或无固定格式的数据（邮件，word文档）</p>
-<h5 id="非结构化数据的检索"><a href="#非结构化数据的检索" class="headerlink" title="非结构化数据的检索"></a><a name="link2">非结构化数据的检索</a></h5><p>​    顺序扫描 Serial Scanning ： 从头到尾搜索</p>
-<p>​    全文搜索 Full-text Search ： 将非结构化数据部分信息，组织成结构化数据，添加索引，进行搜索</p>
-<p>2018年7月29日 22:35:47</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/29/Blog System  Note-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1829,6 +1819,183 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/29/Blog System  Note-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/29/Blog System  Note-2/" itemprop="url">Blog System | Note-2</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-29T00:00:00+08:00">
+                2018-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Blog-System-Note-2"><a href="#Blog-System-Note-2" class="headerlink" title="Blog System | Note-2"></a>Blog System | Note-2</h3><p>@2018年7月29日 14:38:38    Knowledge From Imooc</p>
+<h4 id="数据持久化"><a href="#数据持久化" class="headerlink" title="数据持久化"></a>数据持久化</h4><h5 id="JPA"><a href="#JPA" class="headerlink" title="JPA"></a>JPA</h5><p>​    用于管理Java EE和Java SE环境中的持久化，以及对象/关系(O/R)映射的Java API；</p>
+<h5 id="实体-Entity"><a href="#实体-Entity" class="headerlink" title="实体@Entity"></a>实体@Entity</h5><p>​    表示数据库中的表，每个实体实体对应于表中的行；</p>
+<p>​    类必须有一个public或protected的无参构造函数；</p>
+<p>​    实体实例被当作值以分离对象方式进行传递，则该类必须实现Serializable接口；</p>
+<p>​    唯一的标识：主键或复合主键；</p>
+<h5 id="关系-Relation"><a href="#关系-Relation" class="headerlink" title="关系 Relation"></a>关系 Relation</h5><p>​    一对一：@OneToOne</p>
+<p>​    一对多：@OneToMany</p>
+<p>​    多对一：@ManyToOne</p>
+<p>​    多对多：@ManyToMany</p>
+<h5 id="管理实体的接口-EntityManager"><a href="#管理实体的接口-EntityManager" class="headerlink" title="管理实体的接口 EntityManager"></a>管理实体的接口 EntityManager</h5><p>​    定义用于持久性上下文进行交互的方法；</p>
+<p>​    创建和删除持久实体实例，通过实体的主键查找实体；</p>
+<p>​    允许在实体上运行查询；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取EntityManager实例</span></span><br><span class="line"><span class="meta">@PersistenceUnit</span> <span class="comment">// 持久化单元</span></span><br><span class="line">EntityManagerFactory emf;</span><br><span class="line">EntityManager em;</span><br><span class="line"><span class="meta">@Resource</span></span><br><span class="line">UserTransaction utx;</span><br><span class="line">...</span><br><span class="line">em = emf.createEntityManager();</span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    utx.begin();</span><br><span class="line">    em.persist(SomeEntity);</span><br><span class="line">    em.merge(AnotherEntity);</span><br><span class="line">    em.remove(ThirdEntity);</span><br><span class="line">    utx.commit();</span><br><span class="line">&#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">    utx.rollback();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查找实体</span></span><br><span class="line"><span class="meta">@PersistenceContext</span></span><br><span class="line">EntityManager em;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">enterOrder</span><span class="params">(<span class="keyword">int</span> custID,CustomerOrder newOrder)</span></span>&#123;</span><br><span class="line">    Customer cust = em.find(Customer,custID);</span><br><span class="line">    cust.getOrders().add(newOrder);</span><br><span class="line">    newOrder.setCustomer(cust);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Spring-Data-JPA"><a href="#Spring-Data-JPA" class="headerlink" title="Spring Data JPA"></a>Spring Data JPA</h5><p>​    更大的Spring Data家族的一部分；</p>
+<p>​    对基于JPA的数据访问层的增强支持；</p>
+<p>​    更容易构建基于Spring数据访问技术栈的程序；</p>
+<h5 id="常用接口"><a href="#常用接口" class="headerlink" title="常用接口"></a>常用接口</h5><p>​    CrudRepository</p>
+<p>​    PagingAndSortingRepository</p>
+<p>​    自定义接口：根据方法名创建查询 public interface UserRepository extends Repository&lt;User,Long&gt;{}</p>
+<h5 id="应用"><a href="#应用" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Id</span></span><br><span class="line"><span class="meta">@GeneratedValue</span>(strategy= GenerationType.IDENTITY)</span><br><span class="line"><span class="comment">// Controller</span></span><br><span class="line">findAll();</span><br><span class="line">findOne();</span><br><span class="line">delete();</span><br><span class="line">save();</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># 使用H2控制台：</span><br><span class="line">spring.h2.console.enabled=<span class="keyword">true</span></span><br><span class="line">#查看</span><br><span class="line">localhost:<span class="number">8080</span>/h2-console</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># DataSource</span><br><span class="line">spring.datasource.url=...</span><br><span class="line">spring.datasource.username=...</span><br><span class="line">spring.datasource.password=...</span><br><span class="line">spring.datasource.driver-<span class="class"><span class="keyword">class</span>-<span class="title">name</span></span>=com.mysql.jdbc.Driver</span><br><span class="line"># JPA</span><br><span class="line">spring.jpa.show-sql=<span class="keyword">true</span></span><br><span class="line">spring.jpa.hibernate.ddl-auto=create-drop</span><br></pre></td></tr></table></figure>
+<h4 id="全文搜索"><a href="#全文搜索" class="headerlink" title="全文搜索"></a>全文搜索</h4><h5 id="全文搜索-1"><a href="#全文搜索-1" class="headerlink" title="全文搜索"></a>全文搜索</h5><p>​    概念：将文件中所有文本与搜索项匹配的文字资料检索方法</p>
+<p>​    Knowledge About(<a href="#link1">数据结构</a> &amp;&amp; <a href="#link2">非结构化数据的检索</a>)</p>
+<p>​    实现原理：建立文本库、建立索引、执行搜索、过滤结果</p>
+<p>​    实现技术：Lucene、ElasticSearch（ES）、Solr</p>
+<h5 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h5><p>​    高度可扩展的开源全文搜索和分析引擎；</p>
+<p>​    快速的、近实时性的对大数据进行存储、搜索和分析；</p>
+<p>​    用于支持有复杂的数据搜索需求的企业级应用；</p>
+<p>特点：分布式（分布到多个分片上）、高可用（由分布式所得）、多类型（多种数据类型）、多API、面向文档（不需要事先定义模式）、异步写入（性能高于同步）、近实时、基于Lucene、Apache协议</p>
+<h5 id="核心概念："><a href="#核心概念：" class="headerlink" title="核心概念："></a>核心概念：</h5><p>近实时：</p>
+<p>​    搜索文档到可搜索之间的时间，轻微的延时，1s左右；</p>
+<p>​    每隔n秒刷新数据；</p>
+<p>​    索引建立后，不会直接写入磁盘，存在文件系统缓存中，根据刷新策略，定期同步到磁盘中；</p>
+<p>集群：</p>
+<p>​    一个或多个节点的集合，保存应用的全部数据， 并提供基于全部节点的集成式的索引和搜索功能；</p>
+<p>​    每个集群有唯一名称；</p>
+<p>节点：</p>
+<p>​    集群中的一台服务器，用于保存数据，并且参与整个集群的索引和搜索；</p>
+<p>索引（5个分片，1个副本）：</p>
+<p>​    加快搜索速度，相似文档的集合；</p>
+<p>​    在单个集群中，根据需要，定义任意数量的索引；</p>
+<p>类型：</p>
+<p>​    对一个索引中的文档中，做进一步的细分，根据公共属性划分；</p>
+<p>文档：</p>
+<p>​    进行索引的基本单位，JSON格式；</p>
+<p>分片：</p>
+<p>​    超出单个节点处理的范围，将索引分成多个分片（含副本），存储索引的部分数据；</p>
+<p>副本：</p>
+<p>​    分片的故障不可避免，为了可靠性，设置分片副本，分配到不同节点上；</p>
+<p>​    增加吞吐量，分配到不同副本中；</p>
+<h5 id="应用-1"><a href="#应用-1" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加 Spring Daat Elasticsearch 的依赖</span></span><br><span class="line">compile(<span class="string">'org.springframework.boot:spring-boot-starter-data-elasticsearch'</span>)</span><br><span class="line"><span class="comment">// 添加 JNA 的依赖</span></span><br><span class="line">compile(<span class="string">'net.java.dev.jna:jna:4.3.0'</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># Elasticsearch 服务地址</span><br><span class="line">spring.data.elasticsearch.cluster-nodes=localhost:<span class="number">9300</span></span><br><span class="line"># 设置连接超时时间</span><br><span class="line">spring.data.elasticsearch.properties.transport.tcp.connect_timeout=<span class="number">120</span>s</span><br><span class="line"></span><br><span class="line"><span class="comment">// domain</span></span><br><span class="line"><span class="meta">@Document</span>(indexName=<span class="string">"blog"</span>,type=<span class="string">"blog"</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">// repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">EsBlogRepository</span> <span class="keyword">extends</span> <span class="title">ElasticsearchRepository</span>&lt;<span class="title">EsBlog</span>,<span class="title">String</span>&gt; </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line">进行controller之前，需要启动elasticsearch服务器</span><br><span class="line">PS：注意jar包的版本，以及elasticsearch服务器的版本问题</span><br><span class="line"></span><br><span class="line"><span class="comment">// controller</span></span><br><span class="line"><span class="meta">@GetMapping</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;EsBlog&gt; <span class="title">list</span><span class="params">(@RequestParam(value = <span class="string">"title"</span>)</span>String title,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"summary"</span>)</span>String summary,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"content"</span>)</span>String content,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageIndex"</span>,defaultValue = <span class="string">"0"</span>)</span><span class="keyword">int</span> pageIndex,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageSize"</span>,defaultValue = <span class="string">"10"</span>)</span><span class="keyword">int</span> pageSize)</span>&#123;</span><br><span class="line">    <span class="comment">// 数据在测试用例中初始化</span></span><br><span class="line">    Pageable pageable = <span class="keyword">new</span> PageRequest(pageIndex, pageSize);</span><br><span class="line">    Page&lt;EsBlog&gt; page = esBlogRepository.find...(title,summary,content,pageable);</span><br><span class="line">    <span class="keyword">return</span> page.getContent();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><h5 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a><a name="link1">数据结构</a></h5><p>​    结构化：具有固定格式或有限长度的数据（数据库、元数据）</p>
+<p>​    非结构化：不定长或无固定格式的数据（邮件，word文档）</p>
+<h5 id="非结构化数据的检索"><a href="#非结构化数据的检索" class="headerlink" title="非结构化数据的检索"></a><a name="link2">非结构化数据的检索</a></h5><p>​    顺序扫描 Serial Scanning ： 从头到尾搜索</p>
+<p>​    全文搜索 Full-text Search ： 将非结构化数据部分信息，组织成结构化数据，添加索引，进行搜索</p>
+<p>2018年7月29日 22:35:47</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/09/REVIEW-JAVA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1998,181 +2165,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/03/JPA学习记录/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="REX CHEN">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="REEEEX">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/03/JPA学习记录/" itemprop="url">About JPA -- (1)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-03T22:43:23+08:00">
-                2018-06-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="About-Spring-Data-JPA"><a href="#About-Spring-Data-JPA" class="headerlink" title="About Spring Data JPA"></a>About Spring Data JPA</h1><h2 id="1-Spring-Data-JPA"><a href="#1-Spring-Data-JPA" class="headerlink" title="1.Spring Data JPA"></a>1.Spring Data JPA</h2><p>​    Spring Data JPA是Spring Data这一个大家族中的一部分，它使得实现基于JPA的存储（repository）变得更加容易。Spring Data JPA这个模块，增强支持了基于JPA的数据库访问层。Spring Data JPA构建的Spring-powered的驱动应用程序，使得数据访问变得更加简单。</p>
-<h2 id="2-Spring-Data-JPA基本功能"><a href="#2-Spring-Data-JPA基本功能" class="headerlink" title="2.Spring Data JPA基本功能"></a>2.Spring Data JPA基本功能</h2><p>​    实现应用程序的数据访问层，一直都是很麻烦的问题。为了执行简单的查询、分页和审计，需要编写太多冗余的模版代码。Spring Data JPA的出现，就是通过减少实际工作中的工作量来显著改进了数据访问层的实现。作为开发人员，编写repository接口，包括自定义的方法，Spring都自动提供了实现。</p>
-<h2 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h2><ul>
-<li><p>Sophisticated support to build repositories based on Spring and JPA</p>
-</li>
-<li><p>支持基于Spring和JPA构建数据库</p>
-</li>
-<li><p>Support for <a href="http://www.querydsl.com/" target="_blank" rel="noopener">Querydsl</a> predicates and thus type-safe JPA queries</p>
-</li>
-<li><p>支持查询谓词，以及类安全的JPA查询</p>
-</li>
-<li><p>Transparent auditing of domain class</p>
-</li>
-<li><p>域类的透明审计</p>
-</li>
-<li><p>Pagination support, dynamic query execution, ability to integrate custom data access code</p>
-</li>
-<li><p>支持分页、动态查询，可以继承自定义数据库访问</p>
-</li>
-<li><p>Validation of <code>@Query</code> annotated queries at bootstrap time</p>
-</li>
-<li><p>支持验证@Query的注释查询</p>
-</li>
-<li><p>Support for XML based entity mapping</p>
-</li>
-<li><p>支持基于XML的实体映射</p>
-</li>
-<li><p>JavaConfig based repository configuration by introducing <code>@EnableJpaRepositories</code>.</p>
-</li>
-<li><p>通过引入@EnableJpaRepositories，基于JavaConfig的repository的配置</p>
-</li>
-</ul>
-<h2 id="3-核心接口"><a href="#3-核心接口" class="headerlink" title="3.核心接口"></a>3.核心接口</h2><p>Repository接口 ：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Repository</span>&lt;<span class="title">T</span>,<span class="title">ID</span> <span class="keyword">extends</span> <span class="title">Serializable</span>&gt;</span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在这个接口中，定义了所有repository的类型。需要传入两个参数，一个是实体（采用泛型T），另一个则是实体中的ID的数据类型（Integer/String/…）</p>
-<p>最近，在项目中，使用到的是JpaRepository。这里先讲讲JpaRepository</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">JpaRepository</span>&lt;<span class="title">T</span>,<span class="title">ID</span> <span class="keyword">extends</span> <span class="title">Serializable</span>&gt; <span class="keyword">extends</span> <span class="title">PagingAndSortingRepository</span>&lt;<span class="title">T</span>,<span class="title">ID</span>&gt;</span>&#123;</span><br><span class="line">    <span class="function">List&lt;T&gt; <span class="title">findAll</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function">List&lt;T&gt; <span class="title">findAll</span><span class="params">(Sort sort)</span></span>;</span><br><span class="line">    </span><br><span class="line">    &lt;S extends T&gt; <span class="function">List&lt;S&gt; <span class="title">save</span><span class="params">(Iterable&lt;S&gt; entities)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">flush</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function">T <span class="title">saveAndFlush</span><span class="params">(T entity)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">deleteInBatch</span><span class="params">(Iterable&lt;T&gt; entities)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">deleteAllInBatch</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>其实，从方法名上基本都可以理解它们的功能和操作，只需调用即可。也可以进行重写和实现。传入需要的参数或者需要的返回值类型，见仁见智，根据实际情况编写不同的功能。</p>
-<p>举个例子来说：</p>
-<p>对于实体（Student）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">@Entity</span><br><span class="line">@Data</span><br><span class="line">@Table(name = &quot;t_student&quot;)</span><br><span class="line">@DynamicUpdate</span><br><span class="line">public class Student&#123;</span><br><span class="line">	@Id</span><br><span class="line">	@Column(name = &quot;id&quot;)</span><br><span class="line">    private String id;</span><br><span class="line">    @Column(name = &quot;name&quot;)</span><br><span class="line">    private String name;</span><br><span class="line">    @Column(name = &quot;username&quot;)</span><br><span class="line">    private String username;</span><br><span class="line">    @Column(name = &quot;password&quot;)</span><br><span class="line">    private String password;</span><br><span class="line">    @Column(name = &quot;gender&quot;)</span><br><span class="line">    private Integer gender;</span><br><span class="line">    @Column(name = &quot;birth&quot;)</span><br><span class="line">    private Date birth;</span><br><span class="line">    ...</span><br><span class="line">    /*</span><br><span class="line">    * 驼峰命名法</span><br><span class="line">    * @Column(name = &quot;create_time&quot;)</span><br><span class="line">    * private String createTime;</span><br><span class="line">    */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里简单的举了一个例子，是学生的实体类，有一个基本的变量。为什么会有@Entity,@Data…诸如此类的注解？这是从hibernate就有的注解，主要的功能是为了将映射变得更加的容易。</p>
-<p>下一篇就@Annotation的知识补充上</p>
-<p>我们再把Student实体数据访问层的Repository补上</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">StudentRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Student</span>, <span class="title">String</span>&gt;</span>&#123;</span><br><span class="line">    <span class="comment">// 这里的两个参数 填写对应的实体类和实体ID字段的数据类型</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 举例说明 通过性别查找所有的男同学和女同学</span></span><br><span class="line">    <span class="function">List&lt;Student&gt; <span class="title">findAllStudentsByGender</span><span class="params">(Integer gender)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 通过Pageable达到分页的查询效果</span></span><br><span class="line">    <span class="function">Page&lt;Student&gt; <span class="title">findAllStudentsByGender</span><span class="params">(Integer gender,Pageable pageable)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>完成了数据访问层（Repository）之后，就可以编写Service和ServiceImpl的实现了。在Impl中只需将Repository注入（@AutoWired）即可完成对应的功能。</p>
-<h3 id="简单来说"><a href="#简单来说" class="headerlink" title="简单来说"></a>简单来说</h3><p>​    JpaRepository简化了在SSM框架中，所需要的映射文件的配置：</p>
-<p>​    例如：spring-dao.xml，mapper/StudentDao.xml</p>
-<p>SQL语句的编写：</p>
-<p>​    例如：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">"cn.inc.dao.StudentDao"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"queryStudent"</span> <span class="attr">resultType</span>=<span class="string">"cn.inc.entity.Student"</span>&gt;</span></span><br><span class="line">        SELECT *</span><br><span class="line">        FROM inc.t_student</span><br><span class="line">        ORDER BY id DESC</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>虽然说JpaRepository简化了很多在SSM框架中的映射，SQL编写，注入，组件等问题。但其实对于刚入门的我来说，在工作效率上提高了许多，但是感觉是走了很多的捷径去完成了工作而已，一些基础知识和底层的原理并没有深入的了解。这也是为什么要开启学习笔记的原因。</p>
-<p>今天就更新到这里，感谢。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -2216,7 +2215,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
