@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JAVA, Spring Cloud," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Spring Cloud微服务 | Note(4)@2018年8月3日 16:22:42 Weather System的微服务架构设计与实现System-架构设计现有弊端：​    ·大而全（功能不足内聚）；混杂太多功能；难以理解；难以维护；难以扩展 改造需求：​    ·微服务拆分的足够小，每个微服务的业务单一 ​    ·微服务支持水平拓展 ​    ·根据需要，实现微服务之间的相互调用 微服">
+<meta name="keywords" content="JAVA, Spring Cloud">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Cloud | Note-4">
+<meta property="og:url" content="http://yoursite.com/2018/08/03/Spring Cloud Note-4/index.html">
+<meta property="og:site_name" content="REEEEX">
+<meta property="og:description" content="Spring Cloud微服务 | Note(4)@2018年8月3日 16:22:42 Weather System的微服务架构设计与实现System-架构设计现有弊端：​    ·大而全（功能不足内聚）；混杂太多功能；难以理解；难以维护；难以扩展 改造需求：​    ·微服务拆分的足够小，每个微服务的业务单一 ​    ·微服务支持水平拓展 ​    ·根据需要，实现微服务之间的相互调用 微服">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="c:/Users/lenovo/AppData/Local/Temp/1533198561868.png">
+<meta property="og:updated_time" content="2018-08-02T11:11:54.494Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Cloud | Note-4">
+<meta name="twitter:description" content="Spring Cloud微服务 | Note(4)@2018年8月3日 16:22:42 Weather System的微服务架构设计与实现System-架构设计现有弊端：​    ·大而全（功能不足内聚）；混杂太多功能；难以理解；难以维护；难以扩展 改造需求：​    ·微服务拆分的足够小，每个微服务的业务单一 ​    ·微服务支持水平拓展 ​    ·根据需要，实现微服务之间的相互调用 微服">
+<meta name="twitter:image" content="c:/Users/lenovo/AppData/Local/Temp/1533198561868.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/03/Spring Cloud Note-4/"/>
+
+
+
+
+
+  <title>Spring Cloud | Note-4 | REEEEX</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">REEEEX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">KEEP GOING</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/03/Spring Cloud Note-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring Cloud | Note-4</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-03T00:00:00+08:00">
+                2018-08-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Spring-Cloud微服务-Note-4"><a href="#Spring-Cloud微服务-Note-4" class="headerlink" title="Spring Cloud微服务 | Note(4)"></a>Spring Cloud微服务 | Note(4)</h3><p>@2018年8月3日 16:22:42</p>
+<h4 id="Weather-System的微服务架构设计与实现"><a href="#Weather-System的微服务架构设计与实现" class="headerlink" title="Weather System的微服务架构设计与实现"></a>Weather System的微服务架构设计与实现</h4><h5 id="System-架构设计"><a href="#System-架构设计" class="headerlink" title="System-架构设计"></a>System-架构设计</h5><h6 id="现有弊端："><a href="#现有弊端：" class="headerlink" title="现有弊端："></a>现有弊端：</h6><p>​    ·大而全（功能不足内聚）；混杂太多功能；难以理解；难以维护；难以扩展</p>
+<h6 id="改造需求："><a href="#改造需求：" class="headerlink" title="改造需求："></a>改造需求：</h6><p>​    ·微服务拆分的足够小，每个微服务的业务单一</p>
+<p>​    ·微服务支持水平拓展</p>
+<p>​    ·根据需要，实现微服务之间的相互调用</p>
+<h6 id="微服务拆分如下："><a href="#微服务拆分如下：" class="headerlink" title="微服务拆分如下："></a>微服务拆分如下：</h6><p>​    ·数据采集(msa-collection-server)</p>
+<p>​    ·主要功能(msa-report-server)</p>
+<p>​    ·城市API(msa-city-server)</p>
+<p>​    ·数据API(msa-data-server)</p>
+<h6 id="数据流向："><a href="#数据流向：" class="headerlink" title="数据流向："></a>数据流向：</h6><p><img src="C:\Users\lenovo\AppData\Local\Temp\1533198561868.png" alt="1533198561868"></p>
+<hr>
+<h5 id="数据采集微服务实现"><a href="#数据采集微服务实现" class="headerlink" title="数据采集微服务实现"></a>数据采集微服务实现</h5><p>对代码进行删减，只保留该微服务实现对应服务所需的内容</p>
+<p>仅保留了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// config 	QuartzConfiguration RestConfiguration</span></span><br><span class="line"><span class="comment">// job 		WeatherDataSyncJob</span></span><br><span class="line"><span class="comment">// service 	WeatherDataCollectionService &amp; Impl</span></span><br><span class="line"><span class="comment">// vo 		City</span></span><br></pre></td></tr></table></figure>
+<h5 id="功能微服务实现"><a href="#功能微服务实现" class="headerlink" title="功能微服务实现"></a>功能微服务实现</h5><p>对代码进行删减，只保留该微服务实现对应服务所需的内容</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// controller 	WeatherReportController</span></span><br><span class="line"><span class="comment">// service 		WeatherReportService</span></span><br><span class="line"><span class="comment">// vo			City Forecast Weather WeatherResponse Yesterday</span></span><br><span class="line"><span class="comment">// UI</span></span><br></pre></td></tr></table></figure>
+<h5 id="城市数据API微服务实现"><a href="#城市数据API微服务实现" class="headerlink" title="城市数据API微服务实现"></a>城市数据API微服务实现</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// controller 	WeatherReportController</span></span><br><span class="line"><span class="comment">// service 		WeatherReportService</span></span><br><span class="line"><span class="comment">// vo			City Forecast Weather WeatherResponse Yesterday</span></span><br><span class="line"><span class="comment">// resource		citylist.xml</span></span><br></pre></td></tr></table></figure>
+<h5 id="数据API微服务实现"><a href="#数据API微服务实现" class="headerlink" title="数据API微服务实现"></a>数据API微服务实现</h5><p>对代码进行删减，只保留该微服务实现对应服务所需的内容</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// controller 	WeatherController</span></span><br><span class="line"><span class="comment">// service 		WeatherDataService</span></span><br><span class="line"><span class="comment">// vo			Forecast Weather WeatherResponse Yesterday</span></span><br></pre></td></tr></table></figure>
+<p>到此，原本单架构的服务已经拆分成了四个部分的微服务；</p>
+<p>下一个笔记将开始使用Spring Cloud将四个微服务集成起来，</p>
+<p>形成一个完整的服务项目；</p>
+<hr>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p>@2018年8月3日 19:11:49</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA-Spring-Cloud/" rel="tag"># JAVA, Spring Cloud</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/02/Spring Cloud Note-3/" rel="next" title="Spring Cloud | Note-3">
+                <i class="fa fa-chevron-left"></i> Spring Cloud | Note-3
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">REX CHEN</p>
+              <p class="site-description motion-element" itemprop="description">日常记录</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud微服务-Note-4"><span class="nav-number">1.</span> <span class="nav-text">Spring Cloud微服务 | Note(4)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Weather-System的微服务架构设计与实现"><span class="nav-number">1.1.</span> <span class="nav-text">Weather System的微服务架构设计与实现</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#System-架构设计"><span class="nav-number">1.1.1.</span> <span class="nav-text">System-架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#现有弊端："><span class="nav-number">1.1.1.1.</span> <span class="nav-text">现有弊端：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#改造需求："><span class="nav-number">1.1.1.2.</span> <span class="nav-text">改造需求：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#微服务拆分如下："><span class="nav-number">1.1.1.3.</span> <span class="nav-text">微服务拆分如下：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#数据流向："><span class="nav-number">1.1.1.4.</span> <span class="nav-text">数据流向：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据采集微服务实现"><span class="nav-number">1.1.2.</span> <span class="nav-text">数据采集微服务实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#功能微服务实现"><span class="nav-number">1.1.3.</span> <span class="nav-text">功能微服务实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#城市数据API微服务实现"><span class="nav-number">1.1.4.</span> <span class="nav-text">城市数据API微服务实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据API微服务实现"><span class="nav-number">1.1.5.</span> <span class="nav-text">数据API微服务实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#附录"><span class="nav-number">2.</span> <span class="nav-text">附录</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">REX CHEN</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
