@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JAVA, Spring Cloud," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Spring Cloud微服务 | Note(5)@2018年8月7日 11:20:19 微服务协调者 Spring Cloud简介构建一整套完整的分布式系统的框架；解决微服务的问题；解决配置管理；服务注册；服务发现（不同服务之间互相发现，通过服务中心发现与调用）；断路器（保护系统，过载过大）；智能路由；微代理；服务间调用；一次性令牌；思维导图模版；全局锁；控制总线；领导选举；分布式会话；集群状态">
+<meta name="keywords" content="JAVA, Spring Cloud">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Cloud | Note-5">
+<meta property="og:url" content="http://yoursite.com/2018/08/07/Spring Cloud Note-5/index.html">
+<meta property="og:site_name" content="REEEEX">
+<meta property="og:description" content="Spring Cloud微服务 | Note(5)@2018年8月7日 11:20:19 微服务协调者 Spring Cloud简介构建一整套完整的分布式系统的框架；解决微服务的问题；解决配置管理；服务注册；服务发现（不同服务之间互相发现，通过服务中心发现与调用）；断路器（保护系统，过载过大）；智能路由；微代理；服务间调用；一次性令牌；思维导图模版；全局锁；控制总线；领导选举；分布式会话；集群状态">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-08T08:09:31.079Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Cloud | Note-5">
+<meta name="twitter:description" content="Spring Cloud微服务 | Note(5)@2018年8月7日 11:20:19 微服务协调者 Spring Cloud简介构建一整套完整的分布式系统的框架；解决微服务的问题；解决配置管理；服务注册；服务发现（不同服务之间互相发现，通过服务中心发现与调用）；断路器（保护系统，过载过大）；智能路由；微代理；服务间调用；一次性令牌；思维导图模版；全局锁；控制总线；领导选举；分布式会话；集群状态">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/07/Spring Cloud Note-5/"/>
+
+
+
+
+
+  <title>Spring Cloud | Note-5 | REEEEX</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">REEEEX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">KEEP GOING</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/07/Spring Cloud Note-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring Cloud | Note-5</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-07T00:00:00+08:00">
+                2018-08-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Spring-Cloud微服务-Note-5"><a href="#Spring-Cloud微服务-Note-5" class="headerlink" title="Spring Cloud微服务 | Note(5)"></a>Spring Cloud微服务 | Note(5)</h3><p>@2018年8月7日 11:20:19</p>
+<h4 id="微服务协调者-Spring-Cloud"><a href="#微服务协调者-Spring-Cloud" class="headerlink" title="微服务协调者 Spring Cloud"></a>微服务协调者 Spring Cloud</h4><h5 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h5><p>构建一整套完整的分布式系统的框架；解决微服务的问题；解决配置管理；服务注册；服务发现（不同服务之间互相发现，通过服务中心发现与调用）；断路器（保护系统，过载过大）；智能路由；微代理；服务间调用；一次性令牌；思维导图模版；全局锁；控制总线；领导选举；分布式会话；集群状态；分布式消息</p>
+<h5 id="Spring-Cloud-与-Spring-Boot关系"><a href="#Spring-Cloud-与-Spring-Boot关系" class="headerlink" title="Spring Cloud 与 Spring Boot关系"></a>Spring Cloud 与 Spring Boot关系</h5><p>Spring Boot是构建Spring Cloud架构的基石；</p>
+<p>每个子项目都可看做一个Spring Boot项目；</p>
+<p>Spring Cloud 版本命名规则（伦敦地铁站命名）；</p>
+<p>Finchley版本基于Spring Boot2.0.x；</p>
+<h5 id="入门配置、子项目介绍"><a href="#入门配置、子项目介绍" class="headerlink" title="入门配置、子项目介绍"></a>入门配置、子项目介绍</h5><p>Spring Cloud Config ：配置中心，利用git集中管理程序的配置</p>
+<p>Spring Cloud Netflix：集成Netflix的开源软件（Eureka、Hystrix、Zuul、Archaius）</p>
+<p>Spring Cloud Bus：消息总线，利用分布式消息将服务和服务实例连接在一起，用于在一个集群中传播状态的变化（配置更改的实现，用与Config联合实现热部署）</p>
+<p>Spring Cloud for Cloud Foundry：略</p>
+<p>Spring Cloud Cluster：基于Zookeeper、Redis、Hazelacast、Consul实现的领导选举和平民状态模式的抽象和实现</p>
+<p>Spring Cloud Consul：分布式协调软件，基于Hashicorp Consul实现服务的发现和配置管理</p>
+<p>Spring Cloud Security：在Zuul代理中为OAuth2 REST客户端和认证头转发提供负载均衡</p>
+<p>Spring Cloud Sleuth：用于程序的分布式跟踪、基于日志（ELK）的跟踪相兼容，可以日志的收集</p>
+<p>Spring Cloud Data Flow：针对现代运行时可组合的微服务程序的云本地编排服务</p>
+<p>Spring Cloud Stream：轻量级的事件驱动的微服务框架构建连接到外部系统的程序</p>
+<p>Spring Cloud Stream App Starters：基于Spring Boot为外部系统提供Spring的集成</p>
+<p>Spring Cloud Task App Starters：Spring Boot应用程序，可能是任何进程，包括Spring Batch作业，并可以在数据处理有限的时间终止</p>
+<p>Spring Cloud Contract：一个总体项目，包含帮助用户成功实施消费者驱动契约的解决方案</p>
+<hr>
+<h4 id="微服务的注册与发现"><a href="#微服务的注册与发现" class="headerlink" title="微服务的注册与发现"></a>微服务的注册与发现</h4><h5 id="服务发现的意义"><a href="#服务发现的意义" class="headerlink" title="服务发现的意义"></a>服务发现的意义</h5><p>发布的服务，让其他的服务可以使用发现（例：域名DNS系统）；</p>
+<p>发现服务的方法：</p>
+<p>通过URI访问服务 弊端：绑定主机、难记、难以负载均衡；</p>
+<p>使用Eureka：提供服务注册与发现；与Spring Cloud无缝集成；高可用性；开源；</p>
+<hr>
+<h5 id="集成Eureka-Server"><a href="#集成Eureka-Server" class="headerlink" title="集成Eureka Server"></a>集成Eureka Server</h5><p>环境：Spring Boot 2.0.3 RELEASE，Spring Cloud Starters Netflix Eureka Server Finchley.SR1</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line">buildscript &#123;</span><br><span class="line">    ext &#123;</span><br><span class="line">        springBootVersion = <span class="string">'2.0.3.RELEASE'</span></span><br><span class="line">    &#125;</span><br><span class="line">    repositories &#123;</span><br><span class="line">		mavenCentral()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath(<span class="string">"org.springframework.boot:spring-boot-gradle-plugin:$&#123;springBootVersion&#125;"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">ext &#123;</span><br><span class="line">    springCloudVersion = <span class="string">'Finchley.SR1'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    <span class="comment">// Eureka Server</span></span><br><span class="line">    compile(<span class="string">'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'</span>)</span><br><span class="line">    testCompile(<span class="string">'org.springframework.boot:spring-boot-starter-test'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencyManagement &#123;</span><br><span class="line">    imports &#123;</span><br><span class="line">        mavenBom <span class="string">"org.springframework.cloud:spring-cloud-dependencies:$&#123;springCloudVersion&#125;"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># Eureka</span><br><span class="line">server.port=<span class="number">8761</span></span><br><span class="line">eureka.instance.hostname=localhost</span><br><span class="line">eureka.client.register-with-eureka=<span class="keyword">false</span></span><br><span class="line">eureka.client.fetch-registry=<span class="keyword">false</span></span><br><span class="line">eureka.client.service-url.defaultZone=http:<span class="comment">//$&#123;eureka.instance.hostname&#125;:$&#123;server.port&#125;/eureka/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Application.java</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableEurekaServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EurekaApplication</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(EurekaApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="集成Eureka-Client"><a href="#集成Eureka-Client" class="headerlink" title="集成Eureka Client"></a>集成Eureka Client</h5><p>环境：Spring Boot 2.0.3 RELEASE，Spring Cloud Starters Netflix Eureka Server Finchley.SR1</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line">buildscript &#123;</span><br><span class="line">    ext &#123;</span><br><span class="line">        springBootVersion = <span class="string">'2.0.3.RELEASE'</span></span><br><span class="line">    &#125;</span><br><span class="line">    repositories &#123;</span><br><span class="line">		mavenCentral()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath(<span class="string">"org.springframework.boot:spring-boot-gradle-plugin:$&#123;springBootVersion&#125;"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">ext &#123;</span><br><span class="line">    springCloudVersion = <span class="string">'Finchley.SR1'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    <span class="comment">// Eureka Server</span></span><br><span class="line">    compile(<span class="string">'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'</span>)</span><br><span class="line">    testCompile(<span class="string">'org.springframework.boot:spring-boot-starter-test'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencyManagement &#123;</span><br><span class="line">    imports &#123;</span><br><span class="line">        mavenBom <span class="string">"org.springframework.cloud:spring-cloud-dependencies:$&#123;springCloudVersion&#125;"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># eureka client</span><br><span class="line">spring.application.name=micro-weather-eureka-client</span><br><span class="line">eureka.client.service-url.defaultZone=http:<span class="comment">//localhost:8761/eureka/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Application.java</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableEurekaClient</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MicroWeatherEurekaClientApplication</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(MicroWeatherEurekaClientApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>模拟服务关闭后，Server出现：</p>
+<blockquote>
+<h4 id="EMERGENCY-EUREKA-MAY-BE-INCORRECTLY-CLAIMING-INSTANCES-ARE-UP-WHEN-THEY’RE-NOT-RENEWALS-ARE-LESSER-THAN-THRESHOLD-AND-HENCE-THE-INSTANCES-ARE-NOT-BEING-EXPIRED-JUST-TO-BE-SAFE"><a href="#EMERGENCY-EUREKA-MAY-BE-INCORRECTLY-CLAIMING-INSTANCES-ARE-UP-WHEN-THEY’RE-NOT-RENEWALS-ARE-LESSER-THAN-THRESHOLD-AND-HENCE-THE-INSTANCES-ARE-NOT-BEING-EXPIRED-JUST-TO-BE-SAFE" class="headerlink" title="EMERGENCY! EUREKA MAY BE INCORRECTLY CLAIMING INSTANCES ARE UP WHEN THEY’RE NOT. RENEWALS ARE LESSER THAN THRESHOLD AND HENCE THE INSTANCES ARE NOT BEING EXPIRED JUST TO BE SAFE."></a><strong>EMERGENCY! EUREKA MAY BE INCORRECTLY CLAIMING INSTANCES ARE UP WHEN THEY’RE NOT. RENEWALS ARE LESSER THAN THRESHOLD AND HENCE THE INSTANCES ARE NOT BEING EXPIRED JUST TO BE SAFE.</strong></h4></blockquote>
+<p>证明Server开启保护模式：保持一个时间段（15分钟），服务是否进行暂停，可能是由于网络问题不稳定而不是服务的暂停，进行一个防护机制，减少误判。</p>
+<hr>
+<h5 id="实现服务的注册与发现"><a href="#实现服务的注册与发现" class="headerlink" title="实现服务的注册与发现"></a>实现服务的注册与发现</h5><p>将四个微服务进行改造，集成到Eureka Server &amp; Cilent中</p>
+<p>环境：Redis，Spring Boot 2.0.3 RELEASE，Spring Cloud Starters Netflix Eureka Server Finchley.SR1</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对四个微服务的build.gradle 配置文件进行修改</span></span><br><span class="line"><span class="comment">// 添加如下配置,类eureka client</span></span><br><span class="line">buildscript &#123;</span><br><span class="line">    ext &#123;</span><br><span class="line">        springBootVersion = <span class="string">'2.0.3.RELEASE'</span></span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line">ext &#123;</span><br><span class="line">    springCloudVersion = <span class="string">'Finchley.SR1'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// Eureka Client</span></span><br><span class="line">    compile(<span class="string">'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencyManagement &#123;</span><br><span class="line">    imports &#123;</span><br><span class="line">        mavenBom <span class="string">"org.springframework.cloud:spring-cloud-dependencies:$&#123;springCloudVersion&#125;"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 四个微服务的Application.java文件进行修改</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> ...<span class="title">Application</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(...Application.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 四个微服务的application.properties</span></span><br><span class="line"># ... eureka server</span><br><span class="line">server.pory=<span class="number">808</span>x</span><br><span class="line">spring.application.name=micro-weather-...-eureka</span><br><span class="line">eureka.client.service-url.defaultZone=http:<span class="comment">//localhost:8761/eureka/</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><h4 id="URI："><a href="#URI：" class="headerlink" title="URI："></a>URI：</h4><p>URI：统一资源标志符（Uniform Resource Identifier）<br>URL：统一资源定位符（Uniform Resource Location）</p>
+<p>URI与URL都是定位资源位置的，就是表示这个资源的位置信息。</p>
+<p>URI是一种宽泛的含义更广的定义，而URL则是URI的一个子集，就是说URL是URI的一部分。</p>
+<p>换言之，每个URL都是URI，但是不是每个URI都是URL的。他们之间最明显的不同就是在java.net.URI你只能看到他的一些属性，他只是表示一个位置，但是你没有办法通过URI获取到这个对象的流，但是URL就不同了。java.net.URL该类提供方法（openConnection（）），通过该方法我们可以通过IO流操作。</p>
+<p>也就是说：URL可以直接操作的，但是URI不可以。</p>
+<h4 id="负载均衡："><a href="#负载均衡：" class="headerlink" title="负载均衡："></a>负载均衡：</h4><p>当一台服务器的性能达到极限时，可以使用服务器集群来提高网站的整体性能。那么，在服务器集群中，需要有一台服务器充当调度者的角色，用户的所有请求都会首先由它接收，调度者再根据每台服务器的负载情况将请求分配给某一台后端服务器去处理。</p>
+<p>在这个过程中，调度者如何合理分配任务，保证所有后端服务器都将性能充分发挥，从而保持服务器集群的整体性能最优，这就是负载均衡问题。</p>
+<p>@ 2018年8月7日 16:09:19</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA-Spring-Cloud/" rel="tag"># JAVA, Spring Cloud</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/03/Spring Cloud Note-4/" rel="next" title="Spring Cloud | Note-4">
+                <i class="fa fa-chevron-left"></i> Spring Cloud | Note-4
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">REX CHEN</p>
+              <p class="site-description motion-element" itemprop="description">日常记录</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud微服务-Note-5"><span class="nav-number">1.</span> <span class="nav-text">Spring Cloud微服务 | Note(5)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#微服务协调者-Spring-Cloud"><span class="nav-number">1.1.</span> <span class="nav-text">微服务协调者 Spring Cloud</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#简介"><span class="nav-number">1.1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Spring-Cloud-与-Spring-Boot关系"><span class="nav-number">1.1.2.</span> <span class="nav-text">Spring Cloud 与 Spring Boot关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#入门配置、子项目介绍"><span class="nav-number">1.1.3.</span> <span class="nav-text">入门配置、子项目介绍</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#微服务的注册与发现"><span class="nav-number">1.2.</span> <span class="nav-text">微服务的注册与发现</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务发现的意义"><span class="nav-number">1.2.1.</span> <span class="nav-text">服务发现的意义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#集成Eureka-Server"><span class="nav-number">1.2.2.</span> <span class="nav-text">集成Eureka Server</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#集成Eureka-Client"><span class="nav-number">1.2.3.</span> <span class="nav-text">集成Eureka Client</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EMERGENCY-EUREKA-MAY-BE-INCORRECTLY-CLAIMING-INSTANCES-ARE-UP-WHEN-THEY’RE-NOT-RENEWALS-ARE-LESSER-THAN-THRESHOLD-AND-HENCE-THE-INSTANCES-ARE-NOT-BEING-EXPIRED-JUST-TO-BE-SAFE"><span class="nav-number">1.3.</span> <span class="nav-text">EMERGENCY! EUREKA MAY BE INCORRECTLY CLAIMING INSTANCES ARE UP WHEN THEY’RE NOT. RENEWALS ARE LESSER THAN THRESHOLD AND HENCE THE INSTANCES ARE NOT BEING EXPIRED JUST TO BE SAFE.</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#实现服务的注册与发现"><span class="nav-number">1.3.1.</span> <span class="nav-text">实现服务的注册与发现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#附录"><span class="nav-number">2.</span> <span class="nav-text">附录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#URI："><span class="nav-number">2.1.</span> <span class="nav-text">URI：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#负载均衡："><span class="nav-number">2.2.</span> <span class="nav-text">负载均衡：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">REX CHEN</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
