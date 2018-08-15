@@ -232,6 +232,357 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/15/Spring Cloud Note-9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/15/Spring Cloud Note-9/" itemprop="url">Spring Cloud | Note-9</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-15T00:00:00+08:00">
+                2018-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Spring-Cloud微服务-Note-9"><a href="#Spring-Cloud微服务-Note-9" class="headerlink" title="Spring Cloud微服务 | Note(9)"></a>Spring Cloud微服务 | Note(9)</h3><p>@ 2018年8月15日 10:19:40</p>
+<h4 id="微服务——熔断机制"><a href="#微服务——熔断机制" class="headerlink" title="微服务——熔断机制"></a>微服务——熔断机制</h4><p>当服务过载，流量激增，超过负荷时，掐断服务，保护服务的机制；</p>
+<h5 id="什么是服务的熔断机制"><a href="#什么是服务的熔断机制" class="headerlink" title="什么是服务的熔断机制"></a>什么是服务的熔断机制</h5><p>对于系统的防护机制，不会导致服务的不响应，返回默认值，依然保持服务的响应；</p>
+<p>对该服务的调用执行熔断，对于后续的请求，不再继续调用该目标服务，而是直接返回默认值，从而快速释放资源；保护系统；</p>
+<hr>
+<h5 id="熔断的原理（服务熔断）"><a href="#熔断的原理（服务熔断）" class="headerlink" title="熔断的原理（服务熔断）"></a>熔断的原理（服务熔断）</h5><p>断路器：受保护的服务封装在断路器中，当故障达到阈值时，切断服务的响应，由断路器返回响应；</p>
+<p>断路器模式：防止应用程序执行可能失败的操作，使应用程序检测故障是否解决；</p>
+<p>Microsof Azure 断路器状态：关闭，打开，半打开；</p>
+<p>Hystrix：服务正常，服务异常（Fallback）；</p>
+<hr>
+<h5 id="熔断的意义"><a href="#熔断的意义" class="headerlink" title="熔断的意义"></a>熔断的意义</h5><p>好处：保护系统，系统稳定，减少性能损耗，及时响应（简单的响应），阀值可定制；</p>
+<p>功能：异常处理，日志记录，测试失败的操作，手动复位，并发，加速断路，重试失败请求；</p>
+<hr>
+<h5 id="熔断与降级的区别"><a href="#熔断与降级的区别" class="headerlink" title="熔断与降级的区别"></a>熔断与降级的区别</h5><p>相似：目的一致（可用性，可靠性，保护系统），表现类似（服务暂时不可达），粒度一致（服务级别，DAO）</p>
+<p>区别：</p>
+<p>​    ·触发条件不同——熔断由服务引起，降级由整体负荷引起；</p>
+<p>​    ·管理目标层次不同——熔断管理整个框架级，每个服务都需要，降级管理业务层次；</p>
+<hr>
+<h5 id="如何集成Hystrix"><a href="#如何集成Hystrix" class="headerlink" title="如何集成Hystrix"></a>如何集成Hystrix</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 依赖</span></span><br><span class="line">dependencies &#123;</span><br><span class="line">	compile(<span class="string">'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 启用</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="meta">@EnableFeignClients</span></span><br><span class="line"><span class="meta">@EnableCircuitBreaker</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HystrixApplication</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(HystrixApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 服务过载时实现</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CityController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> CityClient cityClient;</span><br><span class="line">    </span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/cities"</span>)</span><br><span class="line">	<span class="meta">@HystrixCommand</span>(fallbackMethod = <span class="string">"defaultCities"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">listCity</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 通过Feign客户端来查找</span></span><br><span class="line">		String body = cityClient.listCity();</span><br><span class="line">		<span class="keyword">return</span> body;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">defaultCities</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"服务暂不可用(City Server Is Down)"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="实现微服务的熔断机制"><a href="#实现微服务的熔断机制" class="headerlink" title="实现微服务的熔断机制"></a>实现微服务的熔断机制</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 具体服务中实现熔断</span></span><br><span class="line"><span class="meta">@FeignClient</span>(name = <span class="string">"micro-weather-eureka-client-zuul"</span>,fallback = DataClientFallback.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DataClient</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Bean</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataClientFallback</span> <span class="keyword">implements</span> <span class="title">DataClient</span></span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;City&gt; <span class="title">listCity</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 默认响应信息</span></span><br><span class="line">        ...</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> WeatherResponse <span class="title">getDataByCityId</span><span class="params">(String cityId)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 默认响应信息</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line">spring.application.name=micro-weather-eureka-client-feign-gateway-hystrix</span><br><span class="line">feign.hystrix.enabled=<span class="keyword">true</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="微服务——自动扩展"><a href="#微服务——自动扩展" class="headerlink" title="微服务——自动扩展"></a>微服务——自动扩展</h4><h5 id="什么是自动扩展"><a href="#什么是自动扩展" class="headerlink" title="什么是自动扩展"></a>什么是自动扩展</h5><p>垂直扩展（双核主机 –&gt; 四核主机）硬件升级，瓶颈在于硬件水平的技术；</p>
+<p>水平扩展（1台主机 –&gt; x台主机）能力扩展，分布式系统解决计算能力；</p>
+<p>自我注册和自我发现是自动扩展的前提条件；</p>
+<p>服务注册表（服务注册中心），客户端，微服务实例；</p>
+<p>客户端查询服务注册表，查询可用的服务；服务实例启动后，自我注册到服务注册表中，待客户端使用；</p>
+<p>按需扩展：微服务实例分为使用中和保留，当需要更多实例时，再启动保留的服务实例，按照请求的需要扩展；</p>
+<hr>
+<h5 id="自动扩展的意义"><a href="#自动扩展的意义" class="headerlink" title="自动扩展的意义"></a>自动扩展的意义</h5><p>解决应用程序为了支持长时间的运行，需要提前预留硬件、软件的功能，解决闲置资源的浪费问题；</p>
+<p>按需扩展；</p>
+<p>每个微服务实例需要独立的部署空间；</p>
+<h6 id="好处："><a href="#好处：" class="headerlink" title="好处："></a>好处：</h6><p>提供高可用性和容错能力：快速自动扩展使用新的服务实例，以满足服务的需要；</p>
+<p>增加可伸缩性：水平扩展能力的增加，允许根据流量自动选择服务的规模；</p>
+<p>具有最佳使用率，节约成本：按需扩展；</p>
+<p>优先考虑服务或服务组：通过优先级分配资源；</p>
+<hr>
+<h4 id="自动扩展的常见模式"><a href="#自动扩展的常见模式" class="headerlink" title="自动扩展的常见模式"></a>自动扩展的常见模式</h4><h5 id="应用程序级别"><a href="#应用程序级别" class="headerlink" title="应用程序级别"></a>应用程序级别</h5><p>扩展通过复制微服务实例实现，虚拟机或主机运行微服务；</p>
+<p>更换服务实例；</p>
+<h5 id="基础架构级别"><a href="#基础架构级别" class="headerlink" title="基础架构级别"></a>基础架构级别</h5><p>根据需求及时创建或消除；</p>
+<p>保留的服务实例，被创建为具有预订意义的，服务实例虚拟机镜像，当有服务A的需求时，虚拟机将服务移动到激活的状态；</p>
+<p>更换服务虚拟机，适用范围更广；</p>
+<p>缺点：基于整个虚拟机扩展，体积更大，占用更多的系统资源；</p>
+<p>解决：采用轻量级容器docker，减少资源的占用；</p>
+<h5 id="资源限制"><a href="#资源限制" class="headerlink" title="资源限制"></a>资源限制</h5><p>监控程序：实时监控CPU的使用率，当使用率大于阀值时，启动新的服务实例；</p>
+<h5 id="特定时间段"><a href="#特定时间段" class="headerlink" title="特定时间段"></a>特定时间段</h5><p>根据特定时间段、季节性、业务高峰的服务需求，启动新的服务实例，减轻服务器的负载；</p>
+<h5 id="消息长度"><a href="#消息长度" class="headerlink" title="消息长度"></a>消息长度</h5><p>监控程序监控每个服务实例的消息队列的长度，当队列长度大于设置的长度时，说明需要处理的消息超过服务可提供的能力，则新增服务实例；</p>
+<h5 id="业务参数"><a href="#业务参数" class="headerlink" title="业务参数"></a>业务参数</h5><p>添加实例基于某些业务参数，解决业务事件时，通过先新增服务实例的方法，预防即将到来的大量业务交易请求；</p>
+<h5 id="根据预测"><a href="#根据预测" class="headerlink" title="根据预测"></a>根据预测</h5><p>新型的自动扩展方式；</p>
+<p>有多种信息事务模式的组合；</p>
+<p>有助于解决硬编码和时间窗口；</p>
+<p>根据历史信息，当前趋势进行预测（更精确，更有效的解决突发情况）；</p>
+<hr>
+<h4 id="如何实现微服务的自动扩展"><a href="#如何实现微服务的自动扩展" class="headerlink" title="如何实现微服务的自动扩展"></a>如何实现微服务的自动扩展</h4><h5 id="思考的问题"><a href="#思考的问题" class="headerlink" title="思考的问题"></a>思考的问题</h5><p>如何管理数千个容器？</p>
+<p>如何监控容器？</p>
+<p>在部署工件时，如何应用规则和约束？</p>
+<p>如何利用容器获得资源效率？</p>
+<p>如何确保至少有一定数量的最小实例正在运行？</p>
+<p>如何确保依赖服务正常运行？</p>
+<p>如何进行滚动升级和优雅的迁移？</p>
+<p>如何回滚错误的部署？</p>
+<h5 id="所需功能"><a href="#所需功能" class="headerlink" title="所需功能"></a>所需功能</h5><p>依赖两个关键功能：</p>
+<p>1-一个容器抽象层，在许多物理或虚拟机上提供统一的抽象；</p>
+<p>2-容器编排和初始化系统在集群抽象之上智能管理部署</p>
+<hr>
+<h4 id="容器编排"><a href="#容器编排" class="headerlink" title="容器编排"></a>容器编排</h4><p>为开发以及架构团队，提供一个抽象层，来处理大规模集装箱式的部署；</p>
+<p>共同功能：具备发现、资源管理、监控和部署等；</p>
+<p>职责：集群管理（将虚拟机和物理机器的集群管理为一台大型机器 ）</p>
+<p>自动部署（能处理有大量及其的应用程序和容器的自动部署，支持多版本的应用程序容器，并且支持跨越大量集群机器的滚动升级和故障回滚）</p>
+<p>可伸缩性（支持服务实例的自动和手动伸缩，以性能优化为主要目标）</p>
+<p>运行状况的健康（管理集群、节点和应用程序的健康）</p>
+<p>基础架构抽象（开发人员不需要担心集群和容量等问题）</p>
+<p>资源优化（以有效的方式在可用机器上分配容器工作负载，从而减低成本，通过简单到复杂的算法有效提高利用率）</p>
+<p>资源分配（基于应用程序开发人员设置的资源可用性和约束来分配服务器）</p>
+<p>服务可用性（确保服务在集群中正常运行，机器故障的情况下，容器编排会自动通过在集群中的其他机器上重新启动这些服务来处理故障）</p>
+<p>敏捷性（敏捷性工具能够快速分配工作负载到可用资源，或在资源需求发生变化时跨机器移动工作量）</p>
+<p>隔离（提供资源隔离，即使应用程序不是容器化，也可以实现资源隔离）</p>
+<hr>
+<h4 id="资源分配常用算法"><a href="#资源分配常用算法" class="headerlink" title="资源分配常用算法"></a>资源分配常用算法</h4><p>传播（Spread）工作负载平均分配到多台主机中；</p>
+<p>装箱（Bin Packing）优先试图填满机器的最大负载，常用于按需付费的云服务；</p>
+<p>随机（Random）工作负载随机分配到多台主机中；</p>
+<h4 id="常用的容器编排技术"><a href="#常用的容器编排技术" class="headerlink" title="常用的容器编排技术"></a>常用的容器编排技术</h4><p>Docker Swarm</p>
+<p>Kubernetes</p>
+<p>Apache Mesos</p>
+<hr>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p>@ 2018年8月15日 14:57:54</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/10/Spring Cloud Note-8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/10/Spring Cloud Note-8/" itemprop="url">Spring Cloud | Note-8</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T00:00:00+08:00">
+                2018-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Spring-Cloud微服务-Note-8"><a href="#Spring-Cloud微服务-Note-8" class="headerlink" title="Spring Cloud微服务 | Note(8)"></a>Spring Cloud微服务 | Note(8)</h3><p>@ 2018年8月10日 15:22:48</p>
+<h4 id="微服务的集中化配置"><a href="#微服务的集中化配置" class="headerlink" title="微服务的集中化配置"></a>微服务的集中化配置</h4><p>配置文件是为了迎合软件的个性化需求；</p>
+<p>解决每个微服务的统一配置；</p>
+<p>管理微服务的外部，中心化的配置中心；</p>
+<h5 id="为什么需要集中化配置"><a href="#为什么需要集中化配置" class="headerlink" title="为什么需要集中化配置"></a>为什么需要集中化配置</h5><p>微服务数量多，配置多；</p>
+<p>手工管理配置繁琐；</p>
+<h6 id="配置分类："><a href="#配置分类：" class="headerlink" title="配置分类："></a>配置分类：</h6><p>​    ·配置来源划分：源代码、文件、数据库连接、远程调用</p>
+<p>​    ·配置环境划分：开发环境、测试环境、预发布环境、生产环境</p>
+<p>​    ·配置集成阶段划分：编译、打包、运行</p>
+<p>​    ·配置加载方式划分：启动加载、动态加载</p>
+<h6 id="配置中心的要求："><a href="#配置中心的要求：" class="headerlink" title="配置中心的要求："></a>配置中心的要求：</h6><p>​    ·面向可配置的编码</p>
+<p>​    ·隔离性</p>
+<p>​    ·一致性</p>
+<p>​    ·集中化配置</p>
+<h6 id="Spring-Cloud-Config"><a href="#Spring-Cloud-Config" class="headerlink" title="Spring Cloud Config"></a>Spring Cloud Config</h6><p>分布式外部化配置；Config Server；Config Client；</p>
+<hr>
+<h5 id="如何继集成Spring-Cloud-Config-Server"><a href="#如何继集成Spring-Cloud-Config-Server" class="headerlink" title="如何继集成Spring Cloud Config Server"></a>如何继集成Spring Cloud Config Server</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line">dependencies&#123;</span><br><span class="line">    compile(<span class="string">'org.springframework.cloud:spring-cloud-config-server'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Application</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="meta">@EnableConfigServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigApplication</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        SpringApplication.run(ConfigApplication.class,args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># config server</span><br><span class="line">server.port=<span class="number">8888</span></span><br><span class="line">spring.application.name=micro-weather-config-server</span><br><span class="line">eureka.client.service-url.defaultZone=http:<span class="comment">//localhost:8761/eureka/</span></span><br><span class="line">spring.cloud.config.server.git.uri=https:...</span><br><span class="line">spring.cloud.config.server.git.search-paths=...</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="如何继集成Spring-Cloud-Config-Client"><a href="#如何继集成Spring-Cloud-Config-Client" class="headerlink" title="如何继集成Spring Cloud Config Client"></a>如何继集成Spring Cloud Config Client</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line">dependencies&#123;</span><br><span class="line">    compile(<span class="string">'org.springframework.cloud:spring-cloud-config-client'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Application</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigClientApplication</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        SpringApplication.run(ConfigClientApplication.class,args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># config server</span><br><span class="line">spring.application.name=micro-weather-config-client</span><br><span class="line">eureka.client.service-url.defaultZone=http:<span class="comment">//localhost:8761/eureka/</span></span><br><span class="line">spring.cloud.config.profile=dev</span><br><span class="line">spring.cloud.config.uri=http:<span class="comment">//localhost:8888</span></span><br></pre></td></tr></table></figure>
+<h5 id="实现微服务的集中化配置"><a href="#实现微服务的集中化配置" class="headerlink" title="实现微服务的集中化配置"></a>实现微服务的集中化配置</h5><p>配置中心的文件命名规则</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/&#123;application&#125;/&#123;profile&#125;/[/&#123;label&#125;]</span><br><span class="line">/&#123;application&#125;-&#123;profile&#125;.yml</span><br><span class="line">/&#123;label&#125;/&#123;application&#125;-&#123;profile&#125;.yml</span><br><span class="line">/&#123;application&#125;-&#123;profile&#125;.properties</span><br><span class="line">/&#123;label&#125;/&#123;application&#125;-&#123;profile&#125;.properties</span><br></pre></td></tr></table></figure>
+<p>启动Eureka Server以及Config Server</p>
+<p>作为Config Client可以在远端获取部署在git上的配置文件的内容</p>
+<hr>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p>@ 2018年8月10日 16:22:38</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/09/Spring Cloud Note-7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -839,173 +1190,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/02/Spring Cloud Note-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="REX CHEN">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="REEEEX">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/02/Spring Cloud Note-3/" itemprop="url">Spring Cloud | Note-3</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T00:00:00+08:00">
-                2018-08-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Spring-Cloud微服务-Note-3"><a href="#Spring-Cloud微服务-Note-3" class="headerlink" title="Spring Cloud微服务 | Note(3)"></a>Spring Cloud微服务 | Note(3)</h3><p>@2018年8月2日 15:13:33</p>
-<h4 id="单块架构进化为微服务架构"><a href="#单块架构进化为微服务架构" class="headerlink" title="单块架构进化为微服务架构"></a>单块架构进化为微服务架构</h4><h5 id="单块架构"><a href="#单块架构" class="headerlink" title="单块架构"></a>单块架构</h5><p><img src="C:\Users\lenovo\AppData\Local\Temp\1533195168009.png" alt="1533195168009"></p>
-<h6 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h6><p>功能划分清晰；层次关系良好；层层独立；部署简单；相对技术单一；成本低</p>
-<h6 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h6><p>功能太大；升级风险高；维护成本增加；交付周期变长（按系统交付）；可伸缩性差；监控困难</p>
-<hr>
-<h5 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h5><p>随着系统的壮大，单块架构需要转化，转化成每一个服务单元模块，以API交互，平台无关，高内聚低耦合</p>
-<p><img src="C:\Users\lenovo\AppData\Local\Temp\1533195708067.png" alt="1533195708067"></p>
-<hr>
-<h5 id="微服务设计原则（颗粒度设计原则）"><a href="#微服务设计原则（颗粒度设计原则）" class="headerlink" title="微服务设计原则（颗粒度设计原则）"></a>微服务设计原则（颗粒度设计原则）</h5><p>Q：什么是微服务</p>
-<p>A：服务可以运行在自己进程中（独立部署），轻量级交互机制，例如HTTP交互，服务A和B之间，没有太多的技术关联，可以使用不同的数据存储形式（MySQL或NoSQL）</p>
-<h6 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h6><p>1.拆分足够微（颗粒度）：足够小足以即可（亚马逊两个披萨原则，不能太小，不能太大，满足管理成本）</p>
-<p>2.轻量级通信：微服务函数之间的调用需要体现跨域、跨主机，同步（REST），异步（消息中间件）</p>
-<p>3.领域驱动原则：服务需要体现领域业务模型，减少微服务通用语言的复杂性，使团队理解服务上下文边界（明确了解开发的业务功能）</p>
-<p>4.单一职责原则：颗粒度粗（高耦合，不利于维护，修改重合）；高内聚，低耦合，对其它服务的依赖要低，单一界限上下文，通过公开的API访问</p>
-<p>5.DevOps以及两个披萨：开发团队小而精，且具有全栈能力，降低沟通成本</p>
-<p>6.不限于技术栈：与平台无关，根据场景、业务具体选择技术栈</p>
-<hr>
-<h5 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h5><h6 id="服务拆分："><a href="#服务拆分：" class="headerlink" title="服务拆分："></a>服务拆分：</h6><p>​    ·关注服务的颗粒度，颗粒度才用领域驱动设计进行指导，专注某一领域的功能；</p>
-<h6 id="服务注册："><a href="#服务注册：" class="headerlink" title="服务注册："></a>服务注册：</h6><p>​    ·每个微服务，服务之间的通讯实现；服务注册机制（服务注册中心）；通过心跳机制获取状态，并且通过状态通知其他服务；</p>
-<h6 id="服务发现："><a href="#服务发现：" class="headerlink" title="服务发现："></a>服务发现：</h6><p>​    ·通过服务名称等找到所需的服务</p>
-<h6 id="服务消费："><a href="#服务消费：" class="headerlink" title="服务消费："></a>服务消费：</h6><p>​    ·调用其他服务的过程；消费者（调用者），提供商（被调用）</p>
-<h6 id="统一入口："><a href="#统一入口：" class="headerlink" title="统一入口："></a>统一入口：</h6><p>​    ·给服务提供方便的服务名称</p>
-<h6 id="配置管理："><a href="#配置管理：" class="headerlink" title="配置管理："></a>配置管理：</h6><p>​    ·定制功能的配置文件不同；</p>
-<h6 id="熔断机制："><a href="#熔断机制：" class="headerlink" title="熔断机制："></a>熔断机制：</h6><p>​    ·系统的防护；阻挡所有的访问，断开某些服务，返回提示信息，保护系统；</p>
-<h6 id="自动拓展："><a href="#自动拓展：" class="headerlink" title="自动拓展："></a>自动拓展：</h6><p>​    ·服务根据负荷状况，进行自动扩展；</p>
-<hr>
-<h5 id="微服务拆分："><a href="#微服务拆分：" class="headerlink" title="微服务拆分："></a>微服务拆分：</h5><h6 id="意义："><a href="#意义：" class="headerlink" title="意义："></a>意义：</h6><p>​    ·易于实现；利于维护；易于部署，轻量级（Spring Boot内嵌tomcat）；易于更新（服务都是隔离的，易于修改、更新、部署）</p>
-<h6 id="正向的反馈闭环："><a href="#正向的反馈闭环：" class="headerlink" title="正向的反馈闭环："></a>正向的反馈闭环：</h6><p><img src="C:\Users\lenovo\AppData\Local\Temp\1533197427183.png" alt="1533197427183"></p>
-<h6 id="拆分方法："><a href="#拆分方法：" class="headerlink" title="拆分方法："></a>拆分方法：</h6><p>横向拆分：根据不同的业务功能，拆分成不同的微服务</p>
-<p>​    ·数据采集，数据存储，数据查询，数据展示</p>
-<p>纵向拆分：把业务中的不同的功能，模块进行拆分</p>
-<p>​    ·<img src="C:\Users\lenovo\AppData\Local\Temp\1533197559770.png" alt="1533197559770"></p>
-<p>使用DDD（驱动设计原则）：反映领域的业务模型</p>
-<p>​    ·天气数据采集限界上下文：数据采集，数据存储</p>
-<p>​    ·天气预报限界上下文：数据展示</p>
-<p>​    ·天气数据API限界上下文：数据查询</p>
-<p>​    ·城市数据API限界上下文：数据查询</p>
-<hr>
-<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p><a href="https://www.cnblogs.com/wintersun/p/6219259.html" target="_blank" rel="noopener">微服务架构设计</a></p>
-<p><a href="https://www.nginx.com/blog/introduction-to-microservices/" target="_blank" rel="noopener">NGINX-BLOG</a></p>
-<p><a href="http://www.dockone.io/article/394" target="_blank" rel="noopener">微服务架构的优势与不足</a></p>
-<p><a href="http://dockone.io/article/482" target="_blank" rel="noopener">使用API Gateway</a></p>
-<p><a href="http://www.dockone.io/article/549" target="_blank" rel="noopener">深入微服务架构的进程间通信</a></p>
-<p><a href="http://www.dockone.io/article/771" target="_blank" rel="noopener">服务发现的可行方案以及实践案例</a></p>
-<p><a href="http://www.dockone.io/article/936" target="_blank" rel="noopener">微服务的事件驱动数据管理</a></p>
-<p><a href="http://www.dockone.io/article/1066" target="_blank" rel="noopener">选择微服务部署策略</a></p>
-<p><a href="http://www.dockone.io/article/1266" target="_blank" rel="noopener">从单体式架构迁移到微服务架构</a></p>
-<p>@2018年8月2日 16:20:46</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/02/Spring Cloud Note-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1150,7 +1334,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/01/Blog System  Note-6/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/02/Spring Cloud Note-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="REX CHEN">
@@ -1169,7 +1353,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/01/Blog System  Note-6/" itemprop="url">Blog System | Note-6</a></h1>
+                <a class="post-title-link" href="/2018/08/02/Spring Cloud Note-3/" itemprop="url">Spring Cloud | Note-3</a></h1>
         
 
         <div class="post-meta">
@@ -1181,8 +1365,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T00:00:00+08:00">
-                2018-08-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T00:00:00+08:00">
+                2018-08-02
               </time>
             
 
@@ -1221,27 +1405,54 @@
       
         
           
-            <h3 id="Blog-System-Note-5"><a href="#Blog-System-Note-5" class="headerlink" title="Blog System | Note-5"></a>Blog System | Note-5</h3><p>@2018年8月1日 14:43:38        @Knowledge From Imooc</p>
+            <h3 id="Spring-Cloud微服务-Note-3"><a href="#Spring-Cloud微服务-Note-3" class="headerlink" title="Spring Cloud微服务 | Note(3)"></a>Spring Cloud微服务 | Note(3)</h3><p>@2018年8月2日 15:13:33</p>
+<h4 id="单块架构进化为微服务架构"><a href="#单块架构进化为微服务架构" class="headerlink" title="单块架构进化为微服务架构"></a>单块架构进化为微服务架构</h4><h5 id="单块架构"><a href="#单块架构" class="headerlink" title="单块架构"></a>单块架构</h5><p><img src="C:\Users\lenovo\AppData\Local\Temp\1533195168009.png" alt="1533195168009"></p>
+<h6 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h6><p>功能划分清晰；层次关系良好；层层独立；部署简单；相对技术单一；成本低</p>
+<h6 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h6><p>功能太大；升级风险高；维护成本增加；交付周期变长（按系统交付）；可伸缩性差；监控困难</p>
 <hr>
-<p>#### </p>
-<h4 id="搜索功能"><a href="#搜索功能" class="headerlink" title="搜索功能"></a>搜索功能</h4><p>使用Elasticsearchs实现全文检索</p>
-<h5 id="应用"><a href="#应用" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 文档类型的EsBlog实体</span></span><br><span class="line"><span class="meta">@Document</span>(indexName = <span class="string">"blog"</span>,type = <span class="string">"blog"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EsBlog</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;</span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">	<span class="keyword">private</span> String id;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Blog实体的ID</span></span><br><span class="line">	<span class="meta">@Field</span>(index = FieldIndex.not_analyzed)</span><br><span class="line">	<span class="keyword">private</span> Long blogId;</span><br><span class="line">	<span class="keyword">private</span> String title;</span><br><span class="line">	<span class="keyword">private</span> String summary;</span><br><span class="line">	<span class="keyword">private</span> String content;</span><br><span class="line">	<span class="comment">// 不使用全文检索字段</span></span><br><span class="line">	<span class="meta">@Field</span>(index = FieldIndex.not_analyzed)</span><br><span class="line">	<span class="keyword">private</span> String username;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">private</span> String tags;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// EsBlogRepository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">EsBlogRepository</span> <span class="keyword">extends</span> <span class="title">ElasticsearchRepository</span>&lt;<span class="title">EsBlog</span>,<span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// 模糊搜索查询</span></span><br><span class="line">	<span class="function">Page&lt;EsBlog&gt; <span class="title">findDistinctEsBlogByTitleContainingOrSummaryContainingOrContentContainingOrTagsContaining</span><span class="params">(String title,String summary,String content,String tags,Pageable pageable)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// EsBlogService</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">EsBlogService</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 最新博客列表</span></span><br><span class="line">	<span class="function">Page&lt;EsBlog&gt; <span class="title">listNewestEsBlogs</span><span class="params">(String keyword, Pageable pageable)</span></span>;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Impl</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;TagVO&gt; <span class="title">listTop30Tags</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    List&lt;TagVO&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="comment">// given</span></span><br><span class="line">    SearchQuery searchQuery = <span class="keyword">new</span> NativeSearchQueryBuilder()</span><br><span class="line">        .withQuery(matchAllQuery())</span><br><span class="line">        .withSearchType(SearchType.QUERY_THEN_FETCH)</span><br><span class="line">        .withIndices(<span class="string">"blog"</span>).withTypes(<span class="string">"blog"</span>)</span><br><span class="line">        .addAggregation(terms(<span class="string">"tags"</span>).field(<span class="string">"tags"</span>).order(Terms.Order.count(<span class="keyword">false</span>)).size(<span class="number">30</span>))</span><br><span class="line">        .build();</span><br><span class="line">    <span class="comment">// when</span></span><br><span class="line">    Aggregations aggregations = elasticsearchTemplate.query(searchQuery, <span class="keyword">new</span> ResultsExtractor&lt;Aggregations&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Aggregations <span class="title">extract</span><span class="params">(SearchResponse response)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> response.getAggregations();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    StringTerms modelTerms = (StringTerms)aggregations.asMap().get(<span class="string">"tags"</span>);</span><br><span class="line">    Iterator&lt;Terms.Bucket&gt; modelBucketIt = modelTerms.getBuckets().iterator();</span><br><span class="line">    <span class="keyword">while</span> (modelBucketIt.hasNext())&#123;</span><br><span class="line">        Terms.Bucket actiontypeBucket = modelBucketIt.next();</span><br><span class="line">        list.add(<span class="keyword">new</span> TagVO(actiontypeBucket.getKey().toString(),actiontypeBucket.getDocCount()));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> list;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// BlogController</span></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/blogs"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BlogController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> EsBlogService esBlogService;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 博客列表</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@GetMapping</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">listBlogs</span><span class="params">(@RequestParam(value = <span class="string">"order"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"new"</span>)</span> String order,</span></span><br><span class="line"><span class="function">							@<span class="title">RequestParam</span><span class="params">(value = <span class="string">"keyword"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">""</span>)</span> String keyword,</span></span><br><span class="line"><span class="function">							@<span class="title">RequestParam</span><span class="params">(value = <span class="string">"async"</span>, required = <span class="keyword">false</span>)</span> <span class="keyword">boolean</span> async,</span></span><br><span class="line"><span class="function">							@<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageIndex"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"0"</span>)</span> <span class="keyword">int</span> pageIndex,</span></span><br><span class="line"><span class="function">							@<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageSize"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"10"</span>)</span> <span class="keyword">int</span> pageSize,</span></span><br><span class="line"><span class="function">							Model model) </span>&#123;</span><br><span class="line">		Page&lt;EsBlog&gt; page = <span class="keyword">null</span>;</span><br><span class="line">		List&lt;EsBlog&gt; list = <span class="keyword">null</span>;</span><br><span class="line">		<span class="comment">// 系统初始化时，没有博客数据</span></span><br><span class="line">		<span class="keyword">boolean</span> isEmpty = <span class="keyword">true</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// 热门查询</span></span><br><span class="line">			<span class="keyword">if</span> (order.equals(<span class="string">"hot"</span>)) &#123;</span><br><span class="line">				...</span><br><span class="line">			&#125; <span class="keyword">else</span> <span class="keyword">if</span> (order.equals(<span class="string">"new"</span>)) &#123;</span><br><span class="line">				...</span><br><span class="line">			&#125;</span><br><span class="line">			isEmpty = <span class="keyword">false</span>;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">		...</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 所在页面数据列表</span></span><br><span class="line">		list = page.getContent();</span><br><span class="line">		model.addAttribute(<span class="string">"order"</span>, order);</span><br><span class="line">		...</span><br><span class="line">		<span class="comment">// 首次访问页面才加载</span></span><br><span class="line">		<span class="keyword">if</span> (!async &amp;&amp; !isEmpty) &#123;</span><br><span class="line">			List&lt;EsBlog&gt; newest = esBlogService.listTop5NewestEsBlogs();</span><br><span class="line">			model.addAttribute(<span class="string">"newest"</span>, newest);</span><br><span class="line">			...</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> (async == <span class="keyword">true</span> ? <span class="string">"/index :: #mainContainerRepleace"</span> : <span class="string">"/index"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>这一次的博客系统学习，收获颇多（慕课网），</p>
-<p>了解到企业级开发的流程（需求分析-技术选型-框架搭建-原型设计-等等）学习到基本的架构设计，</p>
-<h5 id="BackEnd："><a href="#BackEnd：" class="headerlink" title="BackEnd："></a>BackEnd：</h5><p>Spring，Spring MVC，Spring Data，Spring Security，Hibernate，SpringBoot基础知识的巩固；</p>
-<h5 id="FrontEnd："><a href="#FrontEnd：" class="headerlink" title="FrontEnd："></a>FrontEnd：</h5><p>Thymeleaf模版的学习；Bootstrap的使用，jQuery，HTML5，JS，CSS；</p>
-<p>Elasticsearchs全文检索；</p>
-<p>JpaRepository；</p>
-<p>MongoDB-File-Server的使用；</p>
-<p>Gradle管理；</p>
-<p>继续学习，附下官方文档，保持基础知识的学习，不只是对着代码学着敲而已，官方文档是最好的学习资料。</p>
+<h5 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h5><p>随着系统的壮大，单块架构需要转化，转化成每一个服务单元模块，以API交互，平台无关，高内聚低耦合</p>
+<p><img src="C:\Users\lenovo\AppData\Local\Temp\1533195708067.png" alt="1533195708067"></p>
 <hr>
-<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><p><a href="https://spring.io/guides/gs/spring-boot/" target="_blank" rel="noopener">SpringBoot</a></p>
-<p><a href="https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html" target="_blank" rel="noopener">Thymeleaf</a></p>
-<p><a href="https://getbootstrap.com/docs/4.1/getting-started/introduction/" target="_blank" rel="noopener">Bootstrap</a></p>
-<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html" target="_blank" rel="noopener">Elasticsearch</a></p>
-<p><a href="https://docs.gradle.org/current/userguide/userguide.html" target="_blank" rel="noopener">Gradle</a></p>
-<p>@2018年8月1日 15:02:24</p>
+<h5 id="微服务设计原则（颗粒度设计原则）"><a href="#微服务设计原则（颗粒度设计原则）" class="headerlink" title="微服务设计原则（颗粒度设计原则）"></a>微服务设计原则（颗粒度设计原则）</h5><p>Q：什么是微服务</p>
+<p>A：服务可以运行在自己进程中（独立部署），轻量级交互机制，例如HTTP交互，服务A和B之间，没有太多的技术关联，可以使用不同的数据存储形式（MySQL或NoSQL）</p>
+<h6 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h6><p>1.拆分足够微（颗粒度）：足够小足以即可（亚马逊两个披萨原则，不能太小，不能太大，满足管理成本）</p>
+<p>2.轻量级通信：微服务函数之间的调用需要体现跨域、跨主机，同步（REST），异步（消息中间件）</p>
+<p>3.领域驱动原则：服务需要体现领域业务模型，减少微服务通用语言的复杂性，使团队理解服务上下文边界（明确了解开发的业务功能）</p>
+<p>4.单一职责原则：颗粒度粗（高耦合，不利于维护，修改重合）；高内聚，低耦合，对其它服务的依赖要低，单一界限上下文，通过公开的API访问</p>
+<p>5.DevOps以及两个披萨：开发团队小而精，且具有全栈能力，降低沟通成本</p>
+<p>6.不限于技术栈：与平台无关，根据场景、业务具体选择技术栈</p>
+<hr>
+<h5 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h5><h6 id="服务拆分："><a href="#服务拆分：" class="headerlink" title="服务拆分："></a>服务拆分：</h6><p>​    ·关注服务的颗粒度，颗粒度才用领域驱动设计进行指导，专注某一领域的功能；</p>
+<h6 id="服务注册："><a href="#服务注册：" class="headerlink" title="服务注册："></a>服务注册：</h6><p>​    ·每个微服务，服务之间的通讯实现；服务注册机制（服务注册中心）；通过心跳机制获取状态，并且通过状态通知其他服务；</p>
+<h6 id="服务发现："><a href="#服务发现：" class="headerlink" title="服务发现："></a>服务发现：</h6><p>​    ·通过服务名称等找到所需的服务</p>
+<h6 id="服务消费："><a href="#服务消费：" class="headerlink" title="服务消费："></a>服务消费：</h6><p>​    ·调用其他服务的过程；消费者（调用者），提供商（被调用）</p>
+<h6 id="统一入口："><a href="#统一入口：" class="headerlink" title="统一入口："></a>统一入口：</h6><p>​    ·给服务提供方便的服务名称</p>
+<h6 id="配置管理："><a href="#配置管理：" class="headerlink" title="配置管理："></a>配置管理：</h6><p>​    ·定制功能的配置文件不同；</p>
+<h6 id="熔断机制："><a href="#熔断机制：" class="headerlink" title="熔断机制："></a>熔断机制：</h6><p>​    ·系统的防护；阻挡所有的访问，断开某些服务，返回提示信息，保护系统；</p>
+<h6 id="自动拓展："><a href="#自动拓展：" class="headerlink" title="自动拓展："></a>自动拓展：</h6><p>​    ·服务根据负荷状况，进行自动扩展；</p>
+<hr>
+<h5 id="微服务拆分："><a href="#微服务拆分：" class="headerlink" title="微服务拆分："></a>微服务拆分：</h5><h6 id="意义："><a href="#意义：" class="headerlink" title="意义："></a>意义：</h6><p>​    ·易于实现；利于维护；易于部署，轻量级（Spring Boot内嵌tomcat）；易于更新（服务都是隔离的，易于修改、更新、部署）</p>
+<h6 id="正向的反馈闭环："><a href="#正向的反馈闭环：" class="headerlink" title="正向的反馈闭环："></a>正向的反馈闭环：</h6><p><img src="C:\Users\lenovo\AppData\Local\Temp\1533197427183.png" alt="1533197427183"></p>
+<h6 id="拆分方法："><a href="#拆分方法：" class="headerlink" title="拆分方法："></a>拆分方法：</h6><p>横向拆分：根据不同的业务功能，拆分成不同的微服务</p>
+<p>​    ·数据采集，数据存储，数据查询，数据展示</p>
+<p>纵向拆分：把业务中的不同的功能，模块进行拆分</p>
+<p>​    ·<img src="C:\Users\lenovo\AppData\Local\Temp\1533197559770.png" alt="1533197559770"></p>
+<p>使用DDD（驱动设计原则）：反映领域的业务模型</p>
+<p>​    ·天气数据采集限界上下文：数据采集，数据存储</p>
+<p>​    ·天气预报限界上下文：数据展示</p>
+<p>​    ·天气数据API限界上下文：数据查询</p>
+<p>​    ·城市数据API限界上下文：数据查询</p>
+<hr>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p><a href="https://www.cnblogs.com/wintersun/p/6219259.html" target="_blank" rel="noopener">微服务架构设计</a></p>
+<p><a href="https://www.nginx.com/blog/introduction-to-microservices/" target="_blank" rel="noopener">NGINX-BLOG</a></p>
+<p><a href="http://www.dockone.io/article/394" target="_blank" rel="noopener">微服务架构的优势与不足</a></p>
+<p><a href="http://dockone.io/article/482" target="_blank" rel="noopener">使用API Gateway</a></p>
+<p><a href="http://www.dockone.io/article/549" target="_blank" rel="noopener">深入微服务架构的进程间通信</a></p>
+<p><a href="http://www.dockone.io/article/771" target="_blank" rel="noopener">服务发现的可行方案以及实践案例</a></p>
+<p><a href="http://www.dockone.io/article/936" target="_blank" rel="noopener">微服务的事件驱动数据管理</a></p>
+<p><a href="http://www.dockone.io/article/1066" target="_blank" rel="noopener">选择微服务部署策略</a></p>
+<p><a href="http://www.dockone.io/article/1266" target="_blank" rel="noopener">从单体式架构迁移到微服务架构</a></p>
+<p>@2018年8月2日 16:20:46</p>
 
           
         
@@ -1445,7 +1656,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/31/Blog System  Note-4/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/01/Blog System  Note-6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="REX CHEN">
@@ -1464,7 +1675,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/31/Blog System  Note-4/" itemprop="url">Blog System | Note-4</a></h1>
+                <a class="post-title-link" href="/2018/08/01/Blog System  Note-6/" itemprop="url">Blog System | Note-6</a></h1>
         
 
         <div class="post-meta">
@@ -1476,8 +1687,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-31T00:00:00+08:00">
-                2018-07-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T00:00:00+08:00">
+                2018-08-01
               </time>
             
 
@@ -1516,405 +1727,27 @@
       
         
           
-            <h3 id="Blog-System-Note-4"><a href="#Blog-System-Note-4" class="headerlink" title="Blog System | Note-4"></a>Blog System | Note-4</h3><p>@2018年7月30日 15:18:07        @Knowledge From Imooc</p>
-<ul>
-<li>基础知识</li>
-<li><a href="https://reeeexchen.github.io/2018/07/29/Blog%20System%20%20Note-1/" target="_blank" rel="noopener">Note1</a></li>
-<li><a href="https://reeeexchen.github.io/2018/07/29/Blog%20System%20%20Note-2/" target="_blank" rel="noopener">Note2</a></li>
-<li><a href="https://reeeexchen.github.io/2018/07/29/Blog%20System%20%20Note-3/" target="_blank" rel="noopener">Note3</a></li>
-</ul>
+            <h3 id="Blog-System-Note-5"><a href="#Blog-System-Note-5" class="headerlink" title="Blog System | Note-5"></a>Blog System | Note-5</h3><p>@2018年8月1日 14:43:38        @Knowledge From Imooc</p>
 <hr>
-<h4 id="整体框架实现"><a href="#整体框架实现" class="headerlink" title="整体框架实现"></a>整体框架实现</h4><p>需求设计（见Note-1）</p>
-<h4 id="后台整体控制层-Controller"><a href="#后台整体控制层-Controller" class="headerlink" title="后台整体控制层 Controller"></a>后台整体控制层 Controller</h4><p>MainController/BlogController/UserspaceController/AdminController/UserController</p>
-<h4 id="后台API"><a href="#后台API" class="headerlink" title="后台API"></a>后台API</h4><table>
-<thead>
-<tr>
-<th style="text-align:left">请求方式</th>
-<th>API</th>
-<th>参数</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/blogs</td>
-<td>order,keyword,async,pageIndex,pageSize</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/u/{username}</td>
-<td>具体用户的主页</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/u/{username}/profile</td>
-<td>用户的个人设置</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/u/{username}/profile</td>
-<td>保存个人设置 username,User</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/u/{username}/avatar</td>
-<td>获取个人头像 username</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/u/{username}/avatar</td>
-<td>保存个人头像 username</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/u/{username}/blogs</td>
-<td>查询用户博客<br>order,catalog,keyword,async,pageIndex,pageSize</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/u/{username}/blogs/edit</td>
-<td>获取新增文章的页面 username</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/u/{username}/blogs/edit</td>
-<td>新增、编辑文章 username,Blog</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/u/{username}/blogs/edit/{id}</td>
-<td>获取编辑某文章的界面 username,id</td>
-</tr>
-<tr>
-<td style="text-align:left">DELETE</td>
-<td>/u/{username}/blogs/edit/{id}</td>
-<td>删除文章</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/login</td>
-<td>登录</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/login</td>
-<td>username,password,remember-me</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/register</td>
-<td>注册</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/register</td>
-<td>注册成功，跳转至登录 User</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/users</td>
-<td>用户列表 async,pageIndex,pageSize,name</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/users/add</td>
-<td>新增用户界面</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/users</td>
-<td>保存用户 User,authorityId</td>
-</tr>
-<tr>
-<td style="text-align:left">DELETE</td>
-<td>/users/{id}</td>
-<td>删除用户 id</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/users/edit/{id}</td>
-<td>获取某个用户的编辑界面 id</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/comments</td>
-<td>获取评论列表 blogId</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/comments</td>
-<td>保存评论 blogId,commentContent</td>
-</tr>
-<tr>
-<td style="text-align:left">DELETE</td>
-<td>/comments/{id}</td>
-<td>删除评论 id,blogId</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/votes</td>
-<td>保存点赞 blogId</td>
-</tr>
-<tr>
-<td style="text-align:left">DELETE</td>
-<td>/votes</td>
-<td>删除点赞 blogId</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/catalogs</td>
-<td>获取用户分类列表 username</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/catalogs</td>
-<td>保存用户雷芬 username,CatalogVO(username,Catalog)</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/catalogs/edit/{id}</td>
-<td>获取某ID分类的编辑界面</td>
-</tr>
-<tr>
-<td style="text-align:left">DELETE</td>
-<td>/catalogs/{id}</td>
-<td>删除分类 id,username</td>
-</tr>
-</tbody>
-</table>
-<h4 id="前端整体布局"><a href="#前端整体布局" class="headerlink" title="前端整体布局"></a>前端整体布局</h4><p>/ — index.html / login.html / register.html</p>
-<p>admins — index.html</p>
-<p>fragments — header.html / footer.html / page.html</p>
-<p>users — form.html / list.html / view.html</p>
-<p>userspace — blog.hmtl / blogedit.html / u.html</p>
-<h4 id="用户管理-amp-角色管理"><a href="#用户管理-amp-角色管理" class="headerlink" title="用户管理 &amp; 角色管理"></a>用户管理 &amp; 角色管理</h4><p>注册、登录（在授权管理实现）、增加用户、修改用户、删除用户、搜索用户</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">POST 	/register</span><br><span class="line">GET		/register(User)</span><br><span class="line">GET		/users(async,pageIndex,pageSize,name);</span><br><span class="line">GET		/users/add;</span><br><span class="line">POST 	/users;</span><br><span class="line">DELETE	/users/&#123;id&#125;;</span><br><span class="line">GET		/users/edit/&#123;id&#125;;</span><br></pre></td></tr></table></figure>
-<h5 id="应用"><a href="#应用" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 修改User实体</span></span><br><span class="line"><span class="meta">@NotEmpty</span>(message = <span class="string">"姓名不能为空"</span>)</span><br><span class="line"><span class="meta">@Size</span>(min = <span class="number">2</span>, max = <span class="number">20</span>)</span><br><span class="line"><span class="meta">@Column</span>(nullable = <span class="keyword">false</span>, length = <span class="number">20</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 新增Authority实体</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Authority</span> <span class="keyword">implements</span> <span class="title">GrantedAuthority</span></span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 编写Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">User</span>,<span class="title">Long</span>&gt; </span>&#123;...&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AuthorityRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Authority</span>,<span class="title">Long</span>&gt; </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 完成Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserService</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 完成Impl</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserService</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// VO</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Response</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Util</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConstraintViolationExceptionHandler</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 获取批量异常信息</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> e</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getMessage</span><span class="params">(ConstraintViolationException e)</span></span>&#123;</span><br><span class="line">		List&lt;String&gt; msgList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">		<span class="keyword">for</span>(ConstraintViolation&lt;?&gt; constraintViolation : e.getConstraintViolations())&#123;</span><br><span class="line">			msgList.add(constraintViolation.getMessage());</span><br><span class="line">		&#125;</span><br><span class="line">		String messages = StringUtils.join(msgList.toArray(),<span class="string">";"</span>);</span><br><span class="line">		<span class="keyword">return</span> messages;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对应Controller</span></span><br><span class="line">AdminController,MainController,UserController</span><br><span class="line"><span class="comment">// 前端页面</span></span><br><span class="line">略</span><br></pre></td></tr></table></figure>
+<p>#### </p>
+<h4 id="搜索功能"><a href="#搜索功能" class="headerlink" title="搜索功能"></a>搜索功能</h4><p>使用Elasticsearchs实现全文检索</p>
+<h5 id="应用"><a href="#应用" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 文档类型的EsBlog实体</span></span><br><span class="line"><span class="meta">@Document</span>(indexName = <span class="string">"blog"</span>,type = <span class="string">"blog"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EsBlog</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;</span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">	<span class="keyword">private</span> String id;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Blog实体的ID</span></span><br><span class="line">	<span class="meta">@Field</span>(index = FieldIndex.not_analyzed)</span><br><span class="line">	<span class="keyword">private</span> Long blogId;</span><br><span class="line">	<span class="keyword">private</span> String title;</span><br><span class="line">	<span class="keyword">private</span> String summary;</span><br><span class="line">	<span class="keyword">private</span> String content;</span><br><span class="line">	<span class="comment">// 不使用全文检索字段</span></span><br><span class="line">	<span class="meta">@Field</span>(index = FieldIndex.not_analyzed)</span><br><span class="line">	<span class="keyword">private</span> String username;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">private</span> String tags;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// EsBlogRepository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">EsBlogRepository</span> <span class="keyword">extends</span> <span class="title">ElasticsearchRepository</span>&lt;<span class="title">EsBlog</span>,<span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// 模糊搜索查询</span></span><br><span class="line">	<span class="function">Page&lt;EsBlog&gt; <span class="title">findDistinctEsBlogByTitleContainingOrSummaryContainingOrContentContainingOrTagsContaining</span><span class="params">(String title,String summary,String content,String tags,Pageable pageable)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// EsBlogService</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">EsBlogService</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 最新博客列表</span></span><br><span class="line">	<span class="function">Page&lt;EsBlog&gt; <span class="title">listNewestEsBlogs</span><span class="params">(String keyword, Pageable pageable)</span></span>;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Impl</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;TagVO&gt; <span class="title">listTop30Tags</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    List&lt;TagVO&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="comment">// given</span></span><br><span class="line">    SearchQuery searchQuery = <span class="keyword">new</span> NativeSearchQueryBuilder()</span><br><span class="line">        .withQuery(matchAllQuery())</span><br><span class="line">        .withSearchType(SearchType.QUERY_THEN_FETCH)</span><br><span class="line">        .withIndices(<span class="string">"blog"</span>).withTypes(<span class="string">"blog"</span>)</span><br><span class="line">        .addAggregation(terms(<span class="string">"tags"</span>).field(<span class="string">"tags"</span>).order(Terms.Order.count(<span class="keyword">false</span>)).size(<span class="number">30</span>))</span><br><span class="line">        .build();</span><br><span class="line">    <span class="comment">// when</span></span><br><span class="line">    Aggregations aggregations = elasticsearchTemplate.query(searchQuery, <span class="keyword">new</span> ResultsExtractor&lt;Aggregations&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Aggregations <span class="title">extract</span><span class="params">(SearchResponse response)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> response.getAggregations();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    StringTerms modelTerms = (StringTerms)aggregations.asMap().get(<span class="string">"tags"</span>);</span><br><span class="line">    Iterator&lt;Terms.Bucket&gt; modelBucketIt = modelTerms.getBuckets().iterator();</span><br><span class="line">    <span class="keyword">while</span> (modelBucketIt.hasNext())&#123;</span><br><span class="line">        Terms.Bucket actiontypeBucket = modelBucketIt.next();</span><br><span class="line">        list.add(<span class="keyword">new</span> TagVO(actiontypeBucket.getKey().toString(),actiontypeBucket.getDocCount()));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> list;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// BlogController</span></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/blogs"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BlogController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> EsBlogService esBlogService;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 博客列表</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@GetMapping</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">listBlogs</span><span class="params">(@RequestParam(value = <span class="string">"order"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"new"</span>)</span> String order,</span></span><br><span class="line"><span class="function">							@<span class="title">RequestParam</span><span class="params">(value = <span class="string">"keyword"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">""</span>)</span> String keyword,</span></span><br><span class="line"><span class="function">							@<span class="title">RequestParam</span><span class="params">(value = <span class="string">"async"</span>, required = <span class="keyword">false</span>)</span> <span class="keyword">boolean</span> async,</span></span><br><span class="line"><span class="function">							@<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageIndex"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"0"</span>)</span> <span class="keyword">int</span> pageIndex,</span></span><br><span class="line"><span class="function">							@<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageSize"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"10"</span>)</span> <span class="keyword">int</span> pageSize,</span></span><br><span class="line"><span class="function">							Model model) </span>&#123;</span><br><span class="line">		Page&lt;EsBlog&gt; page = <span class="keyword">null</span>;</span><br><span class="line">		List&lt;EsBlog&gt; list = <span class="keyword">null</span>;</span><br><span class="line">		<span class="comment">// 系统初始化时，没有博客数据</span></span><br><span class="line">		<span class="keyword">boolean</span> isEmpty = <span class="keyword">true</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// 热门查询</span></span><br><span class="line">			<span class="keyword">if</span> (order.equals(<span class="string">"hot"</span>)) &#123;</span><br><span class="line">				...</span><br><span class="line">			&#125; <span class="keyword">else</span> <span class="keyword">if</span> (order.equals(<span class="string">"new"</span>)) &#123;</span><br><span class="line">				...</span><br><span class="line">			&#125;</span><br><span class="line">			isEmpty = <span class="keyword">false</span>;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">		...</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 所在页面数据列表</span></span><br><span class="line">		list = page.getContent();</span><br><span class="line">		model.addAttribute(<span class="string">"order"</span>, order);</span><br><span class="line">		...</span><br><span class="line">		<span class="comment">// 首次访问页面才加载</span></span><br><span class="line">		<span class="keyword">if</span> (!async &amp;&amp; !isEmpty) &#123;</span><br><span class="line">			List&lt;EsBlog&gt; newest = esBlogService.listTop5NewestEsBlogs();</span><br><span class="line">			model.addAttribute(<span class="string">"newest"</span>, newest);</span><br><span class="line">			...</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> (async == <span class="keyword">true</span> ? <span class="string">"/index :: #mainContainerRepleace"</span> : <span class="string">"/index"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>这一次的博客系统学习，收获颇多（慕课网），</p>
+<p>了解到企业级开发的流程（需求分析-技术选型-框架搭建-原型设计-等等）学习到基本的架构设计，</p>
+<h5 id="BackEnd："><a href="#BackEnd：" class="headerlink" title="BackEnd："></a>BackEnd：</h5><p>Spring，Spring MVC，Spring Data，Spring Security，Hibernate，SpringBoot基础知识的巩固；</p>
+<h5 id="FrontEnd："><a href="#FrontEnd：" class="headerlink" title="FrontEnd："></a>FrontEnd：</h5><p>Thymeleaf模版的学习；Bootstrap的使用，jQuery，HTML5，JS，CSS；</p>
+<p>Elasticsearchs全文检索；</p>
+<p>JpaRepository；</p>
+<p>MongoDB-File-Server的使用；</p>
+<p>Gradle管理；</p>
+<p>继续学习，附下官方文档，保持基础知识的学习，不只是对着代码学着敲而已，官方文档是最好的学习资料。</p>
 <hr>
-<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><p>null</p>
-<p>@2018年7月30日 20:21:17</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/31/Blog System  Note-5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="REX CHEN">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="REEEEX">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/31/Blog System  Note-5/" itemprop="url">Blog System | Note-5</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-31T00:00:00+08:00">
-                2018-07-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Blog-System-Note-5"><a href="#Blog-System-Note-5" class="headerlink" title="Blog System | Note-5"></a>Blog System | Note-5</h3><p>@2018年7月31日 10:44:13        @Knowledge From Imooc</p>
-<h4 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h4><h5 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h5><p>建立角色与资源的关系、CSRF问题、启用方法级别的安全设置、使用BCrypt加密、登录、记住我</p>
-<h5 id="需求："><a href="#需求：" class="headerlink" title="需求："></a>需求：</h5><p>角色授权、权限设置</p>
-<h5 id="API："><a href="#API：" class="headerlink" title="API："></a>API：</h5><table>
-<thead>
-<tr>
-<th>请求方式</th>
-<th>路径</th>
-<th>参数</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GET</td>
-<td>/login</td>
-<td>获取登录页面</td>
-</tr>
-<tr>
-<td>POST</td>
-<td>/login</td>
-<td>登录(username,password,remember-me)</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h5 id="应用"><a href="#应用" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 改造SecurityConfig</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@EnableWebSecurity</span> </span><br><span class="line"><span class="meta">@EnableGlobalMethodSecurity</span>(prePostEnabled = <span class="keyword">true</span>)  <span class="comment">// 启用方法级别的安全设置</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String KEY = <span class="string">"rex.com"</span>;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> UserDetailsService userDetailsService;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> PasswordEncoder passwordEncoder;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> PasswordEncoder <span class="title">passwordEncoder</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> BCryptPasswordEncoder();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> AuthenticationProvider <span class="title">authenticationProvider</span><span class="params">()</span></span>&#123;</span><br><span class="line">		DaoAuthenticationProvider authenticationProvider = <span class="keyword">new</span> DaoAuthenticationProvider();</span><br><span class="line">		authenticationProvider.setUserDetailsService(userDetailsService);</span><br><span class="line">        <span class="comment">// 加密设置</span></span><br><span class="line">		authenticationProvider.setPasswordEncoder(passwordEncoder);</span><br><span class="line">		<span class="keyword">return</span> authenticationProvider;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 自定义配置</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> http</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		http.authorizeRequests().antMatchers(<span class="string">"/css/**"</span>, <span class="string">"/js/**"</span>, <span class="string">"/fonts/**"</span>, <span class="string">"/index"</span>).permitAll().antMatchers(<span class="string">"/h2-consele/**"</span>).permitAll()</span><br><span class="line">				<span class="comment">// 相应角色访问</span></span><br><span class="line">				.antMatchers(<span class="string">"/admins/**"</span>).hasRole(<span class="string">"ADMIN"</span>).and()</span><br><span class="line">				<span class="comment">// 基于表单登录验证</span></span><br><span class="line">				.formLogin()</span><br><span class="line">				<span class="comment">// 自定义登录界面</span></span><br><span class="line">				.loginPage(<span class="string">"/login"</span>).failureUrl(<span class="string">"/login-error"</span>)</span><br><span class="line">				<span class="comment">// 启用remember-me</span></span><br><span class="line">				.and().rememberMe().key(KEY)</span><br><span class="line">				<span class="comment">// 处理异常,拒绝访问就重定向到403</span></span><br><span class="line">				.and().exceptionHandling().accessDeniedPage(<span class="string">"/403"</span>);</span><br><span class="line">		http.csrf().ignoringAntMatchers(<span class="string">"/h2-console/**"</span>);</span><br><span class="line">		http.headers().frameOptions().sameOrigin();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 认证信息管理</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> auth</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configureGlobal</span><span class="params">(AuthenticationManagerBuilder auth)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">		auth.userDetailsService(userDetailsService);</span><br><span class="line">		auth.authenticationProvider(authenticationProvider());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 修改UserServiceImpl</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserService</span>,<span class="title">UserDetailsService</span></span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> UserDetails <span class="title">loadUserByUsername</span><span class="params">(String username)</span> <span class="keyword">throws</span> UsernameNotFoundException </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> userRepository.findByUsername(username);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="CSRF防护-详见附录"><a href="#CSRF防护-详见附录" class="headerlink" title="CSRF防护(详见附录)"></a>CSRF防护(详见附录)</h5><p>CSRF：跨站请求伪造，也被称为“One Click Attack”或者Session Riding，通常缩写为CSRF或者XSRF，是一种对网站的恶意利用 </p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- CSRF --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"_csrf"</span> <span class="attr">th:content</span>=<span class="string">"$&#123;_csrf.token&#125;"</span>/&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- default header name is X-CSRF-TOKEN --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"_csrf_header"</span> <span class="attr">th:content</span>=<span class="string">"$&#123;_csrf.headerName&#125;"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
-<p>防护：“双提交”cookie。此方法只工作于Ajax请求，但它能够作为无需改变大量form的全局修正方法。如果某个授权的cookie在form post之前正被JavaScript代码读取，那么限制跨域规则将被应用。如果服务器需要在Post请求体或者URL中包含授权cookie的请求，那么这个请求必须来自于受信任的域，因为其它域是不能从信任域读取cookie的</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取 CSRF Token </span></span><br><span class="line"><span class="keyword">var</span> csrfToken = $(<span class="string">"meta[name='_csrf']"</span>).attr(<span class="string">"content"</span>);</span><br><span class="line"><span class="keyword">var</span> csrfHeader = $(<span class="string">"meta[name='_csrf_header']"</span>).attr(<span class="string">"content"</span>);</span><br><span class="line">$.ajax(&#123; </span><br><span class="line">...</span><br><span class="line">beforeSend: <span class="function"><span class="keyword">function</span>(<span class="params">request</span>) </span>&#123;</span><br><span class="line">	request.setRequestHeader(csrfHeader, csrfToken); <span class="comment">// 添加  CSRF Token </span></span><br><span class="line">&#125;,</span><br><span class="line">...</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="博客管理"><a href="#博客管理" class="headerlink" title="博客管理"></a>博客管理</h4><h5 id="需求：-1"><a href="#需求：-1" class="headerlink" title="需求："></a>需求：</h5><p>发表、编辑、删除、分类、标签、上传图片、模糊查询、最新、最热、阅读量统计</p>
-<h5 id="功能：-1"><a href="#功能：-1" class="headerlink" title="功能："></a>功能：</h5><p>用户主页、个人资料设置、头像更换</p>
-<h5 id="文件服务器（图片、文件等）"><a href="#文件服务器（图片、文件等）" class="headerlink" title="文件服务器（图片、文件等）"></a>文件服务器（图片、文件等）</h5><p>MongoDB File Server</p>
-<p>基于 MongoDB 的文件服务器；MongoDB File Server 致力于小型文件的存储，比如图片、文档等；由于MongoDB 支持多种数据格式的存储，对于二进制的存储自然也是不话下，可以方便用于存储文件；</p>
-<h5 id="API：-1"><a href="#API：-1" class="headerlink" title="API："></a>API：</h5><table>
-<thead>
-<tr>
-<th>请求方式</th>
-<th>路径</th>
-<th>参数</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GET</td>
-<td>/u/{username}</td>
-<td>具体某个用户主页(username)</td>
-</tr>
-<tr>
-<td>GET</td>
-<td>/u/{username}/profile</td>
-<td>获取个人设置页面(username)</td>
-</tr>
-<tr>
-<td>POST</td>
-<td>/u/{username}/profile</td>
-<td>保存个人设置(username，User)</td>
-</tr>
-<tr>
-<td>GET</td>
-<td>/u/{username}/avatar</td>
-<td>获取个人头像(username)</td>
-</tr>
-<tr>
-<td>POST</td>
-<td>/u/{username}/avatar</td>
-<td>保存个人头像(username,User)</td>
-</tr>
-<tr>
-<td>GET</td>
-<td>/u/{username}/blogs</td>
-<td>查询用户博客(order,catalog,keyword,async,pageIndex,pageSize)</td>
-</tr>
-<tr>
-<td>GET</td>
-<td>/u/{username}/blogs/edit</td>
-<td>获取新增博客的页面(username)</td>
-</tr>
-<tr>
-<td>POST</td>
-<td>/u/{username}/blogs/edit</td>
-<td>保存博客的页面(username,Blog)</td>
-</tr>
-<tr>
-<td>GET</td>
-<td>/u/{username}/blogs/edit/{id}</td>
-<td>编辑博客的页面(username,id)</td>
-</tr>
-<tr>
-<td>DELETE</td>
-<td>/u/{username}/blogs/edit/{id}</td>
-<td>删除博客(username,id)</td>
-</tr>
-</tbody>
-</table>
-<h5 id="应用-1"><a href="#应用-1" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加 Markdown parser 依赖</span></span><br><span class="line">compile(<span class="string">'es.nitaur.markdown:txtmark:0.16'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加文件服务器 application.properties</span></span><br><span class="line"># 文件服务器</span><br><span class="line">file.server.url=http:<span class="comment">//localhost:8081/upload</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// UserspaceController</span></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/&#123;username&#125;/profile"</span>)</span><br><span class="line"><span class="meta">@PreAuthorize</span>(<span class="string">"authentication.name.equals(#username)"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> ModelAndView <span class="title">profile</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span>String username,Model model)</span>&#123;</span><br><span class="line">    User user = (User)userDetailsService.loadUserByUsername(username);</span><br><span class="line">    model.addAttribute(<span class="string">"user"</span>,user);</span><br><span class="line">    model.addAttribute(<span class="string">"fileServerUrl"</span>,fileServerUrl);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ModelAndView(<span class="string">"/userspace/profile"</span>,<span class="string">"userModel"</span>,model);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"/&#123;username&#125;/profile"</span>)</span><br><span class="line"><span class="meta">@PreAuthorize</span>(<span class="string">"authentication.name.equals(#username)"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">profile</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span> String username, User user) </span>&#123;</span><br><span class="line">    User originalUser = userService.getUserById(user.getId());</span><br><span class="line">    originalUser.setEmail(user.getEmail());</span><br><span class="line">    originalUser.setName(user.getName());</span><br><span class="line">    <span class="comment">// 判断密码是否更改</span></span><br><span class="line">    String rawPassword = originalUser.getPassword();</span><br><span class="line">    PasswordEncoder encoder = <span class="keyword">new</span> BCryptPasswordEncoder();</span><br><span class="line">    String encodePassword = encoder.encode(user.getPassword());</span><br><span class="line">    <span class="keyword">boolean</span> isMatch = encoder.matches(rawPassword, encodePassword);</span><br><span class="line">    <span class="keyword">if</span> (!isMatch) &#123;</span><br><span class="line">        originalUser.setEncodePassword(user.getPassword());</span><br><span class="line">    &#125;</span><br><span class="line">    userService.saveOrUpdateUser(originalUser);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"redirect:/u/"</span> + username + <span class="string">"/profile"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Blog.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Blog</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// BlogRepository.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BlogRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Blog</span>,<span class="title">Long</span>&gt; </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// BlogServiceImpl.java</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BlogServiceImpl</span> <span class="keyword">implements</span> <span class="title">BlogService</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Modify UserspaceController.java</span></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/&#123;username&#125;"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">userSpace</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span> String username, Model model) </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/&#123;username&#125;/blogs"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">listBlogsByOrder</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span> String username, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"order"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"new"</span>)</span> String order, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"category"</span>, required = <span class="keyword">false</span>)</span> Long catalogId, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"keyword"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">""</span>)</span> String keyword, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"async"</span>, required = <span class="keyword">false</span>)</span> <span class="keyword">boolean</span> async, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageIndex"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"0"</span>)</span> <span class="keyword">int</span> pageIndex, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageSize"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"10"</span>)</span> <span class="keyword">int</span> pageSize, </span></span><br><span class="line"><span class="function">                                   Model model) </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/&#123;username&#125;/blogs/&#123;id&#125;"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getBlogById</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span> String username, </span></span><br><span class="line"><span class="function">                          @<span class="title">PathVariable</span><span class="params">(<span class="string">"id"</span>)</span> Long id, Model model) </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/&#123;username&#125;/blogs/edit"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> ModelAndView <span class="title">createBlog</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span>String username,Model model) </span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><h5 id="CSRF防护"><a href="#CSRF防护" class="headerlink" title="CSRF防护"></a><a href="https://www.ibm.com/developerworks/cn/web/1102_niugang_csrf/" target="_blank" rel="noopener">CSRF防护</a></h5><h5 id="MongoDB-File-Server"><a href="#MongoDB-File-Server" class="headerlink" title="MongoDB File Server"></a><a href="https://github.com/waylau/mongodb-file-server" target="_blank" rel="noopener">MongoDB File Server</a></h5><p>@2018年7月31日 14:40:19</p>
+<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><p><a href="https://spring.io/guides/gs/spring-boot/" target="_blank" rel="noopener">SpringBoot</a></p>
+<p><a href="https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html" target="_blank" rel="noopener">Thymeleaf</a></p>
+<p><a href="https://getbootstrap.com/docs/4.1/getting-started/introduction/" target="_blank" rel="noopener">Bootstrap</a></p>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html" target="_blank" rel="noopener">Elasticsearch</a></p>
+<p><a href="https://docs.gradle.org/current/userguide/userguide.html" target="_blank" rel="noopener">Gradle</a></p>
+<p>@2018年8月1日 15:02:24</p>
 
           
         
@@ -2000,7 +1833,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

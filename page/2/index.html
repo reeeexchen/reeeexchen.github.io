@@ -232,6 +232,524 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/31/Blog System  Note-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/31/Blog System  Note-4/" itemprop="url">Blog System | Note-4</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-31T00:00:00+08:00">
+                2018-07-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Blog-System-Note-4"><a href="#Blog-System-Note-4" class="headerlink" title="Blog System | Note-4"></a>Blog System | Note-4</h3><p>@2018年7月30日 15:18:07        @Knowledge From Imooc</p>
+<ul>
+<li>基础知识</li>
+<li><a href="https://reeeexchen.github.io/2018/07/29/Blog%20System%20%20Note-1/" target="_blank" rel="noopener">Note1</a></li>
+<li><a href="https://reeeexchen.github.io/2018/07/29/Blog%20System%20%20Note-2/" target="_blank" rel="noopener">Note2</a></li>
+<li><a href="https://reeeexchen.github.io/2018/07/29/Blog%20System%20%20Note-3/" target="_blank" rel="noopener">Note3</a></li>
+</ul>
+<hr>
+<h4 id="整体框架实现"><a href="#整体框架实现" class="headerlink" title="整体框架实现"></a>整体框架实现</h4><p>需求设计（见Note-1）</p>
+<h4 id="后台整体控制层-Controller"><a href="#后台整体控制层-Controller" class="headerlink" title="后台整体控制层 Controller"></a>后台整体控制层 Controller</h4><p>MainController/BlogController/UserspaceController/AdminController/UserController</p>
+<h4 id="后台API"><a href="#后台API" class="headerlink" title="后台API"></a>后台API</h4><table>
+<thead>
+<tr>
+<th style="text-align:left">请求方式</th>
+<th>API</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">GET</td>
+<td>/blogs</td>
+<td>order,keyword,async,pageIndex,pageSize</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td>/u/{username}</td>
+<td>具体用户的主页</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td>/u/{username}/profile</td>
+<td>用户的个人设置</td>
+</tr>
+<tr>
+<td style="text-align:left">POST</td>
+<td>/u/{username}/profile</td>
+<td>保存个人设置 username,User</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td>/u/{username}/avatar</td>
+<td>获取个人头像 username</td>
+</tr>
+<tr>
+<td style="text-align:left">POST</td>
+<td>/u/{username}/avatar</td>
+<td>保存个人头像 username</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td>/u/{username}/blogs</td>
+<td>查询用户博客<br>order,catalog,keyword,async,pageIndex,pageSize</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td>/u/{username}/blogs/edit</td>
+<td>获取新增文章的页面 username</td>
+</tr>
+<tr>
+<td style="text-align:left">POST</td>
+<td>/u/{username}/blogs/edit</td>
+<td>新增、编辑文章 username,Blog</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td>/u/{username}/blogs/edit/{id}</td>
+<td>获取编辑某文章的界面 username,id</td>
+</tr>
+<tr>
+<td style="text-align:left">DELETE</td>
+<td>/u/{username}/blogs/edit/{id}</td>
+<td>删除文章</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td>/login</td>
+<td>登录</td>
+</tr>
+<tr>
+<td style="text-align:left">POST</td>
+<td>/login</td>
+<td>username,password,remember-me</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td>/register</td>
+<td>注册</td>
+</tr>
+<tr>
+<td style="text-align:left">POST</td>
+<td>/register</td>
+<td>注册成功，跳转至登录 User</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td>/users</td>
+<td>用户列表 async,pageIndex,pageSize,name</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td>/users/add</td>
+<td>新增用户界面</td>
+</tr>
+<tr>
+<td style="text-align:left">POST</td>
+<td>/users</td>
+<td>保存用户 User,authorityId</td>
+</tr>
+<tr>
+<td style="text-align:left">DELETE</td>
+<td>/users/{id}</td>
+<td>删除用户 id</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td>/users/edit/{id}</td>
+<td>获取某个用户的编辑界面 id</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td>/comments</td>
+<td>获取评论列表 blogId</td>
+</tr>
+<tr>
+<td style="text-align:left">POST</td>
+<td>/comments</td>
+<td>保存评论 blogId,commentContent</td>
+</tr>
+<tr>
+<td style="text-align:left">DELETE</td>
+<td>/comments/{id}</td>
+<td>删除评论 id,blogId</td>
+</tr>
+<tr>
+<td style="text-align:left">POST</td>
+<td>/votes</td>
+<td>保存点赞 blogId</td>
+</tr>
+<tr>
+<td style="text-align:left">DELETE</td>
+<td>/votes</td>
+<td>删除点赞 blogId</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td>/catalogs</td>
+<td>获取用户分类列表 username</td>
+</tr>
+<tr>
+<td style="text-align:left">POST</td>
+<td>/catalogs</td>
+<td>保存用户雷芬 username,CatalogVO(username,Catalog)</td>
+</tr>
+<tr>
+<td style="text-align:left">GET</td>
+<td>/catalogs/edit/{id}</td>
+<td>获取某ID分类的编辑界面</td>
+</tr>
+<tr>
+<td style="text-align:left">DELETE</td>
+<td>/catalogs/{id}</td>
+<td>删除分类 id,username</td>
+</tr>
+</tbody>
+</table>
+<h4 id="前端整体布局"><a href="#前端整体布局" class="headerlink" title="前端整体布局"></a>前端整体布局</h4><p>/ — index.html / login.html / register.html</p>
+<p>admins — index.html</p>
+<p>fragments — header.html / footer.html / page.html</p>
+<p>users — form.html / list.html / view.html</p>
+<p>userspace — blog.hmtl / blogedit.html / u.html</p>
+<h4 id="用户管理-amp-角色管理"><a href="#用户管理-amp-角色管理" class="headerlink" title="用户管理 &amp; 角色管理"></a>用户管理 &amp; 角色管理</h4><p>注册、登录（在授权管理实现）、增加用户、修改用户、删除用户、搜索用户</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">POST 	/register</span><br><span class="line">GET		/register(User)</span><br><span class="line">GET		/users(async,pageIndex,pageSize,name);</span><br><span class="line">GET		/users/add;</span><br><span class="line">POST 	/users;</span><br><span class="line">DELETE	/users/&#123;id&#125;;</span><br><span class="line">GET		/users/edit/&#123;id&#125;;</span><br></pre></td></tr></table></figure>
+<h5 id="应用"><a href="#应用" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 修改User实体</span></span><br><span class="line"><span class="meta">@NotEmpty</span>(message = <span class="string">"姓名不能为空"</span>)</span><br><span class="line"><span class="meta">@Size</span>(min = <span class="number">2</span>, max = <span class="number">20</span>)</span><br><span class="line"><span class="meta">@Column</span>(nullable = <span class="keyword">false</span>, length = <span class="number">20</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 新增Authority实体</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Authority</span> <span class="keyword">implements</span> <span class="title">GrantedAuthority</span></span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 编写Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">User</span>,<span class="title">Long</span>&gt; </span>&#123;...&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AuthorityRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Authority</span>,<span class="title">Long</span>&gt; </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 完成Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserService</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 完成Impl</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserService</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// VO</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Response</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Util</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConstraintViolationExceptionHandler</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 获取批量异常信息</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> e</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getMessage</span><span class="params">(ConstraintViolationException e)</span></span>&#123;</span><br><span class="line">		List&lt;String&gt; msgList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">		<span class="keyword">for</span>(ConstraintViolation&lt;?&gt; constraintViolation : e.getConstraintViolations())&#123;</span><br><span class="line">			msgList.add(constraintViolation.getMessage());</span><br><span class="line">		&#125;</span><br><span class="line">		String messages = StringUtils.join(msgList.toArray(),<span class="string">";"</span>);</span><br><span class="line">		<span class="keyword">return</span> messages;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对应Controller</span></span><br><span class="line">AdminController,MainController,UserController</span><br><span class="line"><span class="comment">// 前端页面</span></span><br><span class="line">略</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><p>null</p>
+<p>@2018年7月30日 20:21:17</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/31/Blog System  Note-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/31/Blog System  Note-5/" itemprop="url">Blog System | Note-5</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-31T00:00:00+08:00">
+                2018-07-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Blog-System-Note-5"><a href="#Blog-System-Note-5" class="headerlink" title="Blog System | Note-5"></a>Blog System | Note-5</h3><p>@2018年7月31日 10:44:13        @Knowledge From Imooc</p>
+<h4 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h4><h5 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h5><p>建立角色与资源的关系、CSRF问题、启用方法级别的安全设置、使用BCrypt加密、登录、记住我</p>
+<h5 id="需求："><a href="#需求：" class="headerlink" title="需求："></a>需求：</h5><p>角色授权、权限设置</p>
+<h5 id="API："><a href="#API：" class="headerlink" title="API："></a>API：</h5><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>路径</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/login</td>
+<td>获取登录页面</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/login</td>
+<td>登录(username,password,remember-me)</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h5 id="应用"><a href="#应用" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 改造SecurityConfig</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@EnableWebSecurity</span> </span><br><span class="line"><span class="meta">@EnableGlobalMethodSecurity</span>(prePostEnabled = <span class="keyword">true</span>)  <span class="comment">// 启用方法级别的安全设置</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String KEY = <span class="string">"rex.com"</span>;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> UserDetailsService userDetailsService;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> PasswordEncoder passwordEncoder;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> PasswordEncoder <span class="title">passwordEncoder</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> BCryptPasswordEncoder();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> AuthenticationProvider <span class="title">authenticationProvider</span><span class="params">()</span></span>&#123;</span><br><span class="line">		DaoAuthenticationProvider authenticationProvider = <span class="keyword">new</span> DaoAuthenticationProvider();</span><br><span class="line">		authenticationProvider.setUserDetailsService(userDetailsService);</span><br><span class="line">        <span class="comment">// 加密设置</span></span><br><span class="line">		authenticationProvider.setPasswordEncoder(passwordEncoder);</span><br><span class="line">		<span class="keyword">return</span> authenticationProvider;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 自定义配置</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> http</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		http.authorizeRequests().antMatchers(<span class="string">"/css/**"</span>, <span class="string">"/js/**"</span>, <span class="string">"/fonts/**"</span>, <span class="string">"/index"</span>).permitAll().antMatchers(<span class="string">"/h2-consele/**"</span>).permitAll()</span><br><span class="line">				<span class="comment">// 相应角色访问</span></span><br><span class="line">				.antMatchers(<span class="string">"/admins/**"</span>).hasRole(<span class="string">"ADMIN"</span>).and()</span><br><span class="line">				<span class="comment">// 基于表单登录验证</span></span><br><span class="line">				.formLogin()</span><br><span class="line">				<span class="comment">// 自定义登录界面</span></span><br><span class="line">				.loginPage(<span class="string">"/login"</span>).failureUrl(<span class="string">"/login-error"</span>)</span><br><span class="line">				<span class="comment">// 启用remember-me</span></span><br><span class="line">				.and().rememberMe().key(KEY)</span><br><span class="line">				<span class="comment">// 处理异常,拒绝访问就重定向到403</span></span><br><span class="line">				.and().exceptionHandling().accessDeniedPage(<span class="string">"/403"</span>);</span><br><span class="line">		http.csrf().ignoringAntMatchers(<span class="string">"/h2-console/**"</span>);</span><br><span class="line">		http.headers().frameOptions().sameOrigin();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 认证信息管理</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> auth</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configureGlobal</span><span class="params">(AuthenticationManagerBuilder auth)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">		auth.userDetailsService(userDetailsService);</span><br><span class="line">		auth.authenticationProvider(authenticationProvider());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 修改UserServiceImpl</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserService</span>,<span class="title">UserDetailsService</span></span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> UserDetails <span class="title">loadUserByUsername</span><span class="params">(String username)</span> <span class="keyword">throws</span> UsernameNotFoundException </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> userRepository.findByUsername(username);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="CSRF防护-详见附录"><a href="#CSRF防护-详见附录" class="headerlink" title="CSRF防护(详见附录)"></a>CSRF防护(详见附录)</h5><p>CSRF：跨站请求伪造，也被称为“One Click Attack”或者Session Riding，通常缩写为CSRF或者XSRF，是一种对网站的恶意利用 </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- CSRF --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"_csrf"</span> <span class="attr">th:content</span>=<span class="string">"$&#123;_csrf.token&#125;"</span>/&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- default header name is X-CSRF-TOKEN --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"_csrf_header"</span> <span class="attr">th:content</span>=<span class="string">"$&#123;_csrf.headerName&#125;"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>防护：“双提交”cookie。此方法只工作于Ajax请求，但它能够作为无需改变大量form的全局修正方法。如果某个授权的cookie在form post之前正被JavaScript代码读取，那么限制跨域规则将被应用。如果服务器需要在Post请求体或者URL中包含授权cookie的请求，那么这个请求必须来自于受信任的域，因为其它域是不能从信任域读取cookie的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取 CSRF Token </span></span><br><span class="line"><span class="keyword">var</span> csrfToken = $(<span class="string">"meta[name='_csrf']"</span>).attr(<span class="string">"content"</span>);</span><br><span class="line"><span class="keyword">var</span> csrfHeader = $(<span class="string">"meta[name='_csrf_header']"</span>).attr(<span class="string">"content"</span>);</span><br><span class="line">$.ajax(&#123; </span><br><span class="line">...</span><br><span class="line">beforeSend: <span class="function"><span class="keyword">function</span>(<span class="params">request</span>) </span>&#123;</span><br><span class="line">	request.setRequestHeader(csrfHeader, csrfToken); <span class="comment">// 添加  CSRF Token </span></span><br><span class="line">&#125;,</span><br><span class="line">...</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="博客管理"><a href="#博客管理" class="headerlink" title="博客管理"></a>博客管理</h4><h5 id="需求：-1"><a href="#需求：-1" class="headerlink" title="需求："></a>需求：</h5><p>发表、编辑、删除、分类、标签、上传图片、模糊查询、最新、最热、阅读量统计</p>
+<h5 id="功能：-1"><a href="#功能：-1" class="headerlink" title="功能："></a>功能：</h5><p>用户主页、个人资料设置、头像更换</p>
+<h5 id="文件服务器（图片、文件等）"><a href="#文件服务器（图片、文件等）" class="headerlink" title="文件服务器（图片、文件等）"></a>文件服务器（图片、文件等）</h5><p>MongoDB File Server</p>
+<p>基于 MongoDB 的文件服务器；MongoDB File Server 致力于小型文件的存储，比如图片、文档等；由于MongoDB 支持多种数据格式的存储，对于二进制的存储自然也是不话下，可以方便用于存储文件；</p>
+<h5 id="API：-1"><a href="#API：-1" class="headerlink" title="API："></a>API：</h5><table>
+<thead>
+<tr>
+<th>请求方式</th>
+<th>路径</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/u/{username}</td>
+<td>具体某个用户主页(username)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/u/{username}/profile</td>
+<td>获取个人设置页面(username)</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/u/{username}/profile</td>
+<td>保存个人设置(username，User)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/u/{username}/avatar</td>
+<td>获取个人头像(username)</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/u/{username}/avatar</td>
+<td>保存个人头像(username,User)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/u/{username}/blogs</td>
+<td>查询用户博客(order,catalog,keyword,async,pageIndex,pageSize)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/u/{username}/blogs/edit</td>
+<td>获取新增博客的页面(username)</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/u/{username}/blogs/edit</td>
+<td>保存博客的页面(username,Blog)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/u/{username}/blogs/edit/{id}</td>
+<td>编辑博客的页面(username,id)</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/u/{username}/blogs/edit/{id}</td>
+<td>删除博客(username,id)</td>
+</tr>
+</tbody>
+</table>
+<h5 id="应用-1"><a href="#应用-1" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加 Markdown parser 依赖</span></span><br><span class="line">compile(<span class="string">'es.nitaur.markdown:txtmark:0.16'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加文件服务器 application.properties</span></span><br><span class="line"># 文件服务器</span><br><span class="line">file.server.url=http:<span class="comment">//localhost:8081/upload</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// UserspaceController</span></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/&#123;username&#125;/profile"</span>)</span><br><span class="line"><span class="meta">@PreAuthorize</span>(<span class="string">"authentication.name.equals(#username)"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> ModelAndView <span class="title">profile</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span>String username,Model model)</span>&#123;</span><br><span class="line">    User user = (User)userDetailsService.loadUserByUsername(username);</span><br><span class="line">    model.addAttribute(<span class="string">"user"</span>,user);</span><br><span class="line">    model.addAttribute(<span class="string">"fileServerUrl"</span>,fileServerUrl);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ModelAndView(<span class="string">"/userspace/profile"</span>,<span class="string">"userModel"</span>,model);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"/&#123;username&#125;/profile"</span>)</span><br><span class="line"><span class="meta">@PreAuthorize</span>(<span class="string">"authentication.name.equals(#username)"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">profile</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span> String username, User user) </span>&#123;</span><br><span class="line">    User originalUser = userService.getUserById(user.getId());</span><br><span class="line">    originalUser.setEmail(user.getEmail());</span><br><span class="line">    originalUser.setName(user.getName());</span><br><span class="line">    <span class="comment">// 判断密码是否更改</span></span><br><span class="line">    String rawPassword = originalUser.getPassword();</span><br><span class="line">    PasswordEncoder encoder = <span class="keyword">new</span> BCryptPasswordEncoder();</span><br><span class="line">    String encodePassword = encoder.encode(user.getPassword());</span><br><span class="line">    <span class="keyword">boolean</span> isMatch = encoder.matches(rawPassword, encodePassword);</span><br><span class="line">    <span class="keyword">if</span> (!isMatch) &#123;</span><br><span class="line">        originalUser.setEncodePassword(user.getPassword());</span><br><span class="line">    &#125;</span><br><span class="line">    userService.saveOrUpdateUser(originalUser);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"redirect:/u/"</span> + username + <span class="string">"/profile"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Blog.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Blog</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// BlogRepository.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BlogRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Blog</span>,<span class="title">Long</span>&gt; </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// BlogServiceImpl.java</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BlogServiceImpl</span> <span class="keyword">implements</span> <span class="title">BlogService</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Modify UserspaceController.java</span></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/&#123;username&#125;"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">userSpace</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span> String username, Model model) </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/&#123;username&#125;/blogs"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">listBlogsByOrder</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span> String username, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"order"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"new"</span>)</span> String order, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"category"</span>, required = <span class="keyword">false</span>)</span> Long catalogId, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"keyword"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">""</span>)</span> String keyword, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"async"</span>, required = <span class="keyword">false</span>)</span> <span class="keyword">boolean</span> async, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageIndex"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"0"</span>)</span> <span class="keyword">int</span> pageIndex, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageSize"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"10"</span>)</span> <span class="keyword">int</span> pageSize, </span></span><br><span class="line"><span class="function">                                   Model model) </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/&#123;username&#125;/blogs/&#123;id&#125;"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getBlogById</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span> String username, </span></span><br><span class="line"><span class="function">                          @<span class="title">PathVariable</span><span class="params">(<span class="string">"id"</span>)</span> Long id, Model model) </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/&#123;username&#125;/blogs/edit"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> ModelAndView <span class="title">createBlog</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span>String username,Model model) </span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><h5 id="CSRF防护"><a href="#CSRF防护" class="headerlink" title="CSRF防护"></a><a href="https://www.ibm.com/developerworks/cn/web/1102_niugang_csrf/" target="_blank" rel="noopener">CSRF防护</a></h5><h5 id="MongoDB-File-Server"><a href="#MongoDB-File-Server" class="headerlink" title="MongoDB File Server"></a><a href="https://github.com/waylau/mongodb-file-server" target="_blank" rel="noopener">MongoDB File Server</a></h5><p>@2018年7月31日 14:40:19</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/30/Blog System  Note-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -339,6 +857,183 @@
 <p><a href="http://getbootstrap.com/docs/3.3/" target="_blank" rel="noopener">Bootstrap</a></p>
 <p><a href="http://getbootstrap.com/docs/3.3/css/" target="_blank" rel="noopener">Bootstrap-CSS</a></p>
 <p>@2018年7月30日 15:17:49</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/29/Blog System  Note-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/29/Blog System  Note-2/" itemprop="url">Blog System | Note-2</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-29T00:00:00+08:00">
+                2018-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Blog-System-Note-2"><a href="#Blog-System-Note-2" class="headerlink" title="Blog System | Note-2"></a>Blog System | Note-2</h3><p>@2018年7月29日 14:38:38    Knowledge From Imooc</p>
+<h4 id="数据持久化"><a href="#数据持久化" class="headerlink" title="数据持久化"></a>数据持久化</h4><h5 id="JPA"><a href="#JPA" class="headerlink" title="JPA"></a>JPA</h5><p>​    用于管理Java EE和Java SE环境中的持久化，以及对象/关系(O/R)映射的Java API；</p>
+<h5 id="实体-Entity"><a href="#实体-Entity" class="headerlink" title="实体@Entity"></a>实体@Entity</h5><p>​    表示数据库中的表，每个实体实体对应于表中的行；</p>
+<p>​    类必须有一个public或protected的无参构造函数；</p>
+<p>​    实体实例被当作值以分离对象方式进行传递，则该类必须实现Serializable接口；</p>
+<p>​    唯一的标识：主键或复合主键；</p>
+<h5 id="关系-Relation"><a href="#关系-Relation" class="headerlink" title="关系 Relation"></a>关系 Relation</h5><p>​    一对一：@OneToOne</p>
+<p>​    一对多：@OneToMany</p>
+<p>​    多对一：@ManyToOne</p>
+<p>​    多对多：@ManyToMany</p>
+<h5 id="管理实体的接口-EntityManager"><a href="#管理实体的接口-EntityManager" class="headerlink" title="管理实体的接口 EntityManager"></a>管理实体的接口 EntityManager</h5><p>​    定义用于持久性上下文进行交互的方法；</p>
+<p>​    创建和删除持久实体实例，通过实体的主键查找实体；</p>
+<p>​    允许在实体上运行查询；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取EntityManager实例</span></span><br><span class="line"><span class="meta">@PersistenceUnit</span> <span class="comment">// 持久化单元</span></span><br><span class="line">EntityManagerFactory emf;</span><br><span class="line">EntityManager em;</span><br><span class="line"><span class="meta">@Resource</span></span><br><span class="line">UserTransaction utx;</span><br><span class="line">...</span><br><span class="line">em = emf.createEntityManager();</span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    utx.begin();</span><br><span class="line">    em.persist(SomeEntity);</span><br><span class="line">    em.merge(AnotherEntity);</span><br><span class="line">    em.remove(ThirdEntity);</span><br><span class="line">    utx.commit();</span><br><span class="line">&#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">    utx.rollback();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查找实体</span></span><br><span class="line"><span class="meta">@PersistenceContext</span></span><br><span class="line">EntityManager em;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">enterOrder</span><span class="params">(<span class="keyword">int</span> custID,CustomerOrder newOrder)</span></span>&#123;</span><br><span class="line">    Customer cust = em.find(Customer,custID);</span><br><span class="line">    cust.getOrders().add(newOrder);</span><br><span class="line">    newOrder.setCustomer(cust);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Spring-Data-JPA"><a href="#Spring-Data-JPA" class="headerlink" title="Spring Data JPA"></a>Spring Data JPA</h5><p>​    更大的Spring Data家族的一部分；</p>
+<p>​    对基于JPA的数据访问层的增强支持；</p>
+<p>​    更容易构建基于Spring数据访问技术栈的程序；</p>
+<h5 id="常用接口"><a href="#常用接口" class="headerlink" title="常用接口"></a>常用接口</h5><p>​    CrudRepository</p>
+<p>​    PagingAndSortingRepository</p>
+<p>​    自定义接口：根据方法名创建查询 public interface UserRepository extends Repository&lt;User,Long&gt;{}</p>
+<h5 id="应用"><a href="#应用" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Id</span></span><br><span class="line"><span class="meta">@GeneratedValue</span>(strategy= GenerationType.IDENTITY)</span><br><span class="line"><span class="comment">// Controller</span></span><br><span class="line">findAll();</span><br><span class="line">findOne();</span><br><span class="line">delete();</span><br><span class="line">save();</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># 使用H2控制台：</span><br><span class="line">spring.h2.console.enabled=<span class="keyword">true</span></span><br><span class="line">#查看</span><br><span class="line">localhost:<span class="number">8080</span>/h2-console</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># DataSource</span><br><span class="line">spring.datasource.url=...</span><br><span class="line">spring.datasource.username=...</span><br><span class="line">spring.datasource.password=...</span><br><span class="line">spring.datasource.driver-<span class="class"><span class="keyword">class</span>-<span class="title">name</span></span>=com.mysql.jdbc.Driver</span><br><span class="line"># JPA</span><br><span class="line">spring.jpa.show-sql=<span class="keyword">true</span></span><br><span class="line">spring.jpa.hibernate.ddl-auto=create-drop</span><br></pre></td></tr></table></figure>
+<h4 id="全文搜索"><a href="#全文搜索" class="headerlink" title="全文搜索"></a>全文搜索</h4><h5 id="全文搜索-1"><a href="#全文搜索-1" class="headerlink" title="全文搜索"></a>全文搜索</h5><p>​    概念：将文件中所有文本与搜索项匹配的文字资料检索方法</p>
+<p>​    Knowledge About(<a href="#link1">数据结构</a> &amp;&amp; <a href="#link2">非结构化数据的检索</a>)</p>
+<p>​    实现原理：建立文本库、建立索引、执行搜索、过滤结果</p>
+<p>​    实现技术：Lucene、ElasticSearch（ES）、Solr</p>
+<h5 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h5><p>​    高度可扩展的开源全文搜索和分析引擎；</p>
+<p>​    快速的、近实时性的对大数据进行存储、搜索和分析；</p>
+<p>​    用于支持有复杂的数据搜索需求的企业级应用；</p>
+<p>特点：分布式（分布到多个分片上）、高可用（由分布式所得）、多类型（多种数据类型）、多API、面向文档（不需要事先定义模式）、异步写入（性能高于同步）、近实时、基于Lucene、Apache协议</p>
+<h5 id="核心概念："><a href="#核心概念：" class="headerlink" title="核心概念："></a>核心概念：</h5><p>近实时：</p>
+<p>​    搜索文档到可搜索之间的时间，轻微的延时，1s左右；</p>
+<p>​    每隔n秒刷新数据；</p>
+<p>​    索引建立后，不会直接写入磁盘，存在文件系统缓存中，根据刷新策略，定期同步到磁盘中；</p>
+<p>集群：</p>
+<p>​    一个或多个节点的集合，保存应用的全部数据， 并提供基于全部节点的集成式的索引和搜索功能；</p>
+<p>​    每个集群有唯一名称；</p>
+<p>节点：</p>
+<p>​    集群中的一台服务器，用于保存数据，并且参与整个集群的索引和搜索；</p>
+<p>索引（5个分片，1个副本）：</p>
+<p>​    加快搜索速度，相似文档的集合；</p>
+<p>​    在单个集群中，根据需要，定义任意数量的索引；</p>
+<p>类型：</p>
+<p>​    对一个索引中的文档中，做进一步的细分，根据公共属性划分；</p>
+<p>文档：</p>
+<p>​    进行索引的基本单位，JSON格式；</p>
+<p>分片：</p>
+<p>​    超出单个节点处理的范围，将索引分成多个分片（含副本），存储索引的部分数据；</p>
+<p>副本：</p>
+<p>​    分片的故障不可避免，为了可靠性，设置分片副本，分配到不同节点上；</p>
+<p>​    增加吞吐量，分配到不同副本中；</p>
+<h5 id="应用-1"><a href="#应用-1" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加 Spring Daat Elasticsearch 的依赖</span></span><br><span class="line">compile(<span class="string">'org.springframework.boot:spring-boot-starter-data-elasticsearch'</span>)</span><br><span class="line"><span class="comment">// 添加 JNA 的依赖</span></span><br><span class="line">compile(<span class="string">'net.java.dev.jna:jna:4.3.0'</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># Elasticsearch 服务地址</span><br><span class="line">spring.data.elasticsearch.cluster-nodes=localhost:<span class="number">9300</span></span><br><span class="line"># 设置连接超时时间</span><br><span class="line">spring.data.elasticsearch.properties.transport.tcp.connect_timeout=<span class="number">120</span>s</span><br><span class="line"></span><br><span class="line"><span class="comment">// domain</span></span><br><span class="line"><span class="meta">@Document</span>(indexName=<span class="string">"blog"</span>,type=<span class="string">"blog"</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">// repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">EsBlogRepository</span> <span class="keyword">extends</span> <span class="title">ElasticsearchRepository</span>&lt;<span class="title">EsBlog</span>,<span class="title">String</span>&gt; </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line">进行controller之前，需要启动elasticsearch服务器</span><br><span class="line">PS：注意jar包的版本，以及elasticsearch服务器的版本问题</span><br><span class="line"></span><br><span class="line"><span class="comment">// controller</span></span><br><span class="line"><span class="meta">@GetMapping</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;EsBlog&gt; <span class="title">list</span><span class="params">(@RequestParam(value = <span class="string">"title"</span>)</span>String title,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"summary"</span>)</span>String summary,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"content"</span>)</span>String content,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageIndex"</span>,defaultValue = <span class="string">"0"</span>)</span><span class="keyword">int</span> pageIndex,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageSize"</span>,defaultValue = <span class="string">"10"</span>)</span><span class="keyword">int</span> pageSize)</span>&#123;</span><br><span class="line">    <span class="comment">// 数据在测试用例中初始化</span></span><br><span class="line">    Pageable pageable = <span class="keyword">new</span> PageRequest(pageIndex, pageSize);</span><br><span class="line">    Page&lt;EsBlog&gt; page = esBlogRepository.find...(title,summary,content,pageable);</span><br><span class="line">    <span class="keyword">return</span> page.getContent();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><h5 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a><a name="link1">数据结构</a></h5><p>​    结构化：具有固定格式或有限长度的数据（数据库、元数据）</p>
+<p>​    非结构化：不定长或无固定格式的数据（邮件，word文档）</p>
+<h5 id="非结构化数据的检索"><a href="#非结构化数据的检索" class="headerlink" title="非结构化数据的检索"></a><a name="link2">非结构化数据的检索</a></h5><p>​    顺序扫描 Serial Scanning ： 从头到尾搜索</p>
+<p>​    全文搜索 Full-text Search ： 将非结构化数据部分信息，组织成结构化数据，添加索引，进行搜索</p>
+<p>2018年7月29日 22:35:47</p>
 
           
         
@@ -647,183 +1342,6 @@
 </ol>
 <h4 id="三、Thymeleaf"><a href="#三、Thymeleaf" class="headerlink" title="三、Thymeleaf"></a>三、Thymeleaf</h4><p><a href="https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html" target="_blank" rel="noopener">Tutorial:Using Thymeleaf 3.0</a></p>
 <p>@2018年7月29日 14:19:06</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/29/Blog System  Note-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="REX CHEN">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="REEEEX">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/29/Blog System  Note-2/" itemprop="url">Blog System | Note-2</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-29T00:00:00+08:00">
-                2018-07-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Blog-System-Note-2"><a href="#Blog-System-Note-2" class="headerlink" title="Blog System | Note-2"></a>Blog System | Note-2</h3><p>@2018年7月29日 14:38:38    Knowledge From Imooc</p>
-<h4 id="数据持久化"><a href="#数据持久化" class="headerlink" title="数据持久化"></a>数据持久化</h4><h5 id="JPA"><a href="#JPA" class="headerlink" title="JPA"></a>JPA</h5><p>​    用于管理Java EE和Java SE环境中的持久化，以及对象/关系(O/R)映射的Java API；</p>
-<h5 id="实体-Entity"><a href="#实体-Entity" class="headerlink" title="实体@Entity"></a>实体@Entity</h5><p>​    表示数据库中的表，每个实体实体对应于表中的行；</p>
-<p>​    类必须有一个public或protected的无参构造函数；</p>
-<p>​    实体实例被当作值以分离对象方式进行传递，则该类必须实现Serializable接口；</p>
-<p>​    唯一的标识：主键或复合主键；</p>
-<h5 id="关系-Relation"><a href="#关系-Relation" class="headerlink" title="关系 Relation"></a>关系 Relation</h5><p>​    一对一：@OneToOne</p>
-<p>​    一对多：@OneToMany</p>
-<p>​    多对一：@ManyToOne</p>
-<p>​    多对多：@ManyToMany</p>
-<h5 id="管理实体的接口-EntityManager"><a href="#管理实体的接口-EntityManager" class="headerlink" title="管理实体的接口 EntityManager"></a>管理实体的接口 EntityManager</h5><p>​    定义用于持久性上下文进行交互的方法；</p>
-<p>​    创建和删除持久实体实例，通过实体的主键查找实体；</p>
-<p>​    允许在实体上运行查询；</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取EntityManager实例</span></span><br><span class="line"><span class="meta">@PersistenceUnit</span> <span class="comment">// 持久化单元</span></span><br><span class="line">EntityManagerFactory emf;</span><br><span class="line">EntityManager em;</span><br><span class="line"><span class="meta">@Resource</span></span><br><span class="line">UserTransaction utx;</span><br><span class="line">...</span><br><span class="line">em = emf.createEntityManager();</span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    utx.begin();</span><br><span class="line">    em.persist(SomeEntity);</span><br><span class="line">    em.merge(AnotherEntity);</span><br><span class="line">    em.remove(ThirdEntity);</span><br><span class="line">    utx.commit();</span><br><span class="line">&#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">    utx.rollback();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查找实体</span></span><br><span class="line"><span class="meta">@PersistenceContext</span></span><br><span class="line">EntityManager em;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">enterOrder</span><span class="params">(<span class="keyword">int</span> custID,CustomerOrder newOrder)</span></span>&#123;</span><br><span class="line">    Customer cust = em.find(Customer,custID);</span><br><span class="line">    cust.getOrders().add(newOrder);</span><br><span class="line">    newOrder.setCustomer(cust);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="Spring-Data-JPA"><a href="#Spring-Data-JPA" class="headerlink" title="Spring Data JPA"></a>Spring Data JPA</h5><p>​    更大的Spring Data家族的一部分；</p>
-<p>​    对基于JPA的数据访问层的增强支持；</p>
-<p>​    更容易构建基于Spring数据访问技术栈的程序；</p>
-<h5 id="常用接口"><a href="#常用接口" class="headerlink" title="常用接口"></a>常用接口</h5><p>​    CrudRepository</p>
-<p>​    PagingAndSortingRepository</p>
-<p>​    自定义接口：根据方法名创建查询 public interface UserRepository extends Repository&lt;User,Long&gt;{}</p>
-<h5 id="应用"><a href="#应用" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Id</span></span><br><span class="line"><span class="meta">@GeneratedValue</span>(strategy= GenerationType.IDENTITY)</span><br><span class="line"><span class="comment">// Controller</span></span><br><span class="line">findAll();</span><br><span class="line">findOne();</span><br><span class="line">delete();</span><br><span class="line">save();</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># 使用H2控制台：</span><br><span class="line">spring.h2.console.enabled=<span class="keyword">true</span></span><br><span class="line">#查看</span><br><span class="line">localhost:<span class="number">8080</span>/h2-console</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># DataSource</span><br><span class="line">spring.datasource.url=...</span><br><span class="line">spring.datasource.username=...</span><br><span class="line">spring.datasource.password=...</span><br><span class="line">spring.datasource.driver-<span class="class"><span class="keyword">class</span>-<span class="title">name</span></span>=com.mysql.jdbc.Driver</span><br><span class="line"># JPA</span><br><span class="line">spring.jpa.show-sql=<span class="keyword">true</span></span><br><span class="line">spring.jpa.hibernate.ddl-auto=create-drop</span><br></pre></td></tr></table></figure>
-<h4 id="全文搜索"><a href="#全文搜索" class="headerlink" title="全文搜索"></a>全文搜索</h4><h5 id="全文搜索-1"><a href="#全文搜索-1" class="headerlink" title="全文搜索"></a>全文搜索</h5><p>​    概念：将文件中所有文本与搜索项匹配的文字资料检索方法</p>
-<p>​    Knowledge About(<a href="#link1">数据结构</a> &amp;&amp; <a href="#link2">非结构化数据的检索</a>)</p>
-<p>​    实现原理：建立文本库、建立索引、执行搜索、过滤结果</p>
-<p>​    实现技术：Lucene、ElasticSearch（ES）、Solr</p>
-<h5 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h5><p>​    高度可扩展的开源全文搜索和分析引擎；</p>
-<p>​    快速的、近实时性的对大数据进行存储、搜索和分析；</p>
-<p>​    用于支持有复杂的数据搜索需求的企业级应用；</p>
-<p>特点：分布式（分布到多个分片上）、高可用（由分布式所得）、多类型（多种数据类型）、多API、面向文档（不需要事先定义模式）、异步写入（性能高于同步）、近实时、基于Lucene、Apache协议</p>
-<h5 id="核心概念："><a href="#核心概念：" class="headerlink" title="核心概念："></a>核心概念：</h5><p>近实时：</p>
-<p>​    搜索文档到可搜索之间的时间，轻微的延时，1s左右；</p>
-<p>​    每隔n秒刷新数据；</p>
-<p>​    索引建立后，不会直接写入磁盘，存在文件系统缓存中，根据刷新策略，定期同步到磁盘中；</p>
-<p>集群：</p>
-<p>​    一个或多个节点的集合，保存应用的全部数据， 并提供基于全部节点的集成式的索引和搜索功能；</p>
-<p>​    每个集群有唯一名称；</p>
-<p>节点：</p>
-<p>​    集群中的一台服务器，用于保存数据，并且参与整个集群的索引和搜索；</p>
-<p>索引（5个分片，1个副本）：</p>
-<p>​    加快搜索速度，相似文档的集合；</p>
-<p>​    在单个集群中，根据需要，定义任意数量的索引；</p>
-<p>类型：</p>
-<p>​    对一个索引中的文档中，做进一步的细分，根据公共属性划分；</p>
-<p>文档：</p>
-<p>​    进行索引的基本单位，JSON格式；</p>
-<p>分片：</p>
-<p>​    超出单个节点处理的范围，将索引分成多个分片（含副本），存储索引的部分数据；</p>
-<p>副本：</p>
-<p>​    分片的故障不可避免，为了可靠性，设置分片副本，分配到不同节点上；</p>
-<p>​    增加吞吐量，分配到不同副本中；</p>
-<h5 id="应用-1"><a href="#应用-1" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加 Spring Daat Elasticsearch 的依赖</span></span><br><span class="line">compile(<span class="string">'org.springframework.boot:spring-boot-starter-data-elasticsearch'</span>)</span><br><span class="line"><span class="comment">// 添加 JNA 的依赖</span></span><br><span class="line">compile(<span class="string">'net.java.dev.jna:jna:4.3.0'</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># Elasticsearch 服务地址</span><br><span class="line">spring.data.elasticsearch.cluster-nodes=localhost:<span class="number">9300</span></span><br><span class="line"># 设置连接超时时间</span><br><span class="line">spring.data.elasticsearch.properties.transport.tcp.connect_timeout=<span class="number">120</span>s</span><br><span class="line"></span><br><span class="line"><span class="comment">// domain</span></span><br><span class="line"><span class="meta">@Document</span>(indexName=<span class="string">"blog"</span>,type=<span class="string">"blog"</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">// repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">EsBlogRepository</span> <span class="keyword">extends</span> <span class="title">ElasticsearchRepository</span>&lt;<span class="title">EsBlog</span>,<span class="title">String</span>&gt; </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line">进行controller之前，需要启动elasticsearch服务器</span><br><span class="line">PS：注意jar包的版本，以及elasticsearch服务器的版本问题</span><br><span class="line"></span><br><span class="line"><span class="comment">// controller</span></span><br><span class="line"><span class="meta">@GetMapping</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;EsBlog&gt; <span class="title">list</span><span class="params">(@RequestParam(value = <span class="string">"title"</span>)</span>String title,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"summary"</span>)</span>String summary,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"content"</span>)</span>String content,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageIndex"</span>,defaultValue = <span class="string">"0"</span>)</span><span class="keyword">int</span> pageIndex,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageSize"</span>,defaultValue = <span class="string">"10"</span>)</span><span class="keyword">int</span> pageSize)</span>&#123;</span><br><span class="line">    <span class="comment">// 数据在测试用例中初始化</span></span><br><span class="line">    Pageable pageable = <span class="keyword">new</span> PageRequest(pageIndex, pageSize);</span><br><span class="line">    Page&lt;EsBlog&gt; page = esBlogRepository.find...(title,summary,content,pageable);</span><br><span class="line">    <span class="keyword">return</span> page.getContent();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><h5 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a><a name="link1">数据结构</a></h5><p>​    结构化：具有固定格式或有限长度的数据（数据库、元数据）</p>
-<p>​    非结构化：不定长或无固定格式的数据（邮件，word文档）</p>
-<h5 id="非结构化数据的检索"><a href="#非结构化数据的检索" class="headerlink" title="非结构化数据的检索"></a><a name="link2">非结构化数据的检索</a></h5><p>​    顺序扫描 Serial Scanning ： 从头到尾搜索</p>
-<p>​    全文搜索 Full-text Search ： 将非结构化数据部分信息，组织成结构化数据，添加索引，进行搜索</p>
-<p>2018年7月29日 22:35:47</p>
 
           
         
@@ -1263,7 +1781,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

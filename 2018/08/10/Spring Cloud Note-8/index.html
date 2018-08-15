@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JAVA, Spring Cloud," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Spring Cloud微服务 | Note(8)@ 2018年8月10日 15:22:48 微服务的集中化配置配置文件是为了迎合软件的个性化需求； 解决每个微服务的统一配置； 管理微服务的外部，中心化的配置中心； 为什么需要集中化配置微服务数量多，配置多； 手工管理配置繁琐； 配置分类：​    ·配置来源划分：源代码、文件、数据库连接、远程调用 ​    ·配置环境划分：开发环境、测试环境、预">
+<meta name="keywords" content="JAVA, Spring Cloud">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Cloud | Note-8">
+<meta property="og:url" content="http://yoursite.com/2018/08/10/Spring Cloud Note-8/index.html">
+<meta property="og:site_name" content="REEEEX">
+<meta property="og:description" content="Spring Cloud微服务 | Note(8)@ 2018年8月10日 15:22:48 微服务的集中化配置配置文件是为了迎合软件的个性化需求； 解决每个微服务的统一配置； 管理微服务的外部，中心化的配置中心； 为什么需要集中化配置微服务数量多，配置多； 手工管理配置繁琐； 配置分类：​    ·配置来源划分：源代码、文件、数据库连接、远程调用 ​    ·配置环境划分：开发环境、测试环境、预">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-10T08:22:39.415Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Cloud | Note-8">
+<meta name="twitter:description" content="Spring Cloud微服务 | Note(8)@ 2018年8月10日 15:22:48 微服务的集中化配置配置文件是为了迎合软件的个性化需求； 解决每个微服务的统一配置； 管理微服务的外部，中心化的配置中心； 为什么需要集中化配置微服务数量多，配置多； 手工管理配置繁琐； 配置分类：​    ·配置来源划分：源代码、文件、数据库连接、远程调用 ​    ·配置环境划分：开发环境、测试环境、预">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/10/Spring Cloud Note-8/"/>
+
+
+
+
+
+  <title>Spring Cloud | Note-8 | REEEEX</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">REEEEX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">KEEP GOING</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/10/Spring Cloud Note-8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring Cloud | Note-8</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T00:00:00+08:00">
+                2018-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Spring-Cloud微服务-Note-8"><a href="#Spring-Cloud微服务-Note-8" class="headerlink" title="Spring Cloud微服务 | Note(8)"></a>Spring Cloud微服务 | Note(8)</h3><p>@ 2018年8月10日 15:22:48</p>
+<h4 id="微服务的集中化配置"><a href="#微服务的集中化配置" class="headerlink" title="微服务的集中化配置"></a>微服务的集中化配置</h4><p>配置文件是为了迎合软件的个性化需求；</p>
+<p>解决每个微服务的统一配置；</p>
+<p>管理微服务的外部，中心化的配置中心；</p>
+<h5 id="为什么需要集中化配置"><a href="#为什么需要集中化配置" class="headerlink" title="为什么需要集中化配置"></a>为什么需要集中化配置</h5><p>微服务数量多，配置多；</p>
+<p>手工管理配置繁琐；</p>
+<h6 id="配置分类："><a href="#配置分类：" class="headerlink" title="配置分类："></a>配置分类：</h6><p>​    ·配置来源划分：源代码、文件、数据库连接、远程调用</p>
+<p>​    ·配置环境划分：开发环境、测试环境、预发布环境、生产环境</p>
+<p>​    ·配置集成阶段划分：编译、打包、运行</p>
+<p>​    ·配置加载方式划分：启动加载、动态加载</p>
+<h6 id="配置中心的要求："><a href="#配置中心的要求：" class="headerlink" title="配置中心的要求："></a>配置中心的要求：</h6><p>​    ·面向可配置的编码</p>
+<p>​    ·隔离性</p>
+<p>​    ·一致性</p>
+<p>​    ·集中化配置</p>
+<h6 id="Spring-Cloud-Config"><a href="#Spring-Cloud-Config" class="headerlink" title="Spring Cloud Config"></a>Spring Cloud Config</h6><p>分布式外部化配置；Config Server；Config Client；</p>
+<hr>
+<h5 id="如何继集成Spring-Cloud-Config-Server"><a href="#如何继集成Spring-Cloud-Config-Server" class="headerlink" title="如何继集成Spring Cloud Config Server"></a>如何继集成Spring Cloud Config Server</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line">dependencies&#123;</span><br><span class="line">    compile(<span class="string">'org.springframework.cloud:spring-cloud-config-server'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Application</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="meta">@EnableConfigServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigApplication</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        SpringApplication.run(ConfigApplication.class,args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># config server</span><br><span class="line">server.port=<span class="number">8888</span></span><br><span class="line">spring.application.name=micro-weather-config-server</span><br><span class="line">eureka.client.service-url.defaultZone=http:<span class="comment">//localhost:8761/eureka/</span></span><br><span class="line">spring.cloud.config.server.git.uri=https:...</span><br><span class="line">spring.cloud.config.server.git.search-paths=...</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="如何继集成Spring-Cloud-Config-Client"><a href="#如何继集成Spring-Cloud-Config-Client" class="headerlink" title="如何继集成Spring Cloud Config Client"></a>如何继集成Spring Cloud Config Client</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line">dependencies&#123;</span><br><span class="line">    compile(<span class="string">'org.springframework.cloud:spring-cloud-config-client'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Application</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigClientApplication</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        SpringApplication.run(ConfigClientApplication.class,args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># config server</span><br><span class="line">spring.application.name=micro-weather-config-client</span><br><span class="line">eureka.client.service-url.defaultZone=http:<span class="comment">//localhost:8761/eureka/</span></span><br><span class="line">spring.cloud.config.profile=dev</span><br><span class="line">spring.cloud.config.uri=http:<span class="comment">//localhost:8888</span></span><br></pre></td></tr></table></figure>
+<h5 id="实现微服务的集中化配置"><a href="#实现微服务的集中化配置" class="headerlink" title="实现微服务的集中化配置"></a>实现微服务的集中化配置</h5><p>配置中心的文件命名规则</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/&#123;application&#125;/&#123;profile&#125;/[/&#123;label&#125;]</span><br><span class="line">/&#123;application&#125;-&#123;profile&#125;.yml</span><br><span class="line">/&#123;label&#125;/&#123;application&#125;-&#123;profile&#125;.yml</span><br><span class="line">/&#123;application&#125;-&#123;profile&#125;.properties</span><br><span class="line">/&#123;label&#125;/&#123;application&#125;-&#123;profile&#125;.properties</span><br></pre></td></tr></table></figure>
+<p>启动Eureka Server以及Config Server</p>
+<p>作为Config Client可以在远端获取部署在git上的配置文件的内容</p>
+<hr>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p>@ 2018年8月10日 16:22:38</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA-Spring-Cloud/" rel="tag"># JAVA, Spring Cloud</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/09/Spring Cloud Note-7/" rel="next" title="Spring Cloud | Note-7">
+                <i class="fa fa-chevron-left"></i> Spring Cloud | Note-7
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/15/Spring Cloud Note-9/" rel="prev" title="Spring Cloud | Note-9">
+                Spring Cloud | Note-9 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">REX CHEN</p>
+              <p class="site-description motion-element" itemprop="description">日常记录</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud微服务-Note-8"><span class="nav-number">1.</span> <span class="nav-text">Spring Cloud微服务 | Note(8)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#微服务的集中化配置"><span class="nav-number">1.1.</span> <span class="nav-text">微服务的集中化配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么需要集中化配置"><span class="nav-number">1.1.1.</span> <span class="nav-text">为什么需要集中化配置</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#配置分类："><span class="nav-number">1.1.1.1.</span> <span class="nav-text">配置分类：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#配置中心的要求："><span class="nav-number">1.1.1.2.</span> <span class="nav-text">配置中心的要求：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Spring-Cloud-Config"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Spring Cloud Config</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如何继集成Spring-Cloud-Config-Server"><span class="nav-number">1.1.2.</span> <span class="nav-text">如何继集成Spring Cloud Config Server</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如何继集成Spring-Cloud-Config-Client"><span class="nav-number">1.1.3.</span> <span class="nav-text">如何继集成Spring Cloud Config Client</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实现微服务的集中化配置"><span class="nav-number">1.1.4.</span> <span class="nav-text">实现微服务的集中化配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#附录"><span class="nav-number">2.</span> <span class="nav-text">附录</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">REX CHEN</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

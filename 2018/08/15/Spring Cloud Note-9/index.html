@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JAVA, Spring Cloud," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Spring Cloud微服务 | Note(9)@ 2018年8月15日 10:19:40 微服务——熔断机制当服务过载，流量激增，超过负荷时，掐断服务，保护服务的机制； 什么是服务的熔断机制对于系统的防护机制，不会导致服务的不响应，返回默认值，依然保持服务的响应； 对该服务的调用执行熔断，对于后续的请求，不再继续调用该目标服务，而是直接返回默认值，从而快速释放资源；保护系统；  熔断的原理（服">
+<meta name="keywords" content="JAVA, Spring Cloud">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Cloud | Note-9">
+<meta property="og:url" content="http://yoursite.com/2018/08/15/Spring Cloud Note-9/index.html">
+<meta property="og:site_name" content="REEEEX">
+<meta property="og:description" content="Spring Cloud微服务 | Note(9)@ 2018年8月15日 10:19:40 微服务——熔断机制当服务过载，流量激增，超过负荷时，掐断服务，保护服务的机制； 什么是服务的熔断机制对于系统的防护机制，不会导致服务的不响应，返回默认值，依然保持服务的响应； 对该服务的调用执行熔断，对于后续的请求，不再继续调用该目标服务，而是直接返回默认值，从而快速释放资源；保护系统；  熔断的原理（服">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-15T06:57:58.194Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Cloud | Note-9">
+<meta name="twitter:description" content="Spring Cloud微服务 | Note(9)@ 2018年8月15日 10:19:40 微服务——熔断机制当服务过载，流量激增，超过负荷时，掐断服务，保护服务的机制； 什么是服务的熔断机制对于系统的防护机制，不会导致服务的不响应，返回默认值，依然保持服务的响应； 对该服务的调用执行熔断，对于后续的请求，不再继续调用该目标服务，而是直接返回默认值，从而快速释放资源；保护系统；  熔断的原理（服">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/15/Spring Cloud Note-9/"/>
+
+
+
+
+
+  <title>Spring Cloud | Note-9 | REEEEX</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">REEEEX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">KEEP GOING</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/15/Spring Cloud Note-9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring Cloud | Note-9</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-15T00:00:00+08:00">
+                2018-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Spring-Cloud微服务-Note-9"><a href="#Spring-Cloud微服务-Note-9" class="headerlink" title="Spring Cloud微服务 | Note(9)"></a>Spring Cloud微服务 | Note(9)</h3><p>@ 2018年8月15日 10:19:40</p>
+<h4 id="微服务——熔断机制"><a href="#微服务——熔断机制" class="headerlink" title="微服务——熔断机制"></a>微服务——熔断机制</h4><p>当服务过载，流量激增，超过负荷时，掐断服务，保护服务的机制；</p>
+<h5 id="什么是服务的熔断机制"><a href="#什么是服务的熔断机制" class="headerlink" title="什么是服务的熔断机制"></a>什么是服务的熔断机制</h5><p>对于系统的防护机制，不会导致服务的不响应，返回默认值，依然保持服务的响应；</p>
+<p>对该服务的调用执行熔断，对于后续的请求，不再继续调用该目标服务，而是直接返回默认值，从而快速释放资源；保护系统；</p>
+<hr>
+<h5 id="熔断的原理（服务熔断）"><a href="#熔断的原理（服务熔断）" class="headerlink" title="熔断的原理（服务熔断）"></a>熔断的原理（服务熔断）</h5><p>断路器：受保护的服务封装在断路器中，当故障达到阈值时，切断服务的响应，由断路器返回响应；</p>
+<p>断路器模式：防止应用程序执行可能失败的操作，使应用程序检测故障是否解决；</p>
+<p>Microsof Azure 断路器状态：关闭，打开，半打开；</p>
+<p>Hystrix：服务正常，服务异常（Fallback）；</p>
+<hr>
+<h5 id="熔断的意义"><a href="#熔断的意义" class="headerlink" title="熔断的意义"></a>熔断的意义</h5><p>好处：保护系统，系统稳定，减少性能损耗，及时响应（简单的响应），阀值可定制；</p>
+<p>功能：异常处理，日志记录，测试失败的操作，手动复位，并发，加速断路，重试失败请求；</p>
+<hr>
+<h5 id="熔断与降级的区别"><a href="#熔断与降级的区别" class="headerlink" title="熔断与降级的区别"></a>熔断与降级的区别</h5><p>相似：目的一致（可用性，可靠性，保护系统），表现类似（服务暂时不可达），粒度一致（服务级别，DAO）</p>
+<p>区别：</p>
+<p>​    ·触发条件不同——熔断由服务引起，降级由整体负荷引起；</p>
+<p>​    ·管理目标层次不同——熔断管理整个框架级，每个服务都需要，降级管理业务层次；</p>
+<hr>
+<h5 id="如何集成Hystrix"><a href="#如何集成Hystrix" class="headerlink" title="如何集成Hystrix"></a>如何集成Hystrix</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 依赖</span></span><br><span class="line">dependencies &#123;</span><br><span class="line">	compile(<span class="string">'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 启用</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="meta">@EnableFeignClients</span></span><br><span class="line"><span class="meta">@EnableCircuitBreaker</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HystrixApplication</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(HystrixApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 服务过载时实现</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CityController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> CityClient cityClient;</span><br><span class="line">    </span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/cities"</span>)</span><br><span class="line">	<span class="meta">@HystrixCommand</span>(fallbackMethod = <span class="string">"defaultCities"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">listCity</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 通过Feign客户端来查找</span></span><br><span class="line">		String body = cityClient.listCity();</span><br><span class="line">		<span class="keyword">return</span> body;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">defaultCities</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"服务暂不可用(City Server Is Down)"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="实现微服务的熔断机制"><a href="#实现微服务的熔断机制" class="headerlink" title="实现微服务的熔断机制"></a>实现微服务的熔断机制</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 具体服务中实现熔断</span></span><br><span class="line"><span class="meta">@FeignClient</span>(name = <span class="string">"micro-weather-eureka-client-zuul"</span>,fallback = DataClientFallback.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DataClient</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Bean</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataClientFallback</span> <span class="keyword">implements</span> <span class="title">DataClient</span></span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;City&gt; <span class="title">listCity</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 默认响应信息</span></span><br><span class="line">        ...</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> WeatherResponse <span class="title">getDataByCityId</span><span class="params">(String cityId)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 默认响应信息</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line">spring.application.name=micro-weather-eureka-client-feign-gateway-hystrix</span><br><span class="line">feign.hystrix.enabled=<span class="keyword">true</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="微服务——自动扩展"><a href="#微服务——自动扩展" class="headerlink" title="微服务——自动扩展"></a>微服务——自动扩展</h4><h5 id="什么是自动扩展"><a href="#什么是自动扩展" class="headerlink" title="什么是自动扩展"></a>什么是自动扩展</h5><p>垂直扩展（双核主机 –&gt; 四核主机）硬件升级，瓶颈在于硬件水平的技术；</p>
+<p>水平扩展（1台主机 –&gt; x台主机）能力扩展，分布式系统解决计算能力；</p>
+<p>自我注册和自我发现是自动扩展的前提条件；</p>
+<p>服务注册表（服务注册中心），客户端，微服务实例；</p>
+<p>客户端查询服务注册表，查询可用的服务；服务实例启动后，自我注册到服务注册表中，待客户端使用；</p>
+<p>按需扩展：微服务实例分为使用中和保留，当需要更多实例时，再启动保留的服务实例，按照请求的需要扩展；</p>
+<hr>
+<h5 id="自动扩展的意义"><a href="#自动扩展的意义" class="headerlink" title="自动扩展的意义"></a>自动扩展的意义</h5><p>解决应用程序为了支持长时间的运行，需要提前预留硬件、软件的功能，解决闲置资源的浪费问题；</p>
+<p>按需扩展；</p>
+<p>每个微服务实例需要独立的部署空间；</p>
+<h6 id="好处："><a href="#好处：" class="headerlink" title="好处："></a>好处：</h6><p>提供高可用性和容错能力：快速自动扩展使用新的服务实例，以满足服务的需要；</p>
+<p>增加可伸缩性：水平扩展能力的增加，允许根据流量自动选择服务的规模；</p>
+<p>具有最佳使用率，节约成本：按需扩展；</p>
+<p>优先考虑服务或服务组：通过优先级分配资源；</p>
+<hr>
+<h4 id="自动扩展的常见模式"><a href="#自动扩展的常见模式" class="headerlink" title="自动扩展的常见模式"></a>自动扩展的常见模式</h4><h5 id="应用程序级别"><a href="#应用程序级别" class="headerlink" title="应用程序级别"></a>应用程序级别</h5><p>扩展通过复制微服务实例实现，虚拟机或主机运行微服务；</p>
+<p>更换服务实例；</p>
+<h5 id="基础架构级别"><a href="#基础架构级别" class="headerlink" title="基础架构级别"></a>基础架构级别</h5><p>根据需求及时创建或消除；</p>
+<p>保留的服务实例，被创建为具有预订意义的，服务实例虚拟机镜像，当有服务A的需求时，虚拟机将服务移动到激活的状态；</p>
+<p>更换服务虚拟机，适用范围更广；</p>
+<p>缺点：基于整个虚拟机扩展，体积更大，占用更多的系统资源；</p>
+<p>解决：采用轻量级容器docker，减少资源的占用；</p>
+<h5 id="资源限制"><a href="#资源限制" class="headerlink" title="资源限制"></a>资源限制</h5><p>监控程序：实时监控CPU的使用率，当使用率大于阀值时，启动新的服务实例；</p>
+<h5 id="特定时间段"><a href="#特定时间段" class="headerlink" title="特定时间段"></a>特定时间段</h5><p>根据特定时间段、季节性、业务高峰的服务需求，启动新的服务实例，减轻服务器的负载；</p>
+<h5 id="消息长度"><a href="#消息长度" class="headerlink" title="消息长度"></a>消息长度</h5><p>监控程序监控每个服务实例的消息队列的长度，当队列长度大于设置的长度时，说明需要处理的消息超过服务可提供的能力，则新增服务实例；</p>
+<h5 id="业务参数"><a href="#业务参数" class="headerlink" title="业务参数"></a>业务参数</h5><p>添加实例基于某些业务参数，解决业务事件时，通过先新增服务实例的方法，预防即将到来的大量业务交易请求；</p>
+<h5 id="根据预测"><a href="#根据预测" class="headerlink" title="根据预测"></a>根据预测</h5><p>新型的自动扩展方式；</p>
+<p>有多种信息事务模式的组合；</p>
+<p>有助于解决硬编码和时间窗口；</p>
+<p>根据历史信息，当前趋势进行预测（更精确，更有效的解决突发情况）；</p>
+<hr>
+<h4 id="如何实现微服务的自动扩展"><a href="#如何实现微服务的自动扩展" class="headerlink" title="如何实现微服务的自动扩展"></a>如何实现微服务的自动扩展</h4><h5 id="思考的问题"><a href="#思考的问题" class="headerlink" title="思考的问题"></a>思考的问题</h5><p>如何管理数千个容器？</p>
+<p>如何监控容器？</p>
+<p>在部署工件时，如何应用规则和约束？</p>
+<p>如何利用容器获得资源效率？</p>
+<p>如何确保至少有一定数量的最小实例正在运行？</p>
+<p>如何确保依赖服务正常运行？</p>
+<p>如何进行滚动升级和优雅的迁移？</p>
+<p>如何回滚错误的部署？</p>
+<h5 id="所需功能"><a href="#所需功能" class="headerlink" title="所需功能"></a>所需功能</h5><p>依赖两个关键功能：</p>
+<p>1-一个容器抽象层，在许多物理或虚拟机上提供统一的抽象；</p>
+<p>2-容器编排和初始化系统在集群抽象之上智能管理部署</p>
+<hr>
+<h4 id="容器编排"><a href="#容器编排" class="headerlink" title="容器编排"></a>容器编排</h4><p>为开发以及架构团队，提供一个抽象层，来处理大规模集装箱式的部署；</p>
+<p>共同功能：具备发现、资源管理、监控和部署等；</p>
+<p>职责：集群管理（将虚拟机和物理机器的集群管理为一台大型机器 ）</p>
+<p>自动部署（能处理有大量及其的应用程序和容器的自动部署，支持多版本的应用程序容器，并且支持跨越大量集群机器的滚动升级和故障回滚）</p>
+<p>可伸缩性（支持服务实例的自动和手动伸缩，以性能优化为主要目标）</p>
+<p>运行状况的健康（管理集群、节点和应用程序的健康）</p>
+<p>基础架构抽象（开发人员不需要担心集群和容量等问题）</p>
+<p>资源优化（以有效的方式在可用机器上分配容器工作负载，从而减低成本，通过简单到复杂的算法有效提高利用率）</p>
+<p>资源分配（基于应用程序开发人员设置的资源可用性和约束来分配服务器）</p>
+<p>服务可用性（确保服务在集群中正常运行，机器故障的情况下，容器编排会自动通过在集群中的其他机器上重新启动这些服务来处理故障）</p>
+<p>敏捷性（敏捷性工具能够快速分配工作负载到可用资源，或在资源需求发生变化时跨机器移动工作量）</p>
+<p>隔离（提供资源隔离，即使应用程序不是容器化，也可以实现资源隔离）</p>
+<hr>
+<h4 id="资源分配常用算法"><a href="#资源分配常用算法" class="headerlink" title="资源分配常用算法"></a>资源分配常用算法</h4><p>传播（Spread）工作负载平均分配到多台主机中；</p>
+<p>装箱（Bin Packing）优先试图填满机器的最大负载，常用于按需付费的云服务；</p>
+<p>随机（Random）工作负载随机分配到多台主机中；</p>
+<h4 id="常用的容器编排技术"><a href="#常用的容器编排技术" class="headerlink" title="常用的容器编排技术"></a>常用的容器编排技术</h4><p>Docker Swarm</p>
+<p>Kubernetes</p>
+<p>Apache Mesos</p>
+<hr>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p>@ 2018年8月15日 14:57:54</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA-Spring-Cloud/" rel="tag"># JAVA, Spring Cloud</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/10/Spring Cloud Note-8/" rel="next" title="Spring Cloud | Note-8">
+                <i class="fa fa-chevron-left"></i> Spring Cloud | Note-8
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">REX CHEN</p>
+              <p class="site-description motion-element" itemprop="description">日常记录</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud微服务-Note-9"><span class="nav-number">1.</span> <span class="nav-text">Spring Cloud微服务 | Note(9)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#微服务——熔断机制"><span class="nav-number">1.1.</span> <span class="nav-text">微服务——熔断机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是服务的熔断机制"><span class="nav-number">1.1.1.</span> <span class="nav-text">什么是服务的熔断机制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#熔断的原理（服务熔断）"><span class="nav-number">1.1.2.</span> <span class="nav-text">熔断的原理（服务熔断）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#熔断的意义"><span class="nav-number">1.1.3.</span> <span class="nav-text">熔断的意义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#熔断与降级的区别"><span class="nav-number">1.1.4.</span> <span class="nav-text">熔断与降级的区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如何集成Hystrix"><span class="nav-number">1.1.5.</span> <span class="nav-text">如何集成Hystrix</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实现微服务的熔断机制"><span class="nav-number">1.1.6.</span> <span class="nav-text">实现微服务的熔断机制</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#微服务——自动扩展"><span class="nav-number">1.2.</span> <span class="nav-text">微服务——自动扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是自动扩展"><span class="nav-number">1.2.1.</span> <span class="nav-text">什么是自动扩展</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#自动扩展的意义"><span class="nav-number">1.2.2.</span> <span class="nav-text">自动扩展的意义</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#好处："><span class="nav-number">1.2.2.1.</span> <span class="nav-text">好处：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自动扩展的常见模式"><span class="nav-number">1.3.</span> <span class="nav-text">自动扩展的常见模式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#应用程序级别"><span class="nav-number">1.3.1.</span> <span class="nav-text">应用程序级别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#基础架构级别"><span class="nav-number">1.3.2.</span> <span class="nav-text">基础架构级别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#资源限制"><span class="nav-number">1.3.3.</span> <span class="nav-text">资源限制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#特定时间段"><span class="nav-number">1.3.4.</span> <span class="nav-text">特定时间段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#消息长度"><span class="nav-number">1.3.5.</span> <span class="nav-text">消息长度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#业务参数"><span class="nav-number">1.3.6.</span> <span class="nav-text">业务参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#根据预测"><span class="nav-number">1.3.7.</span> <span class="nav-text">根据预测</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何实现微服务的自动扩展"><span class="nav-number">1.4.</span> <span class="nav-text">如何实现微服务的自动扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#思考的问题"><span class="nav-number">1.4.1.</span> <span class="nav-text">思考的问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#所需功能"><span class="nav-number">1.4.2.</span> <span class="nav-text">所需功能</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器编排"><span class="nav-number">1.5.</span> <span class="nav-text">容器编排</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#资源分配常用算法"><span class="nav-number">1.6.</span> <span class="nav-text">资源分配常用算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用的容器编排技术"><span class="nav-number">1.7.</span> <span class="nav-text">常用的容器编排技术</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#附录"><span class="nav-number">2.</span> <span class="nav-text">附录</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">REX CHEN</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
