@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JAVA,Spring Boot,Wechat," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="微信小程序开发 Note-3@ 2018年8月16日 11:23:54  buttonbutton 按钮    属性名 类型 默认值 说明 生效时机 最低版本     size String default 按钮的大小     type String default 按钮的样式类型     plain Boolean false 按钮是否镂空，背景色透明     disabled Boolean">
+<meta name="keywords" content="JAVA,Spring Boot,Wechat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Wechat Mini | Note-3">
+<meta property="og:url" content="http://yoursite.com/2018/08/17/MicWechat Note-3/index.html">
+<meta property="og:site_name" content="REEEEX">
+<meta property="og:description" content="微信小程序开发 Note-3@ 2018年8月16日 11:23:54  buttonbutton 按钮    属性名 类型 默认值 说明 生效时机 最低版本     size String default 按钮的大小     type String default 按钮的样式类型     plain Boolean false 按钮是否镂空，背景色透明     disabled Boolean">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-16T08:21:11.164Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Wechat Mini | Note-3">
+<meta name="twitter:description" content="微信小程序开发 Note-3@ 2018年8月16日 11:23:54  buttonbutton 按钮    属性名 类型 默认值 说明 生效时机 最低版本     size String default 按钮的大小     type String default 按钮的样式类型     plain Boolean false 按钮是否镂空，背景色透明     disabled Boolean">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/17/MicWechat Note-3/"/>
+
+
+
+
+
+  <title>Wechat Mini | Note-3 | REEEEX</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">REEEEX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">KEEP GOING</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/17/MicWechat Note-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Wechat Mini | Note-3</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-17T00:00:00+08:00">
+                2018-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="微信小程序开发-Note-3"><a href="#微信小程序开发-Note-3" class="headerlink" title="微信小程序开发 Note-3"></a>微信小程序开发 Note-3</h3><p>@ 2018年8月16日 11:23:54</p>
+<hr>
+<h4 id="button"><a href="#button" class="headerlink" title="button"></a>button</h4><p><a href="https://developers.weixin.qq.com/miniprogram/dev/component/button.html" target="_blank" rel="noopener">button 按钮</a></p>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+<th>生效时机</th>
+<th>最低版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>size</td>
+<td>String</td>
+<td>default</td>
+<td>按钮的大小</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>default</td>
+<td>按钮的样式类型</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>plain</td>
+<td>Boolean</td>
+<td>false</td>
+<td>按钮是否镂空，背景色透明</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>Boolean</td>
+<td>false</td>
+<td>是否禁用</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>loading</td>
+<td>Boolean</td>
+<td>false</td>
+<td>名称前是否带 loading 图标</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>form-type</td>
+<td>String</td>
+<td></td>
+<td>用于 <code>&lt;form/&gt;</code> 组件，点击分别会触发 <code>&lt;form/&gt;</code> 组件的 submit/reset 事件</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>hover-class</td>
+<td>String</td>
+<td>button-hover</td>
+<td>指定按钮按下去的样式类。当 <code>hover-class=&quot;none&quot;</code> 时，没有点击态效果</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>hover-stop-propagation</td>
+<td>Boolean</td>
+<td>false</td>
+<td>指定是否阻止本节点的祖先节点出现点击态</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="checkbox-amp-label"><a href="#checkbox-amp-label" class="headerlink" title="checkbox &amp; label"></a>checkbox &amp; label</h4><p><a href="https://developers.weixin.qq.com/miniprogram/dev/component/checkbox.html" target="_blank" rel="noopener">checkbox 多选框</a></p>
+<p>checkbox-group    多项选择器，内部由多个checkbox组成；</p>
+<p>check双标签自带label ；</p>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>String</td>
+<td></td>
+<td><code>&lt;checkbox/&gt;</code>标识，选中时触发<code>&lt;checkbox-group/&gt;</code>的 change 事件，并携带 <code>&lt;checkbox/&gt;</code> 的 value</td>
+</tr>
+<tr>
+<td>disabled</td>
+<td>Boolean</td>
+<td>false</td>
+<td>是否禁用</td>
+</tr>
+<tr>
+<td>checked</td>
+<td>Boolean</td>
+<td>false</td>
+<td>当前是否选中，可用来设置默认选中</td>
+</tr>
+<tr>
+<td>color</td>
+<td>Color</td>
+<td></td>
+<td>checkbox的颜色，同css的color</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://developers.weixin.qq.com/miniprogram/dev/component/label.html" target="_blank" rel="noopener">label 标签</a></p>
+<p>用来改进表单组件的可用性，使用<code>for</code>属性找到对应的<code>id</code>，或者将控件放在该标签下，当点击时，就会触发对应的控件；</p>
+<p>目前可以绑定的控件有：<code>&lt;button/&gt;</code>, <code>&lt;checkbox/&gt;</code>, <code>&lt;radio/&gt;</code>, <code>&lt;switch/&gt;</code>；</p>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>for</td>
+<td>String</td>
+<td>绑定控件的 id</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">checkbox-group</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">label</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;array&#125;&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">checkbox</span> <span class="attr">id</span>=<span class="string">"&#123;&#123;item.id&#125;&#125;"</span> <span class="attr">value</span>=<span class="string">"&#123;&#123;item.value&#125;&#125;"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">checked</span>=<span class="string">"&#123;&#123;item.checked&#125;&#125;"</span> <span class="attr">color</span>=<span class="string">"&#123;&#123;item.color&#125;&#125;"</span> <span class="attr">disabled</span>=<span class="string">"&#123;&#123;item.disabled&#125;&#125;"</span>&gt;</span></span><br><span class="line">      &#123;&#123;item.name&#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">checkbox</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">checkbox-group</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"1001"</span>&gt;</span>测试点击<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    array: [&#123;</span><br><span class="line">        id:<span class="string">"1001"</span>,</span><br><span class="line">        name: <span class="string">"中国"</span>,</span><br><span class="line">        value: <span class="string">"CHINA"</span>,</span><br><span class="line">        checked: <span class="literal">true</span>,</span><br><span class="line">        color: <span class="string">"red"</span>,</span><br><span class="line">        disabled: <span class="literal">false</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        id: <span class="string">"1002"</span>,</span><br><span class="line">        name: <span class="string">"美国"</span>,</span><br><span class="line">        value: <span class="string">"USA"</span>,</span><br><span class="line">        checked: <span class="literal">false</span>,</span><br><span class="line">        color: <span class="string">"blue"</span>,</span><br><span class="line">        disabled: <span class="literal">false</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        id: <span class="string">"1003"</span>,</span><br><span class="line">        name: <span class="string">"俄罗斯"</span>,</span><br><span class="line">        value: <span class="string">"RUS"</span>,</span><br><span class="line">        checked: <span class="literal">true</span>,</span><br><span class="line">        color: <span class="string">"pink"</span>,</span><br><span class="line">        disabled: <span class="literal">false</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="submit-amp-reset"><a href="#submit-amp-reset" class="headerlink" title="submit &amp; reset"></a>submit &amp; reset</h4><p><a href="https://developers.weixin.qq.com/miniprogram/dev/component/form.html" target="_blank" rel="noopener">form 表单</a></p>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>report-submit</td>
+<td>Boolean</td>
+<td>是否返回 formId 用于发送<a href="https://developers.weixin.qq.com/miniprogram/dev/api/notice.html" target="_blank" rel="noopener">模板消息</a></td>
+</tr>
+<tr>
+<td>bindsubmit</td>
+<td>EventHandle</td>
+<td>携带 form 中的数据触发 submit 事件，event.detail = {value : {‘name’: ‘value’} , formId: ‘’}</td>
+</tr>
+<tr>
+<td>bindreset</td>
+<td>EventHandle</td>
+<td>表单重置时会触发 reset 事件</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="input"><a href="#input" class="headerlink" title="input"></a>input</h4><p><a href="https://developers.weixin.qq.com/miniprogram/dev/component/input.html" target="_blank" rel="noopener">input 输入框</a></p>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>String</td>
+<td></td>
+<td>输入框的初始内容</td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>text</td>
+<td>input 的类型</td>
+</tr>
+<tr>
+<td>password</td>
+<td>Boolean</td>
+<td>false</td>
+<td>是否是密码类型</td>
+</tr>
+<tr>
+<td>placeholder</td>
+<td>String</td>
+<td></td>
+<td>输入框为空时占位符</td>
+</tr>
+<tr>
+<td>placeholder-style</td>
+<td>String</td>
+<td></td>
+<td>指定 placeholder 的样式</td>
+</tr>
+<tr>
+<td>placeholder-class</td>
+<td>String</td>
+<td>“input-placeholder”</td>
+<td>指定 placeholder 的样式类</td>
+</tr>
+<tr>
+<td>cursor-spacing</td>
+<td>Number</td>
+<td>0</td>
+<td>指定光标与键盘的距离，单位 px 。取 input 距离底部的距离和 cursor-spacing 指定的距离的最小值作为光标与键盘的距离</td>
+</tr>
+<tr>
+<td>focus</td>
+<td>Boolean</td>
+<td>false</td>
+<td>获取焦点</td>
+</tr>
+<tr>
+<td>confirm-type</td>
+<td>String</td>
+<td>“done”</td>
+<td>设置键盘右下角按钮的文字，仅在type=’text’时生效</td>
+</tr>
+<tr>
+<td>confirm-hold</td>
+<td>Boolean</td>
+<td>false</td>
+<td>点击键盘右下角按钮时是否保持键盘不收起</td>
+</tr>
+<tr>
+<td>selection-start</td>
+<td>Number</td>
+<td>-1</td>
+<td>光标起始位置，自动聚集时有效，需与selection-end搭配使用</td>
+</tr>
+<tr>
+<td>selection-end</td>
+<td>Number</td>
+<td>-1</td>
+<td>光标结束位置，自动聚集时有效，需与selection-start搭配使用</td>
+</tr>
+<tr>
+<td>adjust-position</td>
+<td>Boolean</td>
+<td>true</td>
+<td>键盘弹起时，是否自动上推页面</td>
+</tr>
+<tr>
+<td>bindinput</td>
+<td>EventHandle</td>
+<td></td>
+<td>键盘输入时触发，event.detail = {value, cursor, keyCode}，keyCode 为键值，处理函数可以直接 return 一个字符串，将替换输入框的内容。</td>
+</tr>
+<tr>
+<td>bindfocus</td>
+<td>EventHandle</td>
+<td></td>
+<td>输入框聚焦时触发，event.detail = { value, height }，height 为键盘高度</td>
+</tr>
+<tr>
+<td>bindblur</td>
+<td>EventHandle</td>
+<td></td>
+<td>输入框失去焦点时触发，event.detail = {value: value}</td>
+</tr>
+<tr>
+<td>bindconfirm</td>
+<td>EventHandle</td>
+<td></td>
+<td>点击完成按钮时触发，event.detail = {value: value}</td>
+</tr>
+</tbody>
+</table>
+<p><strong>type 有效值：</strong></p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>text</td>
+<td>文本输入键盘</td>
+</tr>
+<tr>
+<td>number</td>
+<td>数字输入键盘</td>
+</tr>
+<tr>
+<td>idcard</td>
+<td>身份证输入键盘</td>
+</tr>
+<tr>
+<td>digit</td>
+<td>带小数点的数字键盘</td>
+</tr>
+</tbody>
+</table>
+<p><strong>confirm-type 有效值：</strong></p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>send</td>
+<td>右下角按钮为“发送”</td>
+</tr>
+<tr>
+<td>search</td>
+<td>右下角按钮为“搜索”</td>
+</tr>
+<tr>
+<td>next</td>
+<td>右下角按钮为“下一个”</td>
+</tr>
+<tr>
+<td>go</td>
+<td>右下角按钮为“前往”</td>
+</tr>
+<tr>
+<td>done</td>
+<td>右下角按钮为“完成”</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">value</span>=<span class="string">"学习小程序"</span> <span class="attr">maxlength</span>=<span class="string">'10'</span> <span class="attr">cursor-spacing</span>=<span class="string">'10'</span> <span class="attr">confirm-type</span>=<span class="string">"next"</span> <span class="attr">confirm-hold</span>=<span class="string">"true"</span> <span class="attr">bindinput</span>=<span class="string">'inputEvent'</span> <span class="attr">bindfocus</span>=<span class="string">'focusEvent'</span> <span class="attr">bindblur</span>=<span class="string">'blurEvent'</span> <span class="attr">bindconfirm</span>=<span class="string">'confirmEvent'</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">value</span>=<span class="string">"number"</span> <span class="attr">type</span>=<span class="string">'number'</span> <span class="attr">focus</span>=<span class="string">'true'</span> <span class="attr">selection-start</span>=<span class="string">"2"</span> <span class="attr">selection-end</span>=<span class="string">"4"</span> <span class="attr">adjust-position</span>=<span class="string">"false"</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">value</span>=<span class="string">"idcard"</span> <span class="attr">type</span>=<span class="string">'idcard'</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">value</span>=<span class="string">"digit"</span> <span class="attr">type</span>=<span class="string">'digit'</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br><span class="line">密码框：</span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">value</span>=<span class="string">""</span> <span class="attr">password</span>=<span class="string">"true"</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br><span class="line">placeholder：</span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">value</span>=<span class="string">""</span> <span class="attr">placeholder</span>=<span class="string">"请输入你的用户名"</span> <span class="attr">placeholder-style</span>=<span class="string">"color:green"</span> <span class="attr">placeholder-class</span>=<span class="string">"placeholder"</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  inputEvent: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"inputEvent"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"imooc"</span>;</span><br><span class="line">  &#125;,</span><br><span class="line">  focusEvent: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"focusEvent"</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  blurEvent: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"blurEvent"</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  confirmEvent: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"confirmEvent"</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="picker"><a href="#picker" class="headerlink" title="picker"></a>picker</h4><p><a href="https://developers.weixin.qq.com/miniprogram/dev/component/picker.html" target="_blank" rel="noopener">picker 选择器</a></p>
+<p>从底部弹起的滚动选择器，现支持五种选择器，通过mode来区分，分别是普通选择器，多列选择器，时间选择器，日期选择器，省市区选择器，默认是普通选择器；</p>
+<h5 id="普通选择器：mode-selector"><a href="#普通选择器：mode-selector" class="headerlink" title="普通选择器：mode = selector"></a>普通选择器：mode = selector</h5><table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>range</td>
+<td>Array / Object Array</td>
+<td>[]</td>
+<td>mode为 selector 或 multiSelector 时，range 有效</td>
+</tr>
+<tr>
+<td>range-key</td>
+<td>String</td>
+<td></td>
+<td>当 range 是一个 Object Array 时，通过 range-key 来指定 Object 中 key 的值作为选择器显示内容</td>
+</tr>
+<tr>
+<td>bindcancel</td>
+<td>EventHandle</td>
+<td></td>
+<td>取消选择或点遮罩层收起 picker 时触发</td>
+</tr>
+<tr>
+<td>bindchange</td>
+<td>EventHandle</td>
+<td></td>
+<td>value 改变时触发 change 事件，event.detail = {value: value}</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">picker</span> <span class="attr">mode</span>=<span class="string">"selector"</span> <span class="attr">range</span>=<span class="string">"&#123;&#123;array&#125;&#125;"</span>&gt;</span></span><br><span class="line">  请选择数组</span><br><span class="line"><span class="tag">&lt;/<span class="name">picker</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">picker</span> <span class="attr">mode</span>=<span class="string">"selector"</span> <span class="attr">range</span>=<span class="string">"&#123;&#123;arrayObj&#125;&#125;"</span> <span class="attr">range-key</span>=<span class="string">"name"</span></span></span><br><span class="line"><span class="tag"><span class="attr">bindcancel</span>=<span class="string">"cancelme"</span> <span class="attr">bindchange</span>=<span class="string">"changeme"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span>&gt;</span>&#123;&#123;showme&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">picker</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  data:&#123;</span><br><span class="line">    array:[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">0</span>],</span><br><span class="line">    arrayObj:[</span><br><span class="line">      &#123;<span class="attr">id</span>:<span class="string">"1001"</span>,<span class="attr">name</span>:<span class="string">"jack"</span>&#125;,</span><br><span class="line">      &#123; <span class="attr">id</span>: <span class="string">"1002"</span>, <span class="attr">name</span>: <span class="string">"tom"</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">id</span>: <span class="string">"1003"</span>, <span class="attr">name</span>: <span class="string">"mary"</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">id</span>: <span class="string">"1004"</span>, <span class="attr">name</span>: <span class="string">"bob"</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">id</span>: <span class="string">"1005"</span>, <span class="attr">name</span>: <span class="string">"peter"</span> &#125;</span><br><span class="line">    ],</span><br><span class="line">    showme:<span class="string">"请选择人名"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  changeme:<span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> index = e.detail.value;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"value is = "</span> + index);</span><br><span class="line">    <span class="keyword">var</span> id = <span class="keyword">this</span>.data.arrayObj[index].id;</span><br><span class="line">    <span class="keyword">var</span> name = <span class="keyword">this</span>.data.arrayObj[index].name;</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      showme:id + name</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">  cancelme: <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"CANCEL"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h5 id="多列选择器：mode-multiSelector"><a href="#多列选择器：mode-multiSelector" class="headerlink" title="多列选择器：mode = multiSelector"></a>多列选择器：mode = multiSelector</h5><table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>range</td>
+<td>二维Array / 二维Object Array</td>
+<td>[]</td>
+<td>mode为 selector 或 multiSelector 时，range 有效。二维数组，长度表示多少列，数组的每项表示每列的数据，如<code>[[&quot;a&quot;,&quot;b&quot;], [&quot;c&quot;,&quot;d&quot;]]</code></td>
+</tr>
+<tr>
+<td>range-key</td>
+<td>String</td>
+<td></td>
+<td>当 range 是一个 二维Object Array 时，通过 range-key 来指定 Object 中 key 的值作为选择器显示内容</td>
+</tr>
+<tr>
+<td>bindchange</td>
+<td>EventHandle</td>
+<td></td>
+<td>value 改变时触发 change 事件，event.detail = {value: value}</td>
+</tr>
+<tr>
+<td>bindcolumnchange</td>
+<td>EventHandle</td>
+<td></td>
+<td>某一列的值改变时触发 columnchange 事件，event.detail = {column: column, value: value}，column 的值表示改变了第几列（下标从0开始），value 的值表示变更值的下标</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">style</span>=<span class="string">'margin-top:150rpx;'</span>&gt;</span>多列选择器<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">picker</span> <span class="attr">mode</span>=<span class="string">"multiSelector"</span> <span class="attr">range</span>=<span class="string">"&#123;&#123;arrayMulti&#125;&#125;"</span>&gt;</span></span><br><span class="line">  请选择数组</span><br><span class="line"><span class="tag">&lt;/<span class="name">picker</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">picker</span> <span class="attr">mode</span>=<span class="string">"multiSelector"</span> <span class="attr">range</span>=<span class="string">"&#123;&#123;arrayObjMulti&#125;&#125;"</span> <span class="attr">range-key</span>=<span class="string">"id"</span></span></span><br><span class="line"><span class="tag"><span class="attr">bindchange</span>=<span class="string">"changemeMulti"</span> <span class="attr">bindcolumnchange</span>=<span class="string">"columnchange"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span>&gt;</span>&#123;&#123;showme&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">picker</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Page(&#123;</span><br><span class="line">  data:&#123;</span><br><span class="line">    arrayMulti:[</span><br><span class="line">      [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">0</span>],</span><br><span class="line">      [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">0</span>]</span><br><span class="line">    ],</span><br><span class="line">    arrayObjMulti:[</span><br><span class="line">      [</span><br><span class="line">        &#123; <span class="attr">id</span>: <span class="string">"1001"</span>, <span class="attr">name</span>: <span class="string">"jack"</span> &#125;,</span><br><span class="line">        &#123; <span class="attr">id</span>: <span class="string">"1002"</span>, <span class="attr">name</span>: <span class="string">"tom"</span> &#125;,</span><br><span class="line">        &#123; <span class="attr">id</span>: <span class="string">"1003"</span>, <span class="attr">name</span>: <span class="string">"mary"</span> &#125;,</span><br><span class="line">        &#123; <span class="attr">id</span>: <span class="string">"1004"</span>, <span class="attr">name</span>: <span class="string">"bob"</span> &#125;,</span><br><span class="line">        &#123; <span class="attr">id</span>: <span class="string">"1005"</span>, <span class="attr">name</span>: <span class="string">"peter"</span> &#125;</span><br><span class="line">      ], [</span><br><span class="line">        &#123; <span class="attr">id</span>: <span class="string">"1001"</span>, <span class="attr">name</span>: <span class="string">"jack"</span> &#125;,</span><br><span class="line">        &#123; <span class="attr">id</span>: <span class="string">"1002"</span>, <span class="attr">name</span>: <span class="string">"tom"</span> &#125;,</span><br><span class="line">        &#123; <span class="attr">id</span>: <span class="string">"1003"</span>, <span class="attr">name</span>: <span class="string">"mary"</span> &#125;,</span><br><span class="line">        &#123; <span class="attr">id</span>: <span class="string">"1004"</span>, <span class="attr">name</span>: <span class="string">"bob"</span> &#125;,</span><br><span class="line">        &#123; <span class="attr">id</span>: <span class="string">"1005"</span>, <span class="attr">name</span>: <span class="string">"peter"</span> &#125;</span><br><span class="line">      ]</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  columnchange:<span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.detail);</span><br><span class="line">  &#125;,</span><br><span class="line">  changemeMulti:<span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> indexs = e.detail.value;</span><br><span class="line">    <span class="keyword">var</span> arrayObjMulti = <span class="keyword">this</span>.data.arrayObjMulti;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; indexs.length;i++)&#123;</span><br><span class="line">      <span class="keyword">var</span> indexTmp = indexs[i];</span><br><span class="line">      <span class="keyword">var</span> id = arrayObjMulti[i][indexTmp].id;</span><br><span class="line">      <span class="keyword">var</span> name = arrayObjMulti[i][indexTmp].name;</span><br><span class="line">      <span class="built_in">console</span>.log(id + <span class="string">" "</span> + name);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h5 id="时间选择器：mode-time"><a href="#时间选择器：mode-time" class="headerlink" title="时间选择器：mode = time"></a>时间选择器：mode = time</h5><table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>String</td>
+<td></td>
+<td>表示选中的时间，格式为”hh:mm”</td>
+</tr>
+<tr>
+<td>start</td>
+<td>String</td>
+<td></td>
+<td>表示有效时间范围的开始，字符串格式为”hh:mm”</td>
+</tr>
+<tr>
+<td>end</td>
+<td>String</td>
+<td></td>
+<td>表示有效时间范围的结束，字符串格式为”hh:mm”</td>
+</tr>
+</tbody>
+</table>
+<h5 id="日期选择器：mode-date"><a href="#日期选择器：mode-date" class="headerlink" title="日期选择器：mode = date"></a>日期选择器：mode = date</h5><table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>String</td>
+<td>0</td>
+<td>表示选中的日期，格式为”YYYY-MM-DD”</td>
+</tr>
+<tr>
+<td>start</td>
+<td>String</td>
+<td></td>
+<td>表示有效日期范围的开始，字符串格式为”YYYY-MM-DD”</td>
+</tr>
+<tr>
+<td>end</td>
+<td>String</td>
+<td></td>
+<td>表示有效日期范围的结束，字符串格式为”YYYY-MM-DD”</td>
+</tr>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>day</td>
+<td>有效值 year,month,day，表示选择器的粒度</td>
+</tr>
+</tbody>
+</table>
+<p><strong>fields 有效值：</strong></p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>year</td>
+<td>选择器粒度为年</td>
+</tr>
+<tr>
+<td>month</td>
+<td>选择器粒度为月份</td>
+</tr>
+<tr>
+<td>day</td>
+<td>选择器粒度为天</td>
+</tr>
+</tbody>
+</table>
+<h5 id="省市区选择器：mode-region"><a href="#省市区选择器：mode-region" class="headerlink" title="省市区选择器：mode = region"></a>省市区选择器：mode = region</h5><table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>Array</td>
+<td>[]</td>
+<td>表示选中的省市区，默认选中每一列的第一个值</td>
+</tr>
+<tr>
+<td>custom-item</td>
+<td>String</td>
+<td></td>
+<td>可为每一列的顶部添加一个自定义的项</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">style</span>=<span class="string">'margin-top:100rpx;'</span>&gt;</span>时间选择器<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">picker</span> <span class="attr">mode</span>=<span class="string">"time"</span> <span class="attr">start</span>=<span class="string">"08:00"</span> <span class="attr">end</span>=<span class="string">"22:00"</span> <span class="attr">bindchange</span>=<span class="string">'changeTime'</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span>&gt;</span>当前选择：&#123;&#123;timeLabel&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">picker</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">style</span>=<span class="string">'margin-top:100rpx;'</span>&gt;</span>日期选择器<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">picker</span> <span class="attr">mode</span>=<span class="string">"date"</span> <span class="attr">start</span>=<span class="string">"2018-03-01"</span> <span class="attr">end</span>=<span class="string">"2018-09-01"</span> <span class="attr">bindchange</span>=<span class="string">'changeDate'</span> <span class="attr">fields</span>=<span class="string">"month"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span>&gt;</span>当前选择：&#123;&#123;dateLabel&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">picker</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">style</span>=<span class="string">'margin-top:100rpx;'</span>&gt;</span>城市选择器<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">picker</span> <span class="attr">mode</span>=<span class="string">"region"</span> <span class="attr">bindchange</span>=<span class="string">'changeCity'</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span>&gt;</span>当前选择：&#123;&#123;cityLabel&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">picker</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  data:&#123;</span><br><span class="line">    timeLabel:<span class="string">"null"</span>,</span><br><span class="line">    dateLabel:<span class="string">"null"</span>,</span><br><span class="line">    cityLabel:<span class="string">"null"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  changeTime:<span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      timeLabel: e.detail.value</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">  changeDate: <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      dateLabel: e.detail.value</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">  changeCity: <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      cityLabel: e.detail.value</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="pricker-view"><a href="#pricker-view" class="headerlink" title="pricker-view"></a>pricker-view</h4><p><a href="https://developers.weixin.qq.com/miniprogram/dev/component/picker-view.html" target="_blank" rel="noopener">picker-view 嵌入页面的滚动选择器</a></p>
+<p>picker-view-column：仅可放置于<picker-view>中，其孩子节点的高度会自动设置成与picker-view的选中框的高度一致；</picker-view></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">picker-view</span> <span class="attr">style</span>=<span class="string">'width:100;height:250rpx;'</span> <span class="attr">bindchange</span>=<span class="string">"changeme"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">picker-view-column</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;year&#125;&#125;"</span>&gt;</span>&#123;&#123;item&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">picker-view-column</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">picker-view-column</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;month&#125;&#125;"</span>&gt;</span>&#123;&#123;item&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">picker-view-column</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">picker-view-column</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;day&#125;&#125;"</span>&gt;</span>&#123;&#123;item&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">picker-view-column</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">picker-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span>"Current Value Is : "&#123;&#123;myvalue&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    year: [<span class="number">1990</span>, <span class="number">1995</span>, <span class="number">2000</span>, <span class="number">2005</span>, <span class="number">2010</span>, <span class="number">2015</span>, <span class="number">2020</span>],</span><br><span class="line">    month: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>],</span><br><span class="line">    day: [<span class="number">1</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">15</span>, <span class="number">20</span>, <span class="number">25</span>, <span class="number">30</span>],</span><br><span class="line">    myvalue: <span class="string">"null"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  changeme: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> indexs = e.detail.value;</span><br><span class="line">    <span class="keyword">var</span> year = <span class="keyword">this</span>.data.year[indexs[<span class="number">0</span>]];</span><br><span class="line">    <span class="keyword">var</span> month = <span class="keyword">this</span>.data.month[indexs[<span class="number">1</span>]];</span><br><span class="line">    <span class="keyword">var</span> day = <span class="keyword">this</span>.data.day[indexs[<span class="number">2</span>]];</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      myvalue: year + <span class="string">" Y "</span> + month + <span class="string">" M "</span> + day + <span class="string">" D "</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="radio"><a href="#radio" class="headerlink" title="radio"></a>radio</h4><p><a href="https://developers.weixin.qq.com/miniprogram/dev/component/radio.html" target="_blank" rel="noopener">radio 单选项</a></p>
+<p>radio-group单项选择器，内部由多个<code>&lt;radio/&gt;</code>组成；</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">radio-group</span> <span class="attr">class</span>=<span class="string">"radio-group"</span> <span class="attr">bindchange</span>=<span class="string">"radioChange"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"radio"</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;items&#125;&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">radio</span> <span class="attr">value</span>=<span class="string">"&#123;&#123;item.name&#125;&#125;"</span> <span class="attr">checked</span>=<span class="string">"&#123;&#123;item.checked&#125;&#125;"</span>/&gt;</span>&#123;&#123;item.value&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">radio-group</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    items: [</span><br><span class="line">      &#123;<span class="attr">name</span>: <span class="string">'USA'</span>, <span class="attr">value</span>: <span class="string">'美国'</span>&#125;,</span><br><span class="line">      &#123;<span class="attr">name</span>: <span class="string">'CHN'</span>, <span class="attr">value</span>: <span class="string">'中国'</span>, <span class="attr">checked</span>: <span class="string">'true'</span>&#125;,</span><br><span class="line">      &#123;<span class="attr">name</span>: <span class="string">'BRA'</span>, <span class="attr">value</span>: <span class="string">'巴西'</span>&#125;,</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  radioChange: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'radio发生change事件，携带value值为：'</span>, e.detail.value)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="slider"><a href="#slider" class="headerlink" title="slider"></a>slider</h4><p><a href="https://developers.weixin.qq.com/miniprogram/dev/component/slider.html" target="_blank" rel="noopener">slider 滑动选择器</a></p>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>min</td>
+<td>Number</td>
+<td>0</td>
+<td>最小值</td>
+</tr>
+<tr>
+<td>max</td>
+<td>Number</td>
+<td>100</td>
+<td>最大值</td>
+</tr>
+<tr>
+<td>step</td>
+<td>Number</td>
+<td>1</td>
+<td>步长，取值必须大于 0，并且可被(max - min)整除</td>
+</tr>
+<tr>
+<td>color</td>
+<td>Color</td>
+<td>#e9e9e9</td>
+<td>背景条的颜色（请使用 backgroundColor）</td>
+</tr>
+<tr>
+<td>selected-color</td>
+<td>Color</td>
+<td>#1aad19</td>
+<td>已选择的颜色（请使用 activeColor）</td>
+</tr>
+<tr>
+<td>activeColor</td>
+<td>Color</td>
+<td>#1aad19</td>
+<td>已选择的颜色</td>
+</tr>
+<tr>
+<td>backgroundColor</td>
+<td>Color</td>
+<td>#e9e9e9</td>
+<td>背景条的颜色</td>
+</tr>
+<tr>
+<td>block-size</td>
+<td>Number</td>
+<td>28</td>
+<td>滑块的大小，取值范围为 12 - 28</td>
+</tr>
+<tr>
+<td>block-color</td>
+<td>Color</td>
+<td>#ffffff</td>
+<td>滑块的颜色</td>
+</tr>
+<tr>
+<td>show-value</td>
+<td>Boolean</td>
+<td>false</td>
+<td>是否显示当前 value</td>
+</tr>
+<tr>
+<td>bindchange</td>
+<td>EventHandle</td>
+<td></td>
+<td>完成一次拖动后触发的事件，event.detail = {value: value}</td>
+</tr>
+<tr>
+<td>bindchanging</td>
+<td>EventHandle</td>
+<td></td>
+<td>拖动过程中触发的事件，event.detail = {value: value}</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">slider</span> <span class="attr">min</span>=<span class="string">'1'</span> <span class="attr">max</span>=<span class="string">'100'</span><span class="attr">show-value</span>=<span class="string">"true"</span> <span class="attr">block-color</span>=<span class="string">'green'</span> <span class="attr">bindchanging</span>=<span class="string">'changing'</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">slider</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">style</span>=<span class="string">'background-color:green;width:100%;height:&#123;&#123;myheight&#125;&#125;;'</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    myheight:<span class="string">"500rpx"</span> ,</span><br><span class="line">    staticHeight:<span class="number">500</span></span><br><span class="line">  &#125;,</span><br><span class="line">  changing:<span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> val = e.detail.value;</span><br><span class="line">    <span class="keyword">var</span> newHeight = <span class="keyword">this</span>.data.staticHeight * (val / <span class="number">100</span>);</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      myheight:newHeight + <span class="string">"rpx"</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="swich"><a href="#swich" class="headerlink" title="swich"></a>swich</h4><p><a href="https://developers.weixin.qq.com/miniprogram/dev/component/switch.html" target="_blank" rel="noopener">switch 开关选择器</a></p>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>checked</td>
+<td>Boolean</td>
+<td>false</td>
+<td>是否选中</td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>switch</td>
+<td>样式，有效值：switch, checkbox</td>
+</tr>
+<tr>
+<td>bindchange</td>
+<td>EventHandle</td>
+<td></td>
+<td>checked 改变时触发 change 事件，event.detail={ value:checked}</td>
+</tr>
+<tr>
+<td>color</td>
+<td>Color</td>
+<td></td>
+<td>switch 的颜色，同 css 的 color</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"body-view"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">switch</span> <span class="attr">checked</span> <span class="attr">bindchange</span>=<span class="string">"switchChange"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">switch</span> <span class="attr">checked</span> <span class="attr">bindchange</span>=<span class="string">"switchChange"</span> <span class="attr">type</span>=<span class="string">'checkbox'</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">switch</span> <span class="attr">checked</span> <span class="attr">bindchange</span>=<span class="string">"switchChange"</span> <span class="attr">color</span>=<span class="string">'red'</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  switchChange: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'switch 发生 change 事件，携带值为'</span>, e.detail.value)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="nav-amp-value"><a href="#nav-amp-value" class="headerlink" title="nav &amp; value"></a>nav &amp; value</h4><p><a href="https://developers.weixin.qq.com/miniprogram/dev/component/navigator.html" target="_blank" rel="noopener">navigator 页面链接</a></p>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>target</td>
+<td>String</td>
+<td></td>
+<td>在哪个目标上发生跳转，默认当前小程序</td>
+</tr>
+<tr>
+<td>url</td>
+<td>String</td>
+<td></td>
+<td>当前小程序内的跳转链接</td>
+</tr>
+<tr>
+<td>open-type</td>
+<td>String</td>
+<td>navigate</td>
+<td>跳转方式</td>
+</tr>
+<tr>
+<td>delta</td>
+<td>Number</td>
+<td></td>
+<td>当 open-type 为 ‘navigateBack’ 时有效，表示回退的层数</td>
+</tr>
+<tr>
+<td>hover-stop-propagation</td>
+<td>Boolean</td>
+<td>false</td>
+<td>指定是否阻止本节点的祖先节点出现点击态</td>
+</tr>
+</tbody>
+</table>
+<p><strong>open-type 有效值：</strong></p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>navigate</td>
+<td>对应 <code>wx.navigateTo</code> 或 <code>wx.navigateToMiniProgram</code> 的功能</td>
+</tr>
+<tr>
+<td>redirect</td>
+<td>对应 <code>wx.redirectTo</code> 的功能</td>
+</tr>
+<tr>
+<td>switchTab</td>
+<td>对应 <code>wx.switchTab</code> 的功能</td>
+</tr>
+<tr>
+<td>reLaunch</td>
+<td>对应 <code>wx.reLaunch</code> 的功能</td>
+</tr>
+<tr>
+<td>navigateBack</td>
+<td>对应 <code>wx.navigateBack</code> 的功能</td>
+</tr>
+<tr>
+<td>exit</td>
+<td>退出小程序，target=”miniProgram”时生效</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// page1</span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span>This is Page 1<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">navigator</span> <span class="attr">url</span>=<span class="string">'../page2/page2?id=1001&amp;name=imooc'</span>&gt;</span>跳转第2页<span class="tag">&lt;/<span class="name">navigator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">navigator</span> <span class="attr">url</span>=<span class="string">'../page3/page3'</span>&gt;</span>跳转第3页<span class="tag">&lt;/<span class="name">navigator</span>&gt;</span></span><br><span class="line"></span><br><span class="line">// page2</span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span>This is Page 2<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">navigator</span> <span class="attr">url</span>=<span class="string">'../page3/page3'</span>&gt;</span>跳转第3页<span class="tag">&lt;/<span class="name">navigator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">navigator</span> <span class="attr">open-type</span>=<span class="string">'navigateBack'</span>&gt;</span>返回<span class="tag">&lt;/<span class="name">navigator</span>&gt;</span></span><br><span class="line"></span><br><span class="line">// page3</span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span>This is Page 3<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">navigator</span> <span class="attr">open-type</span>=<span class="string">'navigateBack'</span> <span class="attr">delta</span>=<span class="string">'2'</span>&gt;</span>返回<span class="tag">&lt;/<span class="name">navigator</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// page2</span></span><br><span class="line">Page(&#123;</span><br><span class="line">  onLoad:<span class="function"><span class="keyword">function</span>(<span class="params">params</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(params);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="image-amp-video"><a href="#image-amp-video" class="headerlink" title="image &amp; video"></a>image &amp; video</h4><p>image组件默认宽度300px、高度225px；</p>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>src</td>
+<td>String</td>
+<td></td>
+<td>图片资源地址</td>
+</tr>
+<tr>
+<td><strong>mode</strong></td>
+<td>String</td>
+<td>‘scaleToFill’</td>
+<td>图片裁剪、缩放的模式</td>
+</tr>
+<tr>
+<td>lazy-load</td>
+<td>Boolean</td>
+<td>false</td>
+<td>图片懒加载。只针对page与scroll-view下的image有效</td>
+</tr>
+<tr>
+<td>bindload</td>
+<td>HandleEvent</td>
+<td></td>
+<td>当图片载入完毕时，发布到 AppService 的事件名，事件对象event.detail = {height:’图片高度px’, width:’图片宽度px’}</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h4><p>小程序不能直接访问后台接口；</p>
+<p>通过内网穿透实现暴露到公网；</p>
+<p>工具：ngrok（获取安全Token）；</p>
+<p>在ngrok目录下执行cmd，完成安装；</p>
+<p>执行命令 ngrok http 8080 暴露内网端口到公网中；复制所给的Forwarding网址，即可完成对内网的穿透；</p>
+<hr>
+<h4 id="wx-request"><a href="#wx-request" class="headerlink" title="wx.request"></a>wx.request</h4><p>通过wx.request(OBJECT)实现小程序和后台API的通信；</p>
+<p>类似与HTML中的AJAX通信；</p>
+<h4 id="Bug-amp-Tip"><a href="#Bug-amp-Tip" class="headerlink" title="Bug &amp; Tip"></a>Bug &amp; Tip</h4><p><code>tip</code>: content-type 默认为 ‘application/json’;</p>
+<p><code>bug</code>: 开发者工具 <code>0.10.102800</code> 版本，<code>header</code> 的 <code>content-type</code> 设置异常；</p>
+<p><strong>OBJECT参数说明：</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>类型</th>
+<th>必填</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>url</td>
+<td>String</td>
+<td>是</td>
+<td></td>
+<td>开发者服务器接口地址</td>
+</tr>
+<tr>
+<td>data</td>
+<td>Object/String/ArrayBuffer</td>
+<td>否</td>
+<td></td>
+<td>请求的参数</td>
+</tr>
+<tr>
+<td>header</td>
+<td>Object</td>
+<td>否</td>
+<td></td>
+<td>设置请求的 header，header 中不能设置 Referer。</td>
+</tr>
+<tr>
+<td>method</td>
+<td>String</td>
+<td>否</td>
+<td>GET</td>
+<td>（需大写）有效值：OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT</td>
+</tr>
+<tr>
+<td>dataType</td>
+<td>String</td>
+<td>否</td>
+<td>json</td>
+<td>如果设为json，会尝试对返回的数据做一次 JSON.parse</td>
+</tr>
+<tr>
+<td>responseType</td>
+<td>String</td>
+<td>否</td>
+<td>text</td>
+<td>设置响应的数据类型。合法值：text、arraybuffer</td>
+</tr>
+<tr>
+<td>success</td>
+<td>Function</td>
+<td>否</td>
+<td></td>
+<td>收到开发者服务成功返回的回调函数</td>
+</tr>
+<tr>
+<td>fail</td>
+<td>Function</td>
+<td>否</td>
+<td></td>
+<td>接口调用失败的回调函数</td>
+</tr>
+<tr>
+<td>complete</td>
+<td>Function</td>
+<td>否</td>
+<td></td>
+<td>接口调用结束的回调函数（调用成功、失败都会执行）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>success返回参数说明：</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data</td>
+<td>Object/String/ArrayBuffer</td>
+<td>开发者服务器返回的数据</td>
+</tr>
+<tr>
+<td>statusCode</td>
+<td>Number</td>
+<td>开发者服务器返回的 HTTP 状态码</td>
+</tr>
+<tr>
+<td>header</td>
+<td>Object</td>
+<td>开发者服务器返回的 HTTP Response Header</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  clickme:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    wx.request(&#123;</span><br><span class="line">      url: <span class="string">'...'</span>,</span><br><span class="line">      data: &#123;</span><br><span class="line">        id:<span class="number">1001</span>,</span><br><span class="line">        name:<span class="string">"rex"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      header: &#123;</span><br><span class="line">        <span class="string">'content-type'</span>: <span class="string">'application/json'</span></span><br><span class="line">      &#125;,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(res.data)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><h4 id="综合练习"><a href="#综合练习" class="headerlink" title="综合练习"></a>综合练习</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">bindsubmit</span>=<span class="string">'submitevent'</span> <span class="attr">style</span>=<span class="string">"font-size: 16px;"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">placeholder</span>=<span class="string">'输入用户名'</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">password</span>=<span class="string">'true'</span> <span class="attr">placeholder</span>=<span class="string">'输入密码'</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">checkbox-group</span> <span class="attr">name</span>=<span class="string">"skill"</span> <span class="attr">style</span>=<span class="string">"margin-top:30rpx"</span>&gt;</span>选择技能</span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;skills&#125;&#125;"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">checkbox</span> <span class="attr">id</span>=<span class="string">"&#123;&#123;item.id&#125;&#125;"</span> <span class="attr">value</span>=<span class="string">"&#123;&#123;item.value&#125;&#125;"</span>&gt;</span>&#123;&#123;item.name&#125;&#125;<span class="tag">&lt;/<span class="name">checkbox</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">checkbox-group</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">picker</span> <span class="attr">name</span>=<span class="string">"birthday"</span> <span class="attr">mode</span>=<span class="string">"date"</span> <span class="attr">start</span>=<span class="string">"1990-01-01"</span> <span class="attr">end</span>=<span class="string">"2018-01-01"</span> <span class="attr">bindchange</span>=<span class="string">'changeDate'</span> <span class="attr">style</span>=<span class="string">'margin-top:30rpx'</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span>&gt;</span>出生日期为：&#123;&#123;dateLabel&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">picker</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">picker</span> <span class="attr">name</span>=<span class="string">"city"</span> <span class="attr">mode</span>=<span class="string">"region"</span> <span class="attr">bindchange</span>=<span class="string">'changeCity'</span> <span class="attr">style</span>=<span class="string">'margin-top:30rpx'</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span>&gt;</span>所在地区为：&#123;&#123;cityLabel&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">picker</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">radio-group</span> <span class="attr">name</span>=<span class="string">"sex"</span> <span class="attr">style</span>=<span class="string">'margin-top:30rpx'</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">radio</span> <span class="attr">value</span>=<span class="string">'男'</span> <span class="attr">checked</span>=<span class="string">'true'</span>&gt;</span>男性<span class="tag">&lt;/<span class="name">radio</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">radio</span> <span class="attr">value</span>=<span class="string">'女'</span>&gt;</span>女性<span class="tag">&lt;/<span class="name">radio</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">radio-group</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">style</span>=<span class="string">'margin-top:30rpx'</span>&gt;</span></span><br><span class="line">  请选择年龄：</span><br><span class="line">  <span class="tag">&lt;<span class="name">slider</span> <span class="attr">name</span>=<span class="string">"age"</span> <span class="attr">value</span>=<span class="string">'18'</span> <span class="attr">min</span>=<span class="string">'18'</span> <span class="attr">max</span>=<span class="string">'65'</span> <span class="attr">show-value</span>=<span class="string">'true'</span>&gt;</span><span class="tag">&lt;/<span class="name">slider</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">switch</span> <span class="attr">name</span>=<span class="string">"isOK"</span> <span class="attr">checked</span>=<span class="string">'false'</span> <span class="attr">style</span>=<span class="string">'margin-top:30rpx'</span>&gt;</span></span><br><span class="line">    个人资料进行保密</span><br><span class="line">  <span class="tag">&lt;/<span class="name">switch</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">textarea</span> <span class="attr">name</span>=<span class="string">"remark"</span> <span class="attr">placeholder</span>=<span class="string">'备注信息'</span> <span class="attr">style</span>=<span class="string">'margin-top:30rpx;border:1px;border-style:solid;width:90%;height:150rpx;'</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">style</span>=<span class="string">'margin-top:30rpx'</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">size</span>=<span class="string">'mini'</span> <span class="attr">form-type</span>=<span class="string">'submit'</span> <span class="attr">type</span>=<span class="string">'primary'</span>&gt;</span>提交<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">size</span>=<span class="string">'mini'</span> <span class="attr">form-type</span>=<span class="string">'reset'</span> <span class="attr">type</span>=<span class="string">'warn'</span><span class="attr">style</span>=<span class="string">'margin-left:30rpx'</span>&gt;</span>提交<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    skills: [&#123;</span><br><span class="line">        id: <span class="string">"1001"</span>,</span><br><span class="line">        name: <span class="string">"JAVA"</span>,</span><br><span class="line">        value: <span class="string">"java"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        id: <span class="string">"1002"</span>,</span><br><span class="line">        name: <span class="string">"HTML"</span>,</span><br><span class="line">        value: <span class="string">"html"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        id: <span class="string">"1003"</span>,</span><br><span class="line">        name: <span class="string">"SQL"</span>,</span><br><span class="line">        value: <span class="string">"sql"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        id: <span class="string">"1004"</span>,</span><br><span class="line">        name: <span class="string">"DATA"</span>,</span><br><span class="line">        value: <span class="string">"data"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        id: <span class="string">"1005"</span>,</span><br><span class="line">        name: <span class="string">"IOS"</span>,</span><br><span class="line">        value: <span class="string">"ios"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        id: <span class="string">"1006"</span>,</span><br><span class="line">        name: <span class="string">"ANDROID"</span>,</span><br><span class="line">        value: <span class="string">"android"</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    dateLabel: <span class="string">"null"</span>,</span><br><span class="line">    cityLabel: <span class="string">"null"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  changeDate: <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      dateLabel: e.detail.value</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">  changeCity: <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      cityLabel: e.detail.value</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">  submitevent:<span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.detail.value);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>@ 2018年8月16日 16:21:10</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+          
+            <a href="/tags/Spring-Boot/" rel="tag"># Spring Boot</a>
+          
+            <a href="/tags/Wechat/" rel="tag"># Wechat</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/16/MicWechat Note-2/" rel="next" title="Wechat Mini | Note-2">
+                <i class="fa fa-chevron-left"></i> Wechat Mini | Note-2
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">REX CHEN</p>
+              <p class="site-description motion-element" itemprop="description">日常记录</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#微信小程序开发-Note-3"><span class="nav-number">1.</span> <span class="nav-text">微信小程序开发 Note-3</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#button"><span class="nav-number">1.1.</span> <span class="nav-text">button</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#checkbox-amp-label"><span class="nav-number">1.2.</span> <span class="nav-text">checkbox &amp; label</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#submit-amp-reset"><span class="nav-number">1.3.</span> <span class="nav-text">submit &amp; reset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#input"><span class="nav-number">1.4.</span> <span class="nav-text">input</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#picker"><span class="nav-number">1.5.</span> <span class="nav-text">picker</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#普通选择器：mode-selector"><span class="nav-number">1.5.1.</span> <span class="nav-text">普通选择器：mode = selector</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#多列选择器：mode-multiSelector"><span class="nav-number">1.5.2.</span> <span class="nav-text">多列选择器：mode = multiSelector</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#时间选择器：mode-time"><span class="nav-number">1.5.3.</span> <span class="nav-text">时间选择器：mode = time</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#日期选择器：mode-date"><span class="nav-number">1.5.4.</span> <span class="nav-text">日期选择器：mode = date</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#省市区选择器：mode-region"><span class="nav-number">1.5.5.</span> <span class="nav-text">省市区选择器：mode = region</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pricker-view"><span class="nav-number">1.6.</span> <span class="nav-text">pricker-view</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#radio"><span class="nav-number">1.7.</span> <span class="nav-text">radio</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#slider"><span class="nav-number">1.8.</span> <span class="nav-text">slider</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#swich"><span class="nav-number">1.9.</span> <span class="nav-text">swich</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nav-amp-value"><span class="nav-number">1.10.</span> <span class="nav-text">nav &amp; value</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#image-amp-video"><span class="nav-number">1.11.</span> <span class="nav-text">image &amp; video</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内网穿透"><span class="nav-number">1.12.</span> <span class="nav-text">内网穿透</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wx-request"><span class="nav-number">1.13.</span> <span class="nav-text">wx.request</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bug-amp-Tip"><span class="nav-number">1.14.</span> <span class="nav-text">Bug &amp; Tip</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#附录"><span class="nav-number">2.</span> <span class="nav-text">附录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#综合练习"><span class="nav-number">2.1.</span> <span class="nav-text">综合练习</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">REX CHEN</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
