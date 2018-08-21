@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JAVA,Spring Boot,Wechat," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="微信小程序开发 Note-4@ 2018年8月16日 16:23:30  数据库设计背景音乐表（bgm） 评论表（comments） 搜索记录（search_records） 用户表（users） 关注（粉丝）表（users_fans） 用户点赞视频表（users_like_videos） 用户举报表（users_report） 视频表（videos）  项目初始化先进行前端小程序页面的设计，修改">
+<meta name="keywords" content="JAVA,Spring Boot,Wechat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Wechat Mini | Note-4">
+<meta property="og:url" content="http://yoursite.com/2018/08/18/MicWechat Note-4/index.html">
+<meta property="og:site_name" content="REEEEX">
+<meta property="og:description" content="微信小程序开发 Note-4@ 2018年8月16日 16:23:30  数据库设计背景音乐表（bgm） 评论表（comments） 搜索记录（search_records） 用户表（users） 关注（粉丝）表（users_fans） 用户点赞视频表（users_like_videos） 用户举报表（users_report） 视频表（videos）  项目初始化先进行前端小程序页面的设计，修改">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-20T07:01:16.813Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Wechat Mini | Note-4">
+<meta name="twitter:description" content="微信小程序开发 Note-4@ 2018年8月16日 16:23:30  数据库设计背景音乐表（bgm） 评论表（comments） 搜索记录（search_records） 用户表（users） 关注（粉丝）表（users_fans） 用户点赞视频表（users_like_videos） 用户举报表（users_report） 视频表（videos）  项目初始化先进行前端小程序页面的设计，修改">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/18/MicWechat Note-4/"/>
+
+
+
+
+
+  <title>Wechat Mini | Note-4 | REEEEX</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">REEEEX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">KEEP GOING</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/18/MicWechat Note-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Wechat Mini | Note-4</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-18T00:00:00+08:00">
+                2018-08-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="微信小程序开发-Note-4"><a href="#微信小程序开发-Note-4" class="headerlink" title="微信小程序开发 Note-4"></a>微信小程序开发 Note-4</h3><p>@ 2018年8月16日 16:23:30</p>
+<hr>
+<h4 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h4><p>背景音乐表（bgm）</p>
+<p>评论表（comments）</p>
+<p>搜索记录（search_records）</p>
+<p>用户表（users）</p>
+<p>关注（粉丝）表（users_fans）</p>
+<p>用户点赞视频表（users_like_videos）</p>
+<p>用户举报表（users_report）</p>
+<p>视频表（videos）</p>
+<hr>
+<h4 id="项目初始化"><a href="#项目初始化" class="headerlink" title="项目初始化"></a>项目初始化</h4><p>先进行前端小程序页面的设计，修改工程目录结构，保留必备文件即可；</p>
+<p>映入静态资源文件 resource；</p>
+<p>将后台项目工程，采用分层的目录结构，方便工程的后期维护和管理；</p>
+<hr>
+<h4 id="Mybatis逆向生成工具"><a href="#Mybatis逆向生成工具" class="headerlink" title="Mybatis逆向生成工具"></a>Mybatis逆向生成工具</h4><p>这个工具，是生成表的实体对象，实体mapper，以及实体.xml文件的工具；</p>
+<p>我觉得这个工具生成的文件和使用的方式，过于相似SSM的开发过程，<code>不推荐使用，由于课程的技术，无法修改</code>；</p>
+<p>使用了SpringBoot开发框架的话，应该推荐使用JpaRepository的方式实现与数据持续层的访问；</p>
+<p>在搭建分层工程结构的时候，遇到以下问题：</p>
+<p>Q:JAR包冲突</p>
+<p>A:删除对应JAR包、升级对应JAR包；</p>
+<p>Q:由于是分层搭建工程，出现<code>Caused by: java.lang.IllegalStateException: Found multiple @SpringBootConfiguration annotated classes [Generic bean: class [...]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null;</code>这样的错误</p>
+<p>A:由于是分层工程，并且是父子关系的pom继承关系，存在@SpringBootTest的class路径的自动查询出现问题，需要在每个子工程的@SpringBootTest中指明明确的class路径；</p>
+<p>例如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(SpringRunner.class)</span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VideosDevServiceApplicationTests</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 修改为</span></span><br><span class="line"><span class="meta">@RunWith</span>(SpringRunner.class)</span><br><span class="line"><span class="meta">@SpringBootTest</span>(classes = VideosDevServiceApplication.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VideosDevServiceApplicationTests</span> </span>&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="用户注册接口"><a href="#用户注册接口" class="headerlink" title="用户注册接口"></a>用户注册接口</h4><p>第一，我为上面说这是一个类似SSM框架不推荐的话，掌嘴；</p>
+<p>第二，使用插件（idworker）；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// RegisterLoginController</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RegisterLoginController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@PostMapping</span>(<span class="string">"/regist"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IMoocJSONResult <span class="title">regist</span><span class="params">(@RequestBody Users user)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 1.判断用户名和密码不为空</span></span><br><span class="line">		<span class="keyword">if</span> (StringUtils.isBlank(user.getUsername()) || StringUtils.isBlank(user.getPassword())) &#123;</span><br><span class="line">			<span class="keyword">return</span> IMoocJSONResult.errorMsg(<span class="string">"用户名和密码不能为空"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 2.判断用户是否存在</span></span><br><span class="line">		<span class="keyword">boolean</span> usernameIsExist = userService.queryUsernameIsExist(user.getUsername());</span><br><span class="line">		<span class="keyword">if</span>(!usernameIsExist)&#123;</span><br><span class="line">			user.setNickname(user.getUsername());</span><br><span class="line">			user.setPassword(MD5Utils.getMD5Str(user.getPassword()));</span><br><span class="line">			user.setFansCounts(<span class="number">0</span>);</span><br><span class="line">			user.setReceiveLikeCounts(<span class="number">0</span>);</span><br><span class="line">			user.setFollowCounts(<span class="number">0</span>);</span><br><span class="line">			userService.saveUser(user);</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">return</span> IMoocJSONResult.errorMsg(<span class="string">"用户名已存在"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 3.保存用户,注册信息</span></span><br><span class="line">		<span class="keyword">return</span> IMoocJSONResult.ok();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// UserServiceImpl</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> UsersMapper usersMapper;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> Sid sid;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="meta">@Transactional</span>(propagation = Propagation.SUPPORTS)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">queryUsernameIsExist</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">		Users user = <span class="keyword">new</span> Users();</span><br><span class="line">		user.setUsername(username);</span><br><span class="line">		Users result = usersMapper.selectOne(user);</span><br><span class="line">		<span class="keyword">return</span> result != <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="meta">@Transactional</span>(propagation = Propagation.REQUIRED)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveUser</span><span class="params">(Users user)</span> </span>&#123;</span><br><span class="line">		user.setId(sid.nextShort());</span><br><span class="line">		usersMapper.insert(user);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="Swagger2使用与restful接口测试"><a href="#Swagger2使用与restful接口测试" class="headerlink" title="Swagger2使用与restful接口测试"></a>Swagger2使用与restful接口测试</h4><p>可以生成文档形式的api，并提供给不同的团队；</p>
+<p>便于自我测试，也便于查阅；</p>
+<p>无须过多冗余的word文档；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableSwagger</span>2</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Swagger2</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * swagger2的配置文件，扫描的包等</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Docket <span class="title">createResApi</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()</span><br><span class="line">				.apis(RequestHandlerSelectors.basePackage(<span class="string">"top.rex.videos.controller"</span>))</span><br><span class="line">				.paths(PathSelectors.any()).build();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 构建API文档的信息</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> ApiInfo <span class="title">apiInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> ApiInfoBuilder().title(<span class="string">"Swagger API Document"</span>)</span><br><span class="line">				.contact(<span class="keyword">new</span> Contact(<span class="string">"REX"</span>, <span class="string">"https://reeeexchen.github.io/"</span>, <span class="string">"dy708484@163.com"</span>))</span><br><span class="line">				.description(<span class="string">"This Is About The Description"</span>)</span><br><span class="line">				.version(<span class="string">"1.0.0"</span>).build();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对于Controller的API注释</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@Api</span>(value = <span class="string">"User Login &amp; Register"</span>,tags = &#123;<span class="string">"Login &amp; Register Controller"</span>&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RegisterLoginController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@ApiOperation</span>(value = <span class="string">"Register"</span>,notes = <span class="string">"Register"</span>)</span><br><span class="line">	<span class="meta">@PostMapping</span>(<span class="string">"/regist"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IMoocJSONResult <span class="title">regist</span><span class="params">(@RequestBody Users user)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 对于Users实体的API注释</span></span><br><span class="line"><span class="meta">@ApiModel</span>(value=<span class="string">"Users Entity"</span>, description=<span class="string">"This Is Users Obj"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Users</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">	<span class="meta">@ApiModelProperty</span>(hidden=<span class="keyword">true</span>)</span><br><span class="line">	<span class="meta">@Id</span></span><br><span class="line">    <span class="keyword">private</span> String id;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"Username"</span>, name=<span class="string">"username"</span>, example=<span class="string">"imoocuser"</span>, required=<span class="keyword">true</span>)</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"Password"</span>, name=<span class="string">"password"</span>, example=<span class="string">"123456"</span>, required=<span class="keyword">true</span>)</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>@太心累了，用Mybatis配置扫描包的操作，分层工程结构下的包路径，总是出错，无从下手；</p>
+<p>@2018年8月17日 13:36:47</p>
+<p>从昨晚开始，启动之后做测试，一直报出一个错误</p>
+<p><code>[java.lang.IncompatibleClassChangeError: Implementing class]</code></p>
+<p>我这个错误有点特殊，跟网上能找到的不一样，弄了4个小时之后，终于解决；</p>
+<p>主要的问题依然是jar包；由于之前尝试运行一个含有druid的项目，一直也是类似的错误；</p>
+<p>这次对机器上的JAVA进行了升级；</p>
+<p><strong>JRE和JDK从1.8.0_111升级到了1.8.0_181（JAVA1.8最新版本），问题解决；</strong></p>
+<hr>
+<h4 id="用户注册联调"><a href="#用户注册联调" class="headerlink" title="用户注册联调"></a>用户注册联调</h4><h5 id="配置流程"><a href="#配置流程" class="headerlink" title="配置流程"></a>配置流程</h5><p>服务器域名请在 <code>小程序后台-设置-开发设置-服务器域名</code> 中进行配置，配置时需要注意：</p>
+<ul>
+<li>域名只支持 <code>https</code> (<code>request</code>、<code>uploadFile</code>、<code>downloadFile</code>) 和 <code>wss</code> (<code>connectSocket</code>) 协议；</li>
+<li>域名不能使用 IP 地址或 localhost</li>
+<li>域名必须经过 ICP 备案；</li>
+<li><strong>出于安全考虑，<code>api.weixin.qq.com</code> 不能被配置为服务器域名，相关API也不能在小程序内调用。</strong>开发者应将 appsecret 保存到后台服务器中，通过服务器使用 appsecret 获取 accesstoken，并调用相关 API。</li>
+<li>对于每个接口，分别可以配置最多 20 个域名</li>
+</ul>
+<p><strong>注意将微信开发工具中的，不进行证书校验打开</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">  &#125;,</span><br><span class="line">  doRegist:<span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> formObject = e.detail.value;</span><br><span class="line">    <span class="keyword">var</span> username = formObject.username;</span><br><span class="line">    <span class="keyword">var</span> password = formObject.password;</span><br><span class="line">    <span class="comment">// 简单的前端验证</span></span><br><span class="line">    <span class="keyword">if</span>(username.length == <span class="number">0</span> || password.length == <span class="number">0</span>)&#123;</span><br><span class="line">      wx.showToast(&#123;</span><br><span class="line">        title: <span class="string">'用户名或密码不能为空'</span>,</span><br><span class="line">        icon:<span class="string">'none'</span>,</span><br><span class="line">        duration:<span class="number">3000</span></span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      <span class="keyword">var</span> serverUrl = app.serverUrl;</span><br><span class="line">       wx.showLoading(&#123;</span><br><span class="line">        title: <span class="string">'提交中'</span>,</span><br><span class="line">      &#125;);</span><br><span class="line">      wx.request(&#123;</span><br><span class="line">        url: serverUrl + <span class="string">'/regist'</span>,</span><br><span class="line">        method:<span class="string">"POST"</span>,</span><br><span class="line">        data:&#123;</span><br><span class="line">          username:username,</span><br><span class="line">          password:password</span><br><span class="line">        &#125;,</span><br><span class="line">        header:&#123;</span><br><span class="line">          <span class="string">'content-type'</span>:<span class="string">'application/json'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        success:<span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;</span><br><span class="line">          <span class="built_in">console</span>.log(res.data);</span><br><span class="line">          wx.hideLoading();</span><br><span class="line">          <span class="keyword">var</span> status = res.data.status;</span><br><span class="line">          <span class="keyword">if</span>(status == <span class="number">200</span>)&#123;</span><br><span class="line">            wx.showToast(&#123;</span><br><span class="line">              title: <span class="string">'用户注册成功'</span>,</span><br><span class="line">              icon: <span class="string">'success'</span>,</span><br><span class="line">              duration: <span class="number">3000</span></span><br><span class="line">            &#125;),</span><br><span class="line">            app.userInfo = res.data.data;</span><br><span class="line">          &#125;<span class="keyword">else</span> <span class="keyword">if</span>(status == <span class="number">500</span>)&#123;</span><br><span class="line">            wx.showToast(&#123;</span><br><span class="line">              title: res.data.msg,</span><br><span class="line">              icon: <span class="string">'none'</span>,</span><br><span class="line">              duration: <span class="number">3000</span></span><br><span class="line">            &#125;)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="用户登录"><a href="#用户登录" class="headerlink" title="用户登录"></a>用户登录</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> UsersMapper userMapper;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Transactional</span>(propagation = Propagation.SUPPORTS)</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Users <span class="title">queryUserForLogin</span><span class="params">(String username, String password)</span> </span>&#123;</span><br><span class="line">		Example userExample = <span class="keyword">new</span> Example(Users.class);</span><br><span class="line">		Example.Criteria criteria = userExample.createCriteria();</span><br><span class="line">		criteria.andEqualTo(<span class="string">"username"</span>,username);</span><br><span class="line">		criteria.andEqualTo(<span class="string">"password"</span>,password);</span><br><span class="line">		Users result = userMapper.selectOneByExample(userExample);</span><br><span class="line">		<span class="keyword">return</span> result;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@Api</span>(value = <span class="string">"LOGIN &amp; REGISTER API"</span>, tags = &#123;<span class="string">"LOGIN &amp; REGISTER CONTROLLER"</span>&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RegistLoginController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> UserService userService;</span><br><span class="line">    </span><br><span class="line">	<span class="meta">@ApiOperation</span>(value = <span class="string">"LOGIN"</span>, notes = <span class="string">"LOGIN API"</span>)</span><br><span class="line">	<span class="meta">@PostMapping</span>(<span class="string">"/login"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IMoocJSONResult <span class="title">login</span><span class="params">(@RequestBody Users user)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String username = user.getUsername();</span><br><span class="line">		String password = user.getPassword();</span><br><span class="line">		<span class="comment">// 1.判断用户名和密码不为空</span></span><br><span class="line">		<span class="keyword">if</span> (StringUtils.isBlank(username) || StringUtils.isBlank(password)) &#123;</span><br><span class="line">			<span class="keyword">return</span> IMoocJSONResult.errorMsg(<span class="string">"用户名和密码不能为空"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 2.判断用户是否存在</span></span><br><span class="line">		Users userResult = userService.queryUserForLogin(username,MD5Utils.getMD5Str(password));</span><br><span class="line">		<span class="comment">// 3.返回用户信息</span></span><br><span class="line">		<span class="keyword">if</span>(userResult != <span class="keyword">null</span>)&#123;</span><br><span class="line">			userResult.setPassword(<span class="string">""</span>);</span><br><span class="line">			<span class="keyword">return</span> IMoocJSONResult.ok(userResult);</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">return</span> IMoocJSONResult.errorMsg(<span class="string">"用户名或密码错误，请重试"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 登录</span></span><br><span class="line">  doLogin: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> formObject = e.detail.value;</span><br><span class="line">    <span class="keyword">var</span> username = formObject.username;</span><br><span class="line">    <span class="keyword">var</span> password = formObject.password;</span><br><span class="line">    <span class="comment">// 简单的前端验证</span></span><br><span class="line">    <span class="keyword">if</span> (username.length == <span class="number">0</span> || password.length == <span class="number">0</span>) &#123;</span><br><span class="line">      wx.showToast(&#123;</span><br><span class="line">        title: <span class="string">'用户名或密码不能为空'</span>,</span><br><span class="line">        icon: <span class="string">'none'</span>,</span><br><span class="line">        duration: <span class="number">3000</span></span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">var</span> serverUrl = app.serverUrl;</span><br><span class="line">      wx.showLoading(&#123;</span><br><span class="line">        title: <span class="string">'登录中'</span>,</span><br><span class="line">      &#125;);</span><br><span class="line">      <span class="comment">// BackEnd</span></span><br><span class="line">      wx.request(&#123;</span><br><span class="line">        url: serverUrl + <span class="string">'/login'</span>,</span><br><span class="line">        method: <span class="string">"POST"</span>,</span><br><span class="line">        data: &#123;</span><br><span class="line">          username: username,</span><br><span class="line">          password: password</span><br><span class="line">        &#125;,</span><br><span class="line">        header: &#123;</span><br><span class="line">          <span class="string">'content-type'</span>: <span class="string">'application/json'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">          <span class="built_in">console</span>.log(res.data);</span><br><span class="line">          wx.hideLoading();</span><br><span class="line">          <span class="keyword">var</span> status = res.data.status;</span><br><span class="line">          <span class="keyword">if</span> (status == <span class="number">200</span>) &#123;</span><br><span class="line">            wx.showToast(&#123;</span><br><span class="line">              title: <span class="string">'登录成功'</span>,</span><br><span class="line">              icon: <span class="string">'success'</span>,</span><br><span class="line">              duration: <span class="number">2000</span></span><br><span class="line">            &#125;);</span><br><span class="line">            app.userInfo = res.data.data;</span><br><span class="line">            <span class="comment">// TODO 页面跳转</span></span><br><span class="line">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> (status == <span class="number">500</span>) &#123;</span><br><span class="line">            wx.showToast(&#123;</span><br><span class="line">              title: res.data.msg,</span><br><span class="line">              icon: <span class="string">'none'</span>,</span><br><span class="line">              duration: <span class="number">3000</span></span><br><span class="line">            &#125;);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="有状态会话与无状态会话基本概念"><a href="#有状态会话与无状态会话基本概念" class="headerlink" title="有状态会话与无状态会话基本概念"></a>有状态会话与无状态会话基本概念</h4><p>有状态session：每个用户访问都会产生一个session；</p>
+<p>无状态session：app的用户访问服务时，不产生session；</p>
+<p>redis-session：以通过无状态session，用redis的方式维护一个持续的会话状态；用户访问服务时，将用户的信息以JSON的形式保存到redis的缓存中；</p>
+<h5 id="redis-session好处"><a href="#redis-session好处" class="headerlink" title="redis-session好处"></a>redis-session好处</h5><p>用户信息存储到redis缓存中，形成无状态会话；</p>
+<p>便于扩展，当单体应用该扩展成集群会更方便；</p>
+<p>便于权限认证；</p>
+<hr>
+<h4 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h4><p>之前已经在我的阿里云服务器中搭建过redis-server，在此不再记录，详细参考网上的搭建教程；</p>
+<p><strong>基本命令</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">redis-cli.exe -h xxx.xxx.xxx.xxx -p <span class="number">6379</span> -a xxx</span><br><span class="line">ping</span><br><span class="line">set key value</span><br><span class="line">get key</span><br></pre></td></tr></table></figure>
+<h4 id="开发用户redis-session"><a href="#开发用户redis-session" class="headerlink" title="开发用户redis-session"></a>开发用户redis-session</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BasicController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">public</span> RedisOperator redis;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String USER_REDIS_SESSION = <span class="string">"user-redis-session"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@Api</span>(value = <span class="string">"LOGIN &amp; REGISTER API"</span>, tags = &#123;<span class="string">"LOGIN &amp; REGISTER CONTROLLER"</span>&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RegistLoginController</span> <span class="keyword">extends</span> <span class="title">BasicController</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 设置用户登录与注册的redis-session-token</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> userModel</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> UsersVO <span class="title">setUserRedisSessionToken</span><span class="params">(Users userModel)</span></span>&#123;</span><br><span class="line">		<span class="comment">// REDIS SESSION</span></span><br><span class="line">		String uniqueToken = UUID.randomUUID().toString();</span><br><span class="line">		redis.set(USER_REDIS_SESSION + <span class="string">":"</span> + userModel.getId(),uniqueToken,<span class="number">1000</span> * <span class="number">60</span> * <span class="number">30</span>);</span><br><span class="line"></span><br><span class="line">		UsersVO usersVO = <span class="keyword">new</span> UsersVO();</span><br><span class="line">		BeanUtils.copyProperties(userModel,usersVO);</span><br><span class="line">		usersVO.setUserToken(uniqueToken);</span><br><span class="line">		<span class="keyword">return</span> usersVO;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>@ 2018年8月17日 15:15:10</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+          
+            <a href="/tags/Spring-Boot/" rel="tag"># Spring Boot</a>
+          
+            <a href="/tags/Wechat/" rel="tag"># Wechat</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/17/MicWechat Note-3/" rel="next" title="Wechat Mini | Note-3">
+                <i class="fa fa-chevron-left"></i> Wechat Mini | Note-3
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/19/MicWechat Note-5/" rel="prev" title="Wechat Mini | Note-5">
+                Wechat Mini | Note-5 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">REX CHEN</p>
+              <p class="site-description motion-element" itemprop="description">日常记录</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#微信小程序开发-Note-4"><span class="nav-number">1.</span> <span class="nav-text">微信小程序开发 Note-4</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库设计"><span class="nav-number">1.1.</span> <span class="nav-text">数据库设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#项目初始化"><span class="nav-number">1.2.</span> <span class="nav-text">项目初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mybatis逆向生成工具"><span class="nav-number">1.3.</span> <span class="nav-text">Mybatis逆向生成工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户注册接口"><span class="nav-number">1.4.</span> <span class="nav-text">用户注册接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Swagger2使用与restful接口测试"><span class="nav-number">1.5.</span> <span class="nav-text">Swagger2使用与restful接口测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户注册联调"><span class="nav-number">1.6.</span> <span class="nav-text">用户注册联调</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#配置流程"><span class="nav-number">1.6.1.</span> <span class="nav-text">配置流程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户登录"><span class="nav-number">1.7.</span> <span class="nav-text">用户登录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有状态会话与无状态会话基本概念"><span class="nav-number">1.8.</span> <span class="nav-text">有状态会话与无状态会话基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#redis-session好处"><span class="nav-number">1.8.1.</span> <span class="nav-text">redis-session好处</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#redis"><span class="nav-number">1.9.</span> <span class="nav-text">redis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开发用户redis-session"><span class="nav-number">1.10.</span> <span class="nav-text">开发用户redis-session</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">REX CHEN</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

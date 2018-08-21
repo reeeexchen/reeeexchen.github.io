@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JAVA,Spring Boot,Wechat," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="微信小程序开发 Note-6@ 2018年8月17日 22:51:33 上传短视频业务流程用户选择视频（10s限制或即时拍摄）； BGM选择页面； 选择/不选择，并且输入描述（可为空）； 上传（Controller）； 保存视频截图（封面）； 用户是否选择BGM； ​    -否——直接保存视频； ​    -是——合并视频和BGM成新视频，并保存； 用户选择视频wx.chooseVideo(OB">
+<meta name="keywords" content="JAVA,Spring Boot,Wechat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Wechat Mini | Note-6">
+<meta property="og:url" content="http://yoursite.com/2018/08/20/MicWechat Note-6/index.html">
+<meta property="og:site_name" content="REEEEX">
+<meta property="og:description" content="微信小程序开发 Note-6@ 2018年8月17日 22:51:33 上传短视频业务流程用户选择视频（10s限制或即时拍摄）； BGM选择页面； 选择/不选择，并且输入描述（可为空）； 上传（Controller）； 保存视频截图（封面）； 用户是否选择BGM； ​    -否——直接保存视频； ​    -是——合并视频和BGM成新视频，并保存； 用户选择视频wx.chooseVideo(OB">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-20T07:01:31.407Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Wechat Mini | Note-6">
+<meta name="twitter:description" content="微信小程序开发 Note-6@ 2018年8月17日 22:51:33 上传短视频业务流程用户选择视频（10s限制或即时拍摄）； BGM选择页面； 选择/不选择，并且输入描述（可为空）； 上传（Controller）； 保存视频截图（封面）； 用户是否选择BGM； ​    -否——直接保存视频； ​    -是——合并视频和BGM成新视频，并保存； 用户选择视频wx.chooseVideo(OB">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/20/MicWechat Note-6/"/>
+
+
+
+
+
+  <title>Wechat Mini | Note-6 | REEEEX</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">REEEEX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">KEEP GOING</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/20/MicWechat Note-6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Wechat Mini | Note-6</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-20T00:00:00+08:00">
+                2018-08-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="微信小程序开发-Note-6"><a href="#微信小程序开发-Note-6" class="headerlink" title="微信小程序开发 Note-6"></a>微信小程序开发 Note-6</h3><p>@ 2018年8月17日 22:51:33</p>
+<h4 id="上传短视频业务流程"><a href="#上传短视频业务流程" class="headerlink" title="上传短视频业务流程"></a>上传短视频业务流程</h4><p>用户选择视频（10s限制或即时拍摄）；</p>
+<p>BGM选择页面；</p>
+<p>选择/不选择，并且输入描述（可为空）；</p>
+<p>上传（Controller）；</p>
+<p>保存视频截图（封面）；</p>
+<p>用户是否选择BGM；</p>
+<p>​    -否——直接保存视频；</p>
+<p>​    -是——合并视频和BGM成新视频，并保存；</p>
+<h4 id="用户选择视频"><a href="#用户选择视频" class="headerlink" title="用户选择视频"></a>用户选择视频</h4><h6 id="wx-chooseVideo-OBJECT"><a href="#wx-chooseVideo-OBJECT" class="headerlink" title="wx.chooseVideo(OBJECT)"></a>wx.chooseVideo(OBJECT)</h6><p>拍摄视频或从手机相册中选视频，返回视频的临时文件路径。</p>
+<p><strong>OBJECT参数说明：</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sourceType</td>
+<td>StringArray</td>
+<td>否</td>
+<td>album 从相册选视频，camera 使用相机拍摄，默认为：[‘album’, ‘camera’]</td>
+</tr>
+<tr>
+<td>compressed</td>
+<td>Boolead</td>
+<td>否</td>
+<td>是否压缩所选的视频源文件，默认值为true，需要压缩</td>
+</tr>
+<tr>
+<td>maxDuration</td>
+<td>Number</td>
+<td>否</td>
+<td>拍摄视频最长拍摄时间，单位秒。最长支持 60 秒</td>
+</tr>
+<tr>
+<td>success</td>
+<td>Function</td>
+<td>否</td>
+<td>接口调用成功，返回视频文件的临时文件路径，详见返回参数说明</td>
+</tr>
+<tr>
+<td>fail</td>
+<td>Function</td>
+<td>否</td>
+<td>接口调用失败的回调函数</td>
+</tr>
+<tr>
+<td>complete</td>
+<td>Function</td>
+<td>否</td>
+<td>接口调用结束的回调函数（调用成功、失败都会执行）</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    faceUrl: <span class="string">"../resource/images/noneface.png"</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 视频上传</span></span><br><span class="line">  uploadVideo: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    wx.chooseVideo(&#123;</span><br><span class="line">      sourceType: [<span class="string">'album'</span>],</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(res);</span><br><span class="line">        <span class="keyword">var</span> duration = res.duration;</span><br><span class="line">        <span class="keyword">var</span> tempheight = res.height;</span><br><span class="line">        <span class="keyword">var</span> tempwidth = res.width;</span><br><span class="line">        <span class="keyword">var</span> tempVideoUrl = res.tempFilePath;</span><br><span class="line">        <span class="keyword">var</span> tempCoverUrl = res.thumbTempFilePath;</span><br><span class="line">        <span class="keyword">if</span> (duration &gt; <span class="number">11</span>) &#123;</span><br><span class="line">          wx.showToast(&#123;</span><br><span class="line">            title: <span class="string">'视频长度不能超过10秒'</span>,</span><br><span class="line">            icon: <span class="string">"none"</span>,</span><br><span class="line">            duration: <span class="number">2500</span></span><br><span class="line">          &#125;);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (duration &lt; <span class="number">3</span>) &#123;</span><br><span class="line">          wx.showToast(&#123;</span><br><span class="line">            title: <span class="string">'视频长度过短，请上传超过3秒以上的视频'</span>,</span><br><span class="line">            icon: <span class="string">"none"</span>,</span><br><span class="line">            duration: <span class="number">2500</span></span><br><span class="line">          &#125;);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="comment">// TODO 打开BGM选择页面</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="后台BGM列表接口"><a href="#后台BGM列表接口" class="headerlink" title="后台BGM列表接口"></a>后台BGM列表接口</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Service</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BgmServiceImpl</span> <span class="keyword">implements</span> <span class="title">BgmService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> BgmMapper bgmMapper;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Transactional</span>(propagation = Propagation.SUPPORTS)</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;Bgm&gt; <span class="title">queryBgmList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> bgmMapper.selectAll();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Controller</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@Api</span>(value = <span class="string">"BGM API"</span>, tags = &#123;<span class="string">"BGM CONTROLLER"</span>&#125;)</span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/bgm"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BgmController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> BgmService bgmService;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> Sid sid;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@ApiOperation</span>(value = <span class="string">"GET BGM LIST"</span>, notes = <span class="string">"GET BGM LIST API"</span>)</span><br><span class="line">	<span class="meta">@PostMapping</span>(<span class="string">"/list"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IMoocJSONResult <span class="title">list</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> IMoocJSONResult.ok(bgmService.queryBgmList());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="BGM页面联调-amp-获取背景音乐列表"><a href="#BGM页面联调-amp-获取背景音乐列表" class="headerlink" title="BGM页面联调 &amp; 获取背景音乐列表"></a>BGM页面联调 &amp; 获取背景音乐列表</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    bgmList: [],</span><br><span class="line">    serverUrl: <span class="string">""</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  onLoad: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> serverUrl = app.serverUrl;</span><br><span class="line">    wx.showLoading(&#123;</span><br><span class="line">      title: <span class="string">'加载背景音乐中...'</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// BackEnd</span></span><br><span class="line">    wx.request(&#123;</span><br><span class="line">      url: serverUrl + <span class="string">'/bgm/list'</span>,</span><br><span class="line">      method: <span class="string">"POST"</span>,</span><br><span class="line">      header: &#123;</span><br><span class="line">        <span class="string">'content-type'</span>: <span class="string">'application/json'</span></span><br><span class="line">      &#125;,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(res.data);</span><br><span class="line">        wx.hideLoading();</span><br><span class="line">        <span class="keyword">if</span> (res.data.status == <span class="number">200</span>) &#123;</span><br><span class="line">          <span class="keyword">var</span> bgmList = res.data.data;</span><br><span class="line">          me.setData(&#123;</span><br><span class="line">            bgmList: bgmList,</span><br><span class="line">            serverUrl: serverUrl</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">form</span> <span class="attr">bindsubmit</span>=<span class="string">'upload'</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">radio-group</span> <span class="attr">name</span>=<span class="string">"bgmId"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">block</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;bgmList&#125;&#125;"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">'container'</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">audio</span> <span class="attr">name</span>=<span class="string">"&#123;&#123;item.name&#125;&#125;"</span> <span class="attr">author</span>=<span class="string">"&#123;&#123;item.author&#125;&#125;"</span> <span class="attr">src</span>=<span class="string">"&#123;&#123;serverUrl&#125;&#125;&#123;&#123;item.path&#125;&#125;"</span> <span class="attr">style</span>=<span class="string">"width:300px"</span> <span class="attr">id</span>=<span class="string">"&#123;&#123;item.id&#125;&#125;"</span> <span class="attr">controls</span> <span class="attr">loop</span>&gt;</span><span class="tag">&lt;/<span class="name">audio</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">radio</span> <span class="attr">style</span>=<span class="string">'margin-top:20px;'</span> <span class="attr">value</span>=<span class="string">''</span>&gt;</span><span class="tag">&lt;/<span class="name">radio</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">block</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">radio-group</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="开发上传短视频接口-amp-Swagger测试上传"><a href="#开发上传短视频接口-amp-Swagger测试上传" class="headerlink" title="开发上传短视频接口 &amp; Swagger测试上传"></a>开发上传短视频接口 &amp; Swagger测试上传</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Controller</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@Api</span>(value = <span class="string">"VIDEO API"</span>, tags = &#123;<span class="string">"VIDEO CONTROLLER"</span>&#125;)</span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/video"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@ApiOperation</span>(value = <span class="string">"UPLOAD VIDEO"</span>, notes = <span class="string">"UPLOAD VIDEO API"</span>)</span><br><span class="line">	<span class="meta">@ApiImplicitParams</span>(&#123;</span><br><span class="line">			<span class="meta">@ApiImplicitParam</span>(name = <span class="string">"userId"</span>, value = <span class="string">"用户ID"</span>, required = <span class="keyword">true</span>, dataType = <span class="string">"String"</span>, paramType = <span class="string">"query"</span>),</span><br><span class="line">			<span class="meta">@ApiImplicitParam</span>(name = <span class="string">"bgmId"</span>, value = <span class="string">"背景音乐ID"</span>, dataType = <span class="string">"String"</span>, paramType = <span class="string">"query"</span>),</span><br><span class="line">			<span class="meta">@ApiImplicitParam</span>(name = <span class="string">"videoSeconds"</span>, value = <span class="string">"视频长度"</span>, required = <span class="keyword">true</span>, dataType = <span class="string">"double"</span>, paramType = <span class="string">"query"</span>),</span><br><span class="line">			<span class="meta">@ApiImplicitParam</span>(name = <span class="string">"videoWidth"</span>, value = <span class="string">"视频宽度"</span>, required = <span class="keyword">true</span>, dataType = <span class="string">"int"</span>, paramType = <span class="string">"query"</span>),</span><br><span class="line">			<span class="meta">@ApiImplicitParam</span>(name = <span class="string">"videoHeight"</span>, value = <span class="string">"视频高度"</span>, required = <span class="keyword">true</span>, dataType = <span class="string">"int"</span>, paramType = <span class="string">"query"</span>),</span><br><span class="line">			<span class="meta">@ApiImplicitParam</span>(name = <span class="string">"desc"</span>, value = <span class="string">"视频描述"</span>, dataType = <span class="string">"String"</span>, paramType = <span class="string">"query"</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="meta">@PostMapping</span>(value = <span class="string">"/upload"</span>,headers = <span class="string">"content-type=multipart/form-data"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IMoocJSONResult <span class="title">upload</span><span class="params">(String userId, String bgmId,</span></span></span><br><span class="line"><span class="function"><span class="params">								  <span class="keyword">double</span> videoSeconds, <span class="keyword">int</span> videoWidth, <span class="keyword">int</span> videoHeight, String desc,</span></span></span><br><span class="line"><span class="function"><span class="params">								  @ApiParam(value = <span class="string">"短视频"</span>,required = <span class="keyword">true</span>)</span> MultipartFile file) <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (StringUtils.isBlank(userId)) &#123;</span><br><span class="line">			<span class="keyword">return</span> IMoocJSONResult.errorMsg(<span class="string">"用户不存在(无ID)"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 文件保存的命名空间</span></span><br><span class="line">		String fileSpace = <span class="string">"D:/xxx"</span>;</span><br><span class="line">		<span class="comment">// 保存到数据库中的相对路径</span></span><br><span class="line">		String uploadPathDB = <span class="string">"/"</span> + userId + <span class="string">"/video"</span>;</span><br><span class="line"></span><br><span class="line">		FileOutputStream fileOutputStream = <span class="keyword">null</span>;</span><br><span class="line">		InputStream inputStream = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> (file != <span class="keyword">null</span>) &#123;</span><br><span class="line">				String fileName = file.getOriginalFilename();</span><br><span class="line">				<span class="keyword">if</span> (StringUtils.isNotBlank(fileName)) &#123;</span><br><span class="line">					<span class="comment">// 文件上传的最终保存绝对路径</span></span><br><span class="line">					String finalVideoPath = fileSpace + uploadPathDB + <span class="string">"/"</span> + fileName;</span><br><span class="line">					<span class="comment">// 设置数据库保存的路径</span></span><br><span class="line">					uploadPathDB += (<span class="string">"/"</span> + fileName);</span><br><span class="line"></span><br><span class="line">					File outFile = <span class="keyword">new</span> File(finalVideoPath);</span><br><span class="line">					<span class="keyword">if</span> (outFile.getParentFile() != <span class="keyword">null</span> || !outFile.getParentFile().isDirectory()) &#123;</span><br><span class="line">						<span class="comment">// 创建父文件夹</span></span><br><span class="line">						outFile.getParentFile().mkdirs();</span><br><span class="line">					&#125;</span><br><span class="line">					fileOutputStream = <span class="keyword">new</span> FileOutputStream(outFile);</span><br><span class="line">					inputStream = file.getInputStream();</span><br><span class="line">					IOUtils.copy(inputStream, fileOutputStream);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">return</span> IMoocJSONResult.errorMsg(<span class="string">"视频上传错误"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">			<span class="keyword">return</span> IMoocJSONResult.errorMsg(<span class="string">"视频上传错误"</span>);</span><br><span class="line">		&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> (fileOutputStream != <span class="keyword">null</span>) &#123;</span><br><span class="line">				fileOutputStream.flush();</span><br><span class="line">				fileOutputStream.close();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> IMoocJSONResult.ok();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="视频临时参数传入下一个页面"><a href="#视频临时参数传入下一个页面" class="headerlink" title="视频临时参数传入下一个页面"></a>视频临时参数传入下一个页面</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 打开BGM选择页面</span></span><br><span class="line">wx.navigateTo(&#123;</span><br><span class="line">    url: <span class="string">'../chooseBgm/chooseBgm?duration='</span> + duration </span><br><span class="line">    + <span class="string">"&amp;tempHeight="</span> + tempHeight</span><br><span class="line">    + <span class="string">"&amp;tempWidth="</span> + tempWidth</span><br><span class="line">    + <span class="string">"&amp;tempVideoUrl="</span> + tempVideoUrl</span><br><span class="line">    + <span class="string">"&amp;tempCoverUrl="</span> + tempCoverUrl</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    videoParams:&#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  onLoad: <span class="function"><span class="keyword">function</span>(<span class="params">params</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(params);</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    me.setData(&#123;</span><br><span class="line">      videoParams:params</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 在BGM选择页面，选择BGM后，上传视频</span></span><br><span class="line">  upload:<span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> bgmId = e.detail.value.bgmId;</span><br><span class="line">    <span class="keyword">var</span> desc = e.detail.value.desc;</span><br><span class="line">    <span class="built_in">console</span>.log(bgmId + <span class="string">"---"</span> + desc);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="小程序上传短视频联调"><a href="#小程序上传短视频联调" class="headerlink" title="小程序上传短视频联调"></a>小程序上传短视频联调</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Controler</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@Api</span>(value = <span class="string">"VIDEO API"</span>, tags = &#123;<span class="string">"VIDEO CONTROLLER"</span>&#125;)</span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/video"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@ApiOperation</span>(value = <span class="string">"UPLOAD VIDEO"</span>, notes = <span class="string">"UPLOAD VIDEO API"</span>)</span><br><span class="line">	<span class="meta">@ApiImplicitParams</span>(&#123;</span><br><span class="line">			<span class="meta">@ApiImplicitParam</span>(name = <span class="string">"userId"</span>, value = <span class="string">"用户ID"</span>, required = <span class="keyword">true</span>, dataType = <span class="string">"String"</span>, paramType = <span class="string">"form"</span>),</span><br><span class="line">			<span class="meta">@ApiImplicitParam</span>(name = <span class="string">"bgmId"</span>, value = <span class="string">"背景音乐ID"</span>, dataType = <span class="string">"String"</span>, paramType = <span class="string">"form"</span>),</span><br><span class="line">			<span class="meta">@ApiImplicitParam</span>(name = <span class="string">"videoSeconds"</span>, value = <span class="string">"视频长度"</span>, required = <span class="keyword">true</span>, dataType = <span class="string">"String"</span>, paramType = <span class="string">"form"</span>),</span><br><span class="line">			<span class="meta">@ApiImplicitParam</span>(name = <span class="string">"videoWidth"</span>, value = <span class="string">"视频宽度"</span>, required = <span class="keyword">true</span>, dataType = <span class="string">"String"</span>, paramType = <span class="string">"form"</span>),</span><br><span class="line">			<span class="meta">@ApiImplicitParam</span>(name = <span class="string">"videoHeight"</span>, value = <span class="string">"视频高度"</span>, required = <span class="keyword">true</span>, dataType = <span class="string">"String"</span>, paramType = <span class="string">"form"</span>),</span><br><span class="line">			<span class="meta">@ApiImplicitParam</span>(name = <span class="string">"desc"</span>, value = <span class="string">"视频描述"</span>, dataType = <span class="string">"String"</span>, paramType = <span class="string">"form"</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="meta">@PostMapping</span>(value = <span class="string">"/upload"</span>,headers = <span class="string">"content-type=multipart/form-data"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IMoocJSONResult <span class="title">upload</span><span class="params">(String userId, String bgmId,</span></span></span><br><span class="line"><span class="function"><span class="params">								  <span class="keyword">double</span> videoSeconds, <span class="keyword">int</span> videoWidth, <span class="keyword">int</span> videoHeight, String desc,</span></span></span><br><span class="line"><span class="function"><span class="params">								  @ApiParam(value = <span class="string">"短视频"</span>,required = <span class="keyword">true</span>)</span> MultipartFile file) <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (StringUtils.isBlank(userId)) &#123;</span><br><span class="line">			<span class="keyword">return</span> IMoocJSONResult.errorMsg(<span class="string">"用户不存在(无ID)"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 文件保存的命名空间</span></span><br><span class="line">		String fileSpace = <span class="string">"D:/videos_dev_face"</span>;</span><br><span class="line">		<span class="comment">// 保存到数据库中的相对路径</span></span><br><span class="line">		String uploadPathDB = <span class="string">"/"</span> + userId + <span class="string">"/video"</span>;</span><br><span class="line"></span><br><span class="line">		FileOutputStream fileOutputStream = <span class="keyword">null</span>;</span><br><span class="line">		InputStream inputStream = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> (file != <span class="keyword">null</span>) &#123;</span><br><span class="line">				String fileName = file.getOriginalFilename();</span><br><span class="line">				<span class="keyword">if</span> (StringUtils.isNotBlank(fileName)) &#123;</span><br><span class="line">					<span class="comment">// 文件上传的最终保存绝对路径</span></span><br><span class="line">					String finalVideoPath = fileSpace + uploadPathDB + <span class="string">"/"</span> + fileName;</span><br><span class="line">					<span class="comment">// 设置数据库保存的路径</span></span><br><span class="line">					uploadPathDB += (<span class="string">"/"</span> + fileName);</span><br><span class="line"></span><br><span class="line">					File outFile = <span class="keyword">new</span> File(finalVideoPath);</span><br><span class="line">					<span class="keyword">if</span> (outFile.getParentFile() != <span class="keyword">null</span> || !outFile.getParentFile().isDirectory()) &#123;</span><br><span class="line">						<span class="comment">// 创建父文件夹</span></span><br><span class="line">						outFile.getParentFile().mkdirs();</span><br><span class="line">					&#125;</span><br><span class="line">					fileOutputStream = <span class="keyword">new</span> FileOutputStream(outFile);</span><br><span class="line">					inputStream = file.getInputStream();</span><br><span class="line">					IOUtils.copy(inputStream, fileOutputStream);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">return</span> IMoocJSONResult.errorMsg(<span class="string">"视频上传错误"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">			<span class="keyword">return</span> IMoocJSONResult.errorMsg(<span class="string">"视频上传错误"</span>);</span><br><span class="line">		&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> (fileOutputStream != <span class="keyword">null</span>) &#123;</span><br><span class="line">				fileOutputStream.flush();</span><br><span class="line">				fileOutputStream.close();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> IMoocJSONResult.ok();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line"></span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    bgmList: [],</span><br><span class="line">    serverUrl: <span class="string">""</span>,</span><br><span class="line">    videoParams: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 在BGM选择页面，选择BGM后，上传视频</span></span><br><span class="line">  upload: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> bgmId = e.detail.value.bgmId;</span><br><span class="line">    <span class="keyword">var</span> desc = e.detail.value.desc;</span><br><span class="line">    <span class="built_in">console</span>.log(bgmId + <span class="string">"---"</span> + desc);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> duration = me.data.videoParams.duration;</span><br><span class="line">    <span class="keyword">var</span> tmpHeight = me.data.videoParams.tmpHeight;</span><br><span class="line">    <span class="keyword">var</span> tmpWidth = me.data.videoParams.tmpWidth;</span><br><span class="line">    <span class="keyword">var</span> tmpVideoUrl = me.data.videoParams.tmpVideoUrl;</span><br><span class="line">    <span class="keyword">var</span> tmpCoverUrl = me.data.videoParams.tmpCoverUrl;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.log(tmpHeight + <span class="string">","</span> + tmpWidth);</span><br><span class="line">    <span class="built_in">console</span>.log(tmpVideoUrl);</span><br><span class="line">    <span class="built_in">console</span>.log(tmpCoverUrl);</span><br><span class="line"></span><br><span class="line">    wx.showLoading(&#123;</span><br><span class="line">      title: <span class="string">'视频上传中'</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 上传短视频</span></span><br><span class="line">    <span class="keyword">var</span> serverUrl = app.serverUrl;</span><br><span class="line">    wx.uploadFile(&#123;</span><br><span class="line">      url: serverUrl + <span class="string">"/video/upload"</span>,</span><br><span class="line">      formData: &#123;</span><br><span class="line">        userId: app.userInfo.id,</span><br><span class="line">        bgmId: bgmId,</span><br><span class="line">        videoSeconds: duration,</span><br><span class="line">        videoWidth: tmpHeight,</span><br><span class="line">        videoHeight: tmpWidth,</span><br><span class="line">        desc: desc</span><br><span class="line">      &#125;,</span><br><span class="line">      filePath: tmpVideoUrl,</span><br><span class="line">      name: <span class="string">'file'</span>,</span><br><span class="line">      header: &#123;</span><br><span class="line">        <span class="string">'content-type'</span>: <span class="string">'application/json'</span></span><br><span class="line">      &#125;,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// var data = JSON.parse(res.data);</span></span><br><span class="line">        <span class="built_in">console</span>.log(res);</span><br><span class="line">        wx.hideLoading();</span><br><span class="line">        <span class="keyword">if</span> (res.status == <span class="number">200</span>) &#123;</span><br><span class="line">          wx.showToast(&#123;</span><br><span class="line">            title: <span class="string">'视频上传成功'</span>,</span><br><span class="line">            icon: <span class="string">'success'</span>,</span><br><span class="line">            duration: <span class="number">3000</span></span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="FFMPEG"><a href="#FFMPEG" class="headerlink" title="FFMPEG"></a>FFMPEG</h4><p>视音频处理工具；跨平台的视音频处理解决方案；</p>
+<p>播放器（暴风）；转码工具（格式工厂）；直播、视频加码、滤镜、水印、特效；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i input.mp4 output.avi</span><br></pre></td></tr></table></figure>
+<h4 id="JAVA-amp-FFMPEG"><a href="#JAVA-amp-FFMPEG" class="headerlink" title="JAVA &amp; FFMPEG"></a>JAVA &amp; FFMPEG</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FFMPEGTest</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String ffmpegEXE;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">FFMPEGTest</span><span class="params">(String ffmpegEXE)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.ffmpegEXE = ffmpegEXE;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">convertor</span><span class="params">(String videoInputPath, String videoOutputPath)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">		<span class="comment">// cmd执行命令</span></span><br><span class="line">		List&lt;String&gt; command = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">		command.add(ffmpegEXE);</span><br><span class="line">		command.add(<span class="string">"-i"</span>);</span><br><span class="line">		command.add(videoInputPath);</span><br><span class="line">		command.add(videoOutputPath);</span><br><span class="line">		<span class="comment">// 建立进程cmd</span></span><br><span class="line">		ProcessBuilder builder = <span class="keyword">new</span> ProcessBuilder(command);</span><br><span class="line">		Process process = builder.start();</span><br><span class="line">		<span class="comment">// 关闭流，避免资源浪费</span></span><br><span class="line">		InputStream errorStream = process.getErrorStream();</span><br><span class="line">		InputStreamReader inputStreamReader = <span class="keyword">new</span> InputStreamReader(errorStream);</span><br><span class="line">		BufferedReader br = <span class="keyword">new</span> BufferedReader(inputStreamReader);</span><br><span class="line">		String line = <span class="string">""</span>;</span><br><span class="line">		<span class="keyword">while</span>((line = br.readLine()) != <span class="keyword">null</span>)&#123;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(br != <span class="keyword">null</span>)&#123;</span><br><span class="line">			br.close();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(inputStreamReader != <span class="keyword">null</span>)&#123;</span><br><span class="line">			inputStreamReader.close();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(errorStream != <span class="keyword">null</span>)&#123;</span><br><span class="line">			errorStream.close();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 执行.exe的路径</span></span><br><span class="line">		FFMPEGTest ffmpeg = <span class="keyword">new</span> FFMPEGTest(<span class="string">"D:\\FFMEPG\\bin\\ffmpeg.exe"</span>);</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			ffmpeg.convertor(<span class="string">"D:\\test.mp4"</span>, <span class="string">"D:\\done.avi"</span>);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="FFMPEG操作视频-amp-BGM"><a href="#FFMPEG操作视频-amp-BGM" class="headerlink" title="FFMPEG操作视频 &amp; BGM"></a>FFMPEG操作视频 &amp; BGM</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg.exe -i test.mp4 -i bgm.mp3 -t <span class="number">10</span> -y done.mp4</span><br></pre></td></tr></table></figure>
+<h4 id="JAVA合并音视频"><a href="#JAVA合并音视频" class="headerlink" title="JAVA合并音视频"></a>JAVA合并音视频</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在JAVA &amp; FFMPEG的基础上，进行修改即可</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MergeVideoMp3</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String ffmpegEXE;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">MergeVideoMp3</span><span class="params">(String ffmpegEXE)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.ffmpegEXE = ffmpegEXE;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">convertor</span><span class="params">(String videoInputPath, String mp3InputPath, <span class="keyword">double</span> seconds, String videoOutputPath)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">		<span class="comment">// cmd执行命令 ffmpeg.exe -i test.mp4 -i bgm.mp3 -t 10 -y done.mp4</span></span><br><span class="line">		List&lt;String&gt; command = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">		command.add(ffmpegEXE);</span><br><span class="line">		command.add(<span class="string">"-i"</span>);</span><br><span class="line">		command.add(videoInputPath);</span><br><span class="line">		command.add(<span class="string">"-i"</span>);</span><br><span class="line">		command.add(mp3InputPath);</span><br><span class="line">		command.add(<span class="string">"-t"</span>);</span><br><span class="line">		command.add(String.valueOf(seconds));</span><br><span class="line">		command.add(<span class="string">"-y"</span>);</span><br><span class="line">		command.add(videoOutputPath);</span><br><span class="line">		...</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 执行.exe的路径</span></span><br><span class="line">		MergeVideoMp3 ffmpeg = <span class="keyword">new</span> MergeVideoMp3(<span class="string">"D:\\FFMEPG\\bin\\ffmpeg.exe"</span>);</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			ffmpeg.convertor(<span class="string">"D:\\test.mp4"</span>, <span class="string">"D:\\bgm.mp3"</span>, <span class="number">10</span>, <span class="string">"D:\\done.mp4"</span>);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="保存视频信息-amp-数据库"><a href="#保存视频信息-amp-数据库" class="headerlink" title="保存视频信息 &amp; 数据库"></a>保存视频信息 &amp; 数据库</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Service</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoServiceImpl</span> <span class="keyword">implements</span> <span class="title">VideoService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> VideosMapper videosMapper;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> Sid sid;</span><br><span class="line">	<span class="meta">@Transactional</span>(propagation = Propagation.REQUIRED)</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">saveVideo</span><span class="params">(Videos video)</span> </span>&#123;</span><br><span class="line">        video.setId(sid.nextShort());</span><br><span class="line">        videosMapper.insertSelective(video);</span><br><span class="line">        <span class="keyword">return</span> video.getId();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Controller</span></span><br><span class="line"><span class="comment">// 具体代码与头像上传和保存到数据库基本类似；</span></span><br><span class="line"><span class="comment">// 代码过长，不进行发表；</span></span><br><span class="line"><span class="comment">// 详情看github；</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="上传封面图-amp-数据库"><a href="#上传封面图-amp-数据库" class="headerlink" title="上传封面图 &amp; 数据库"></a>上传封面图 &amp; 数据库</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Service</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoServiceImpl</span> <span class="keyword">implements</span> <span class="title">VideoService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> VideosMapper videosMapper;</span><br><span class="line">    </span><br><span class="line">	<span class="meta">@Transactional</span>(propagation = Propagation.REQUIRED)</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateVideo</span><span class="params">(String videoId, String coverPath)</span> </span>&#123;</span><br><span class="line">		Videos video = <span class="keyword">new</span> Videos();</span><br><span class="line">		video.setId(videoId);</span><br><span class="line">		video.setCoverPath(coverPath);</span><br><span class="line">		videosMapper.updateByPrimaryKeySelective(video);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Controller</span></span><br><span class="line"><span class="comment">// 具体代码与头像上传和保存到数据库基本类似；</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@Api</span>(value = <span class="string">"VIDEO API"</span>, tags = &#123;<span class="string">"VIDEO CONTROLLER"</span>&#125;)</span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/video"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoController</span> <span class="keyword">extends</span> <span class="title">BasicController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> VideoService videoService;</span><br><span class="line">	<span class="meta">@ApiOperation</span>(value = <span class="string">"UPLOAD COVER PIC"</span>, notes = <span class="string">"UPLOAD COVER PIC API"</span>)</span><br><span class="line">	<span class="meta">@ApiImplicitParams</span>(&#123;</span><br><span class="line">			<span class="meta">@ApiImplicitParam</span>(name = <span class="string">"userId"</span>, value = <span class="string">"用户ID"</span>, required = <span class="keyword">true</span>, dataType = <span class="string">"String"</span>, paramType = <span class="string">"form"</span>),</span><br><span class="line">			<span class="meta">@ApiImplicitParam</span>(name = <span class="string">"videoId"</span>, value = <span class="string">"视频ID"</span>, required = <span class="keyword">true</span>, dataType = <span class="string">"String"</span>, paramType = <span class="string">"form"</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="meta">@PostMapping</span>(value = <span class="string">"/uploadCover"</span>, headers = <span class="string">"content-type=multipart/form-data"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IMoocJSONResult <span class="title">uploadCover</span><span class="params">(String userId, String videoId, @ApiParam(value = <span class="string">"封面"</span>, required = <span class="keyword">true</span>)</span> MultipartFile file) <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		...</span><br><span class="line">		videoService.updateVideo(videoId,uploadPathDB);</span><br><span class="line">		<span class="keyword">return</span> IMoocJSONResult.ok();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="小程序上传视频业务流程联调"><a href="#小程序上传视频业务流程联调" class="headerlink" title="小程序上传视频业务流程联调"></a>小程序上传视频业务流程联调</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 封面图上传 补充</span></span><br><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    bgmList: [],</span><br><span class="line">    serverUrl: <span class="string">""</span>,</span><br><span class="line">    videoParams: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 在BGM选择页面，选择BGM后，上传视频</span></span><br><span class="line">  upload: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    wx.showLoading(&#123;</span><br><span class="line">      title: <span class="string">'视频上传中'</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 上传短视频</span></span><br><span class="line">      ...</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse(res.data);</span><br><span class="line">        wx.hideLoading();</span><br><span class="line">        <span class="keyword">if</span> (data.status == <span class="number">200</span>) &#123;</span><br><span class="line">          <span class="keyword">var</span> videoId = data.data;</span><br><span class="line">          <span class="comment">// 封面图上传</span></span><br><span class="line">          wx.showLoading(&#123;</span><br><span class="line">            title: <span class="string">'封面图上传中'</span>,</span><br><span class="line">          &#125;);</span><br><span class="line">          wx.uploadFile(&#123;</span><br><span class="line">            url: serverUrl + <span class="string">"/video/uploadCover"</span>,</span><br><span class="line">            formData: &#123;</span><br><span class="line">              userId: app.userInfo.id,</span><br><span class="line">              videoId: videoId</span><br><span class="line">            &#125;,</span><br><span class="line">            filePath: tmpCoverUrl,</span><br><span class="line">            name: <span class="string">'file'</span>,</span><br><span class="line">            header: &#123;</span><br><span class="line">              <span class="string">'content-type'</span>: <span class="string">'application/json'</span></span><br><span class="line">            &#125;,</span><br><span class="line">            success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">              <span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse(res.data);</span><br><span class="line">              wx.hideLoading();</span><br><span class="line">              <span class="keyword">if</span> (data.status == <span class="number">200</span>) &#123;</span><br><span class="line">                wx.showToast(&#123;</span><br><span class="line">                  title: <span class="string">'上传成功'</span>,</span><br><span class="line">                  icon: <span class="string">"success"</span></span><br><span class="line">                &#125;);</span><br><span class="line">                wx.navigateBack(&#123;</span><br><span class="line">                  delta: <span class="number">1</span>,</span><br><span class="line">                &#125;);</span><br><span class="line">              &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                wx.showToast(&#123;</span><br><span class="line">                  title: <span class="string">'上传失败'</span>,</span><br><span class="line">                  icon: <span class="string">"none"</span></span><br><span class="line">                &#125;);</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          wx.showToast(&#123;</span><br><span class="line">            title: <span class="string">'上传失败'</span>,</span><br><span class="line">            icon: <span class="string">"none"</span></span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="联调手机端-amp-坑"><a href="#联调手机端-amp-坑" class="headerlink" title="联调手机端 &amp; 坑"></a>联调手机端 &amp; 坑</h4><p>在使用手机端测试时，res所返回的数据与PC端返回的数据不同；</p>
+<p>手机端所返回的数据中，不包含封面图的数据信息；</p>
+<p>所以，才用FFMPEG生成截图的方式，生成封面图；</p>
+<h4 id="使用FFMPEG生成截图"><a href="#使用FFMPEG生成截图" class="headerlink" title="使用FFMPEG生成截图"></a>使用FFMPEG生成截图</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FetchVideoCover</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 视频路径</span></span><br><span class="line">	<span class="keyword">private</span> String ffmpegEXE;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getCover</span><span class="params">(String videoInputPath, String coverOutputPath)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"><span class="comment">//		ffmpeg.exe -ss 00:00:01 -i spring.mp4 -vframes 1 bb.jpg</span></span><br><span class="line">		List&lt;String&gt; command = <span class="keyword">new</span> java.util.ArrayList&lt;String&gt;();</span><br><span class="line">		command.add(ffmpegEXE);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 指定截取第1秒</span></span><br><span class="line">		command.add(<span class="string">"-ss"</span>);</span><br><span class="line">		command.add(<span class="string">"00:00:01"</span>);</span><br><span class="line"></span><br><span class="line">		command.add(<span class="string">"-y"</span>);</span><br><span class="line">		command.add(<span class="string">"-i"</span>);</span><br><span class="line">		command.add(videoInputPath);</span><br><span class="line"></span><br><span class="line">		command.add(<span class="string">"-vframes"</span>);</span><br><span class="line">		command.add(<span class="string">"1"</span>);</span><br><span class="line"></span><br><span class="line">		command.add(coverOutputPath);</span><br><span class="line"></span><br><span class="line">		ProcessBuilder builder = <span class="keyword">new</span> ProcessBuilder(command);</span><br><span class="line">		Process process = builder.start();</span><br><span class="line"></span><br><span class="line">		InputStream errorStream = process.getErrorStream();</span><br><span class="line">		InputStreamReader inputStreamReader = <span class="keyword">new</span> InputStreamReader(errorStream);</span><br><span class="line">		BufferedReader br = <span class="keyword">new</span> BufferedReader(inputStreamReader);</span><br><span class="line"></span><br><span class="line">		String line = <span class="string">""</span>;</span><br><span class="line">		<span class="keyword">while</span> ((line = br.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (br != <span class="keyword">null</span>) &#123;</span><br><span class="line">			br.close();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (inputStreamReader != <span class="keyword">null</span>) &#123;</span><br><span class="line">			inputStreamReader.close();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (errorStream != <span class="keyword">null</span>) &#123;</span><br><span class="line">			errorStream.close();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="上传视频流程-amp-整合视频截图功能"><a href="#上传视频流程-amp-整合视频截图功能" class="headerlink" title="上传视频流程 &amp; 整合视频截图功能"></a>上传视频流程 &amp; 整合视频截图功能</h4><h4 id="上传流程联调"><a href="#上传流程联调" class="headerlink" title="上传流程联调"></a>上传流程联调</h4><p>在上传视频的同时，制作封面图，并且将封面图的CoverPath存储到数据库即可；</p>
+<p>就解决了PC和手机传回数据不同的问题，不再需要二次request的过程；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 产生视频封面</span></span><br><span class="line">FetchVideoCover videoInfo = <span class="keyword">new</span> FetchVideoCover(FFMPEG_EXE);</span><br><span class="line">videoInfo.getCover(finalVideoPath, FILE_SPACE + coverPathDB);</span><br></pre></td></tr></table></figure>
+<p>@ 2018年8月19日 19:47:47</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+          
+            <a href="/tags/Spring-Boot/" rel="tag"># Spring Boot</a>
+          
+            <a href="/tags/Wechat/" rel="tag"># Wechat</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/19/MicWechat Note-5/" rel="next" title="Wechat Mini | Note-5">
+                <i class="fa fa-chevron-left"></i> Wechat Mini | Note-5
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/21/MicWechat Note-7/" rel="prev" title="Wechat Mini | Note-7">
+                Wechat Mini | Note-7 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">REX CHEN</p>
+              <p class="site-description motion-element" itemprop="description">日常记录</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#微信小程序开发-Note-6"><span class="nav-number">1.</span> <span class="nav-text">微信小程序开发 Note-6</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#上传短视频业务流程"><span class="nav-number">1.1.</span> <span class="nav-text">上传短视频业务流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户选择视频"><span class="nav-number">1.2.</span> <span class="nav-text">用户选择视频</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#wx-chooseVideo-OBJECT"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">wx.chooseVideo(OBJECT)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#后台BGM列表接口"><span class="nav-number">1.3.</span> <span class="nav-text">后台BGM列表接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BGM页面联调-amp-获取背景音乐列表"><span class="nav-number">1.4.</span> <span class="nav-text">BGM页面联调 &amp; 获取背景音乐列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开发上传短视频接口-amp-Swagger测试上传"><span class="nav-number">1.5.</span> <span class="nav-text">开发上传短视频接口 &amp; Swagger测试上传</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#视频临时参数传入下一个页面"><span class="nav-number">1.6.</span> <span class="nav-text">视频临时参数传入下一个页面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小程序上传短视频联调"><span class="nav-number">1.7.</span> <span class="nav-text">小程序上传短视频联调</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FFMPEG"><span class="nav-number">1.8.</span> <span class="nav-text">FFMPEG</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JAVA-amp-FFMPEG"><span class="nav-number">1.9.</span> <span class="nav-text">JAVA &amp; FFMPEG</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FFMPEG操作视频-amp-BGM"><span class="nav-number">1.10.</span> <span class="nav-text">FFMPEG操作视频 &amp; BGM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JAVA合并音视频"><span class="nav-number">1.11.</span> <span class="nav-text">JAVA合并音视频</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#保存视频信息-amp-数据库"><span class="nav-number">1.12.</span> <span class="nav-text">保存视频信息 &amp; 数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#上传封面图-amp-数据库"><span class="nav-number">1.13.</span> <span class="nav-text">上传封面图 &amp; 数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小程序上传视频业务流程联调"><span class="nav-number">1.14.</span> <span class="nav-text">小程序上传视频业务流程联调</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#联调手机端-amp-坑"><span class="nav-number">1.15.</span> <span class="nav-text">联调手机端 &amp; 坑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用FFMPEG生成截图"><span class="nav-number">1.16.</span> <span class="nav-text">使用FFMPEG生成截图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#上传视频流程-amp-整合视频截图功能"><span class="nav-number">1.17.</span> <span class="nav-text">上传视频流程 &amp; 整合视频截图功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#上传流程联调"><span class="nav-number">1.18.</span> <span class="nav-text">上传流程联调</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">REX CHEN</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

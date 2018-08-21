@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JAVA,Spring Boot,Wechat," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="微信小程序开发 Note-7 小程序首页视频列表首页是底色加封面图，并不是可播放的视频； 自定义mapper1234567891011121314&amp;lt;select id=&quot;queryAllVideos&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;String&quot;&amp;gt;    select v.*,u.face_image as face_image,u.">
+<meta name="keywords" content="JAVA,Spring Boot,Wechat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Wechat Mini | Note-7">
+<meta property="og:url" content="http://yoursite.com/2018/08/21/MicWechat Note-7/index.html">
+<meta property="og:site_name" content="REEEEX">
+<meta property="og:description" content="微信小程序开发 Note-7 小程序首页视频列表首页是底色加封面图，并不是可播放的视频； 自定义mapper1234567891011121314&amp;lt;select id=&quot;queryAllVideos&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;String&quot;&amp;gt;    select v.*,u.face_image as face_image,u.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-20T09:48:25.514Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Wechat Mini | Note-7">
+<meta name="twitter:description" content="微信小程序开发 Note-7 小程序首页视频列表首页是底色加封面图，并不是可播放的视频； 自定义mapper1234567891011121314&amp;lt;select id=&quot;queryAllVideos&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;String&quot;&amp;gt;    select v.*,u.face_image as face_image,u.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/21/MicWechat Note-7/"/>
+
+
+
+
+
+  <title>Wechat Mini | Note-7 | REEEEX</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">REEEEX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">KEEP GOING</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/21/MicWechat Note-7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Wechat Mini | Note-7</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-21T00:00:00+08:00">
+                2018-08-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="微信小程序开发-Note-7"><a href="#微信小程序开发-Note-7" class="headerlink" title="微信小程序开发 Note-7"></a>微信小程序开发 Note-7</h3><hr>
+<h4 id="小程序首页视频列表"><a href="#小程序首页视频列表" class="headerlink" title="小程序首页视频列表"></a>小程序首页视频列表</h4><p>首页是底色加封面图，并不是可播放的视频；</p>
+<h4 id="自定义mapper"><a href="#自定义mapper" class="headerlink" title="自定义mapper"></a>自定义mapper</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"queryAllVideos"</span> <span class="attr">resultMap</span>=<span class="string">"BaseResultMap"</span> <span class="attr">parameterType</span>=<span class="string">"String"</span>&gt;</span></span><br><span class="line">    select v.*,u.face_image as face_image,u.nickname as nickname from videos v</span><br><span class="line">    left join users u on u.id = v.user_id</span><br><span class="line">    where</span><br><span class="line">    1 = 1</span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">" videoDesc != null and videoDesc != '' "</span>&gt;</span></span><br><span class="line">        and v.video_desc like '%$&#123;videoDesc&#125;%'</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">" userId != null and userId != '' "</span>&gt;</span></span><br><span class="line">        and v.user_id = #&#123;userId&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    and v.status = 1</span><br><span class="line">    order by v.create_time desc</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="视频列表分页查询接口"><a href="#视频列表分页查询接口" class="headerlink" title="视频列表分页查询接口"></a>视频列表分页查询接口</h4><p>Pagehelper原理：</p>
+<p>从数据库中select数据，在查询之前做一层拦截；</p>
+<p>拦截后的select语句，将会由Ph做一个拼接，拼接成复合分页要求的select（limit）语句；</p>
+<p>拼接出来的新select语句将替代原select，获取数据；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查询第几页，每页显示几条数据</span></span><br><span class="line">PageHelper.startPage(page,pageSize);</span><br><span class="line">List&lt;User&gt; list = userMapper.find();</span><br><span class="line">PageInfo page = <span class="keyword">new</span> PageInfo&lt;list&gt;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Service</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoServiceImpl</span> <span class="keyword">implements</span> <span class="title">VideoService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> VideosMapper videosMapper;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> VideosMapperCustom videosMapperCustom;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> PagedResult <span class="title">getAllVideos</span><span class="params">(Integer page, Integer pageSize)</span> </span>&#123;</span><br><span class="line">		PageHelper.startPage(page,pageSize);</span><br><span class="line">		List&lt;VideosVO&gt; list = videosMapperCustom.queryAllVideos();</span><br><span class="line"></span><br><span class="line">		PageInfo&lt;VideosVO&gt; pageList = <span class="keyword">new</span> PageInfo&lt;&gt;(list);</span><br><span class="line"></span><br><span class="line">		PagedResult pagedResult = <span class="keyword">new</span> PagedResult();</span><br><span class="line">		pagedResult.setPage(page);</span><br><span class="line">		pagedResult.setTotal(pageList.getPages());</span><br><span class="line">		pagedResult.setRows(list);</span><br><span class="line">		pagedResult.setRecords(pageList.getTotal());</span><br><span class="line">		<span class="keyword">return</span> pagedResult;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Controller</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@Api</span>(value = <span class="string">"VIDEO API"</span>, tags = &#123;<span class="string">"VIDEO CONTROLLER"</span>&#125;)</span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/video"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoController</span> <span class="keyword">extends</span> <span class="title">BasicController</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">	<span class="meta">@PostMapping</span>(value = <span class="string">"/showAll"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IMoocJSONResult <span class="title">showAll</span><span class="params">(Integer page)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(page == <span class="keyword">null</span>)&#123;</span><br><span class="line">			page = <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		PagedResult pagedResult = videoService.getAllVideos(page,PAGE_SIZE);</span><br><span class="line">		<span class="keyword">return</span> IMoocJSONResult.ok(pagedResult);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="首页分页联调"><a href="#首页分页联调" class="headerlink" title="首页分页联调"></a>首页分页联调</h4><h5 id="wx-getSystemInfoSync-获取系统信息同步接口"><a href="#wx-getSystemInfoSync-获取系统信息同步接口" class="headerlink" title="wx.getSystemInfoSync() - 获取系统信息同步接口"></a>wx.getSystemInfoSync() - 获取系统信息同步接口</h5><p>同步返回参数说明：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>screenWidth</td>
+<td>屏幕宽度</td>
+</tr>
+<tr>
+<td>screenHeight</td>
+<td>屏幕高度</td>
+</tr>
+<tr>
+<td>windowWidth</td>
+<td>可使用窗口宽度</td>
+</tr>
+<tr>
+<td>windowHeight</td>
+<td>可使用窗口高度</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    <span class="comment">// 总页数</span></span><br><span class="line">    totalPage: <span class="number">1</span>,</span><br><span class="line">    <span class="comment">// 当前页数</span></span><br><span class="line">    page: <span class="number">1</span>,</span><br><span class="line">    <span class="comment">// 视频列表</span></span><br><span class="line">    videoList: [],</span><br><span class="line">    screenWidth: <span class="number">350</span>,</span><br><span class="line">    serverUrl: <span class="string">""</span></span><br><span class="line">  &#125;,</span><br><span class="line">  onLoad: <span class="function"><span class="keyword">function</span>(<span class="params">params</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> screenWidth = wx.getSystemInfoSync().screenWidth;</span><br><span class="line">    me.setData(&#123;</span><br><span class="line">      screenWidth: screenWidth</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取当前的分页数</span></span><br><span class="line">    <span class="keyword">var</span> page = me.data.page;</span><br><span class="line">    <span class="keyword">var</span> serverUrl = app.serverUrl;</span><br><span class="line">    wx.showLoading(&#123;</span><br><span class="line">      title: <span class="string">'视频加载中...'</span>,</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    wx.request(&#123;</span><br><span class="line">      url: serverUrl + <span class="string">'/video/showAll?page='</span> + page,</span><br><span class="line">      method:<span class="string">'POST'</span>,</span><br><span class="line">      success:<span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;</span><br><span class="line">        wx.hideLoading();</span><br><span class="line">        <span class="built_in">console</span>.log(res.data);</span><br><span class="line">        <span class="comment">// 获取数据</span></span><br><span class="line">        <span class="comment">// 判断当前页page是否为第一页，第一页则清空videoList</span></span><br><span class="line">        <span class="keyword">if</span>(page === <span class="number">1</span>)&#123;</span><br><span class="line">          me.setData(&#123;</span><br><span class="line">            videoList: []</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> videoList = res.data.data.rows;</span><br><span class="line">        <span class="keyword">var</span> newVideoList = me.data.videoList;</span><br><span class="line"></span><br><span class="line">        me.setData(&#123;</span><br><span class="line">          videoList: newVideoList.concat(videoList),</span><br><span class="line">          page:page,</span><br><span class="line">          totalPage: res.data.data.total,</span><br><span class="line">          serverUrl:serverUrl</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="首页——上拉分页"><a href="#首页——上拉分页" class="headerlink" title="首页——上拉分页"></a>首页——上拉分页</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line"><span class="comment">// 并且修改共用方法</span></span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    <span class="comment">// 总页数</span></span><br><span class="line">    totalPage: <span class="number">1</span>,</span><br><span class="line">    <span class="comment">// 当前页数</span></span><br><span class="line">    page: <span class="number">1</span>,</span><br><span class="line">    <span class="comment">// 视频列表</span></span><br><span class="line">    videoList: [],</span><br><span class="line">    screenWidth: <span class="number">350</span>,</span><br><span class="line">    serverUrl: <span class="string">""</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 共用方法</span></span><br><span class="line">  getAllVideoList: <span class="function"><span class="keyword">function</span>(<span class="params">page</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> serverUrl = app.serverUrl;</span><br><span class="line">    wx.showLoading(&#123;</span><br><span class="line">      title: <span class="string">'视频加载中...'</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">    wx.request(&#123;</span><br><span class="line">      url: serverUrl + <span class="string">'/video/showAll?page='</span> + page,</span><br><span class="line">      method: <span class="string">'POST'</span>,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">        wx.hideLoading();</span><br><span class="line">        <span class="built_in">console</span>.log(res.data);</span><br><span class="line">        <span class="comment">// 获取数据</span></span><br><span class="line">        <span class="comment">// 判断当前页page是否为第一页，第一页则清空videoList</span></span><br><span class="line">        <span class="keyword">if</span> (page === <span class="number">1</span>) &#123;</span><br><span class="line">          me.setData(&#123;</span><br><span class="line">            videoList: []</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> videoList = res.data.data.rows;</span><br><span class="line">        <span class="keyword">var</span> newVideoList = me.data.videoList;</span><br><span class="line"></span><br><span class="line">        me.setData(&#123;</span><br><span class="line">          videoList: newVideoList.concat(videoList),</span><br><span class="line">          page: page,</span><br><span class="line">          totalPage: res.data.data.total,</span><br><span class="line">          serverUrl: serverUrl</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 上拉刷新</span></span><br><span class="line">  onReachBottom: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> currentPage = me.data.page;</span><br><span class="line">    <span class="keyword">var</span> totalPage = me.data.totalPage;</span><br><span class="line">    <span class="comment">// 如果是最后一页，无须查询</span></span><br><span class="line">    <span class="keyword">if</span> (currentPage === totalPage) &#123;</span><br><span class="line">      wx.showToast(&#123;</span><br><span class="line">        title: <span class="string">'没有更多视频，请积极投稿'</span>,</span><br><span class="line">        icon: <span class="string">'none'</span></span><br><span class="line">      &#125;);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 继续翻页</span></span><br><span class="line">    <span class="keyword">var</span> page = currentPage + <span class="number">1</span>;</span><br><span class="line">    me.getAllVideoList(page);</span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 具体的视频信息</span></span><br><span class="line">  showVideoInfo: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="首页——下拉刷新"><a href="#首页——下拉刷新" class="headerlink" title="首页——下拉刷新"></a>首页——下拉刷新</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line">Page(&#123;</span><br><span class="line">  <span class="comment">// 共用方法</span></span><br><span class="line">  getAllVideoList: <span class="function"><span class="keyword">function</span>(<span class="params">page</span>) </span>&#123;</span><br><span class="line">	...</span><br><span class="line">    wx.request(&#123;</span><br><span class="line">      url: serverUrl + <span class="string">'/video/showAll?page='</span> + page,</span><br><span class="line">      method: <span class="string">'POST'</span>,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 隐藏刷新</span></span><br><span class="line">        wx.hideLoading();</span><br><span class="line">        wx.hideNavigationBarLoading();</span><br><span class="line">        wx.stopPullDownRefresh();</span><br><span class="line">        ...</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 下拉刷新(需要在index.json启动事件)</span></span><br><span class="line">  onPullDownRefresh:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    wx.showNavigationBarLoading();</span><br><span class="line">    <span class="keyword">this</span>.getAllVideoList(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="视频组件与API"><a href="#视频组件与API" class="headerlink" title="视频组件与API"></a>视频组件与API</h4><p><a href="https://developers.weixin.qq.com/miniprogram/dev/component/video.html" target="_blank" rel="noopener">video 视频</a></p>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>src</td>
+<td>String</td>
+<td></td>
+<td>要播放视频的资源地址，支持云文件ID（2.2.3）</td>
+</tr>
+<tr>
+<td>initial-time</td>
+<td>Number</td>
+<td></td>
+<td>指定视频初始播放位置</td>
+</tr>
+<tr>
+<td>duration</td>
+<td>Number</td>
+<td></td>
+<td>指定视频时长</td>
+</tr>
+<tr>
+<td>controls</td>
+<td>Boolean</td>
+<td>true</td>
+<td>是否显示默认播放控件（播放/暂停按钮、播放进度、时间）</td>
+</tr>
+<tr>
+<td>danmu-list</td>
+<td>Object Array</td>
+<td></td>
+<td>弹幕列表</td>
+</tr>
+<tr>
+<td>danmu-btn</td>
+<td>Boolean</td>
+<td>false</td>
+<td>是否显示弹幕按钮，只在初始化时有效，不能动态变更</td>
+</tr>
+<tr>
+<td>enable-danmu</td>
+<td>Boolean</td>
+<td>false</td>
+<td>是否展示弹幕，只在初始化时有效，不能动态变更</td>
+</tr>
+<tr>
+<td>autoplay</td>
+<td>Boolean</td>
+<td>false</td>
+<td>是否自动播放</td>
+</tr>
+<tr>
+<td>loop</td>
+<td>Boolean</td>
+<td>false</td>
+<td>是否循环播放</td>
+</tr>
+<tr>
+<td>muted</td>
+<td>Boolean</td>
+<td>false</td>
+<td>是否静音播放</td>
+</tr>
+<tr>
+<td>page-gesture</td>
+<td>Boolean</td>
+<td>false</td>
+<td>在非全屏模式下，是否开启亮度与音量调节手势</td>
+</tr>
+<tr>
+<td>direction</td>
+<td>Number</td>
+<td></td>
+<td>设置全屏时视频的方向，不指定则根据宽高比自动判断。有效值为 0（正常竖向）, 90（屏幕逆时针90度）, -90（屏幕顺时针90度）</td>
+</tr>
+<tr>
+<td>show-progress</td>
+<td>Boolean</td>
+<td>true</td>
+<td>若不设置，宽度大于240时才会显示</td>
+</tr>
+<tr>
+<td>show-fullscreen-btn</td>
+<td>Boolean</td>
+<td>true</td>
+<td>是否显示全屏按钮</td>
+</tr>
+<tr>
+<td>show-play-btn</td>
+<td>Boolean</td>
+<td>true</td>
+<td>是否显示视频底部控制栏的播放按钮</td>
+</tr>
+<tr>
+<td>show-center-play-btn</td>
+<td>Boolean</td>
+<td>true</td>
+<td>是否显示视频中间的播放按钮</td>
+</tr>
+<tr>
+<td>enable-progress-gesture</td>
+<td>Boolean</td>
+<td>true</td>
+<td>是否开启控制进度的手势</td>
+</tr>
+</tbody>
+</table>
+<h5 id="wx-createVideoContext-videoId-this"><a href="#wx-createVideoContext-videoId-this" class="headerlink" title="wx.createVideoContext(videoId, this)"></a>wx.createVideoContext(videoId, this)</h5><p>创建并返回 video 上下文 <code>videoContext</code> 对象。在自定义组件下，第二个参数传入组件实例this，以操作组件内 <code>&lt;video/&gt;</code>组件</p>
+<h5 id="videoContext"><a href="#videoContext" class="headerlink" title="videoContext"></a>videoContext</h5><p><code>videoContext</code> 通过 videoId 跟一个 video 组件绑定，通过它可以操作一个 video 组件</p>
+<hr>
+<h4 id="开源搜索视频组件"><a href="#开源搜索视频组件" class="headerlink" title="开源搜索视频组件"></a>开源搜索视频组件</h4><h5 id="wsSearchView"><a href="#wsSearchView" class="headerlink" title="wsSearchView"></a><a href="https://github.com/mindawei/wsSearchView" target="_blank" rel="noopener">wsSearchView</a></h5><p>该搜索框组件基于开源项目<a href="https://github.com/icindy/wxSearch" target="_blank" rel="noopener">wxSearch</a> 进行了改进，主要有以下几个修改点：</p>
+<ul>
+<li>增加了注释，修改了一些bug，项目可以跑起来。</li>
+<li>为了解决搜索框和输入法界面重叠的问题，将搜索组件作为一个独立的页面。</li>
+<li>修改了界面样式，更加美观。</li>
+<li>减少了暴露接口，复杂性更低。</li>
+</ul>
+<h4 id="搜索插件缓存"><a href="#搜索插件缓存" class="headerlink" title="搜索插件缓存"></a>搜索插件缓存</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">search</span>(<span class="params">inputValue</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (inputValue &amp;&amp; inputValue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// 添加历史记录</span></span><br><span class="line">    wxSearchAddHisKey(inputValue);</span><br><span class="line">    <span class="comment">// 更新</span></span><br><span class="line">    <span class="keyword">var</span> temData = __that.data.wxSearchData;</span><br><span class="line">    temData.value = inputValue;</span><br><span class="line">    __that.setData(&#123;</span><br><span class="line">      wxSearchData: temData</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 回调搜索</span></span><br><span class="line">    __searchFunction(inputValue);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加本地缓存</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">wxSearchAddHisKey</span>(<span class="params">inputValue</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!inputValue || inputValue.length == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> value = wx.getStorageSync(<span class="string">'wxSearchHisKeys'</span>);</span><br><span class="line">  <span class="keyword">if</span> (value) &#123;</span><br><span class="line">    <span class="keyword">if</span> (value.indexOf(inputValue) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">      value.unshift(inputValue);</span><br><span class="line">    &#125;</span><br><span class="line">    wx.setStorage(&#123;</span><br><span class="line">      key: <span class="string">"wxSearchHisKeys"</span>,</span><br><span class="line">      data: value,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        getHisKeys(__that);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    value = [];</span><br><span class="line">    value.push(inputValue);</span><br><span class="line">    wx.setStorage(&#123;</span><br><span class="line">      key: <span class="string">"wxSearchHisKeys"</span>,</span><br><span class="line">      data: value,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        getHisKeys(__that);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="修改全局用户对象（使用缓存）"><a href="#修改全局用户对象（使用缓存）" class="headerlink" title="修改全局用户对象（使用缓存）"></a>修改全局用户对象（使用缓存）</h4><p>为了使用户每次打开小程序不需要重复的登录，根据官方文档的同步&amp;异步方法的说明；</p>
+<p>需要通过设置全局的用户对象，使用本地缓存的方式，解决这样的问题；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//app.js</span></span><br><span class="line">App(&#123;</span><br><span class="line">  serverUrl: <span class="string">"ip"</span>,</span><br><span class="line">  userInfo: <span class="literal">null</span>,</span><br><span class="line">  setGlobalUserInfo:<span class="function"><span class="keyword">function</span>(<span class="params">user</span>)</span>&#123;</span><br><span class="line">    wx.setStorageSync(<span class="string">"userInfo"</span>, user);</span><br><span class="line">  &#125;,</span><br><span class="line">  getGlobalUserInfo: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> wx.getStorageSync(<span class="string">"userInfo"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// app.userInfo = res.data.data;</span></span><br><span class="line"><span class="comment">// fixme 修改原有全局对象为本地缓存</span></span><br><span class="line">app.setGlobalUserInfo(res.data.data);</span><br><span class="line"><span class="comment">// fixme 修改原有全局对象为本地缓存</span></span><br><span class="line"><span class="keyword">var</span> userInfo = app.getGlobalUserInfo();</span><br><span class="line"><span class="comment">// 注销后，清空缓存</span></span><br><span class="line">          wx.removeStorageSync(<span class="string">"userInfo"</span>);</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="查询接口完善-amp-热搜词保存"><a href="#查询接口完善-amp-热搜词保存" class="headerlink" title="查询接口完善 &amp; 热搜词保存"></a>查询接口完善 &amp; 热搜词保存</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Service</span></span><br><span class="line"><span class="keyword">package</span> com.imooc.service.impl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.github.pagehelper.PageHelper;</span><br><span class="line"><span class="keyword">import</span> com.github.pagehelper.PageInfo;</span><br><span class="line"><span class="keyword">import</span> com.imooc.mapper.SearchRecordsMapper;</span><br><span class="line"><span class="keyword">import</span> com.imooc.mapper.VideosMapper;</span><br><span class="line"><span class="keyword">import</span> com.imooc.mapper.VideosMapperCustom;</span><br><span class="line"><span class="keyword">import</span> com.imooc.pojo.SearchRecords;</span><br><span class="line"><span class="keyword">import</span> com.imooc.pojo.Videos;</span><br><span class="line"><span class="keyword">import</span> com.imooc.pojo.vo.VideosVO;</span><br><span class="line"><span class="keyword">import</span> com.imooc.service.VideoService;</span><br><span class="line"><span class="keyword">import</span> com.imooc.utils.PagedResult;</span><br><span class="line"><span class="keyword">import</span> org.n3r.idworker.Sid;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"><span class="keyword">import</span> org.springframework.transaction.annotation.Propagation;</span><br><span class="line"><span class="keyword">import</span> org.springframework.transaction.annotation.Transactional;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoServiceImpl</span> <span class="keyword">implements</span> <span class="title">VideoService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> VideosMapper videosMapper;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> VideosMapperCustom videosMapperCustom;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> SearchRecordsMapper searchRecordsMapper;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> Sid sid;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Transactional</span>(propagation = Propagation.REQUIRED)</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> PagedResult <span class="title">getAllVideos</span><span class="params">(Videos video, Integer isSaveRecord, Integer page, Integer pageSize)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 保存热搜词记录</span></span><br><span class="line">		String desc = video.getVideoDesc();</span><br><span class="line">		<span class="keyword">if</span>(isSaveRecord != <span class="keyword">null</span> &amp;&amp; isSaveRecord == <span class="number">1</span>)&#123;</span><br><span class="line">			SearchRecords record = <span class="keyword">new</span> SearchRecords();</span><br><span class="line">			record.setId(sid.nextShort());</span><br><span class="line">			record.setContent(desc);</span><br><span class="line">			searchRecordsMapper.insert(record);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 视频分页查询</span></span><br><span class="line">		PageHelper.startPage(page, pageSize);</span><br><span class="line">		List&lt;VideosVO&gt; list = videosMapperCustom.queryAllVideos(desc);</span><br><span class="line"></span><br><span class="line">		PageInfo&lt;VideosVO&gt; pageList = <span class="keyword">new</span> PageInfo&lt;&gt;(list);</span><br><span class="line"></span><br><span class="line">		PagedResult pagedResult = <span class="keyword">new</span> PagedResult();</span><br><span class="line">		pagedResult.setPage(page);</span><br><span class="line">		pagedResult.setTotal(pageList.getPages());</span><br><span class="line">		pagedResult.setRows(list);</span><br><span class="line">		pagedResult.setRecords(pageList.getTotal());</span><br><span class="line">		<span class="keyword">return</span> pagedResult;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// VideosMapperCustom.xml</span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"queryAllVideos"</span> <span class="attr">resultMap</span>=<span class="string">"BaseResultMap"</span> <span class="attr">parameterType</span>=<span class="string">"String"</span>&gt;</span></span><br><span class="line">    select v.*,u.face_image as face_image,u.nickname as nickname from videos v</span><br><span class="line">    left join users u on u.id = v.user_id</span><br><span class="line">    where</span><br><span class="line">    1 = 1</span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">" videoDesc != null and videoDesc != '' "</span>&gt;</span></span><br><span class="line">        and v.video_desc like '%$&#123;videoDesc&#125;%'</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    and v.status = 1</span><br><span class="line">    order by v.create_time desc</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="热搜词查询接口"><a href="#热搜词查询接口" class="headerlink" title="热搜词查询接口"></a>热搜词查询接口</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// SearchRecordsMapper.xml</span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"getHotwords"</span> <span class="attr">resultType</span>=<span class="string">"String"</span>&gt;</span></span><br><span class="line">    SELECT content</span><br><span class="line">    FROM search_records</span><br><span class="line">    GROUP BY content</span><br><span class="line">    ORDER BY count(content) DESC</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Service</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoServiceImpl</span> <span class="keyword">implements</span> <span class="title">VideoService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> SearchRecordsMapper searchRecordsMapper;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Transactional</span>(propagation = Propagation.SUPPORTS)</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">getHotwords</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> searchRecordsMapper.getHotwords();;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Controller</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@Api</span>(value = <span class="string">"VIDEO API"</span>, tags = &#123;<span class="string">"VIDEO CONTROLLER"</span>&#125;)</span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/video"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoController</span> <span class="keyword">extends</span> <span class="title">BasicController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> VideoService videoService;</span><br><span class="line">    </span><br><span class="line">	<span class="meta">@PostMapping</span>(value = <span class="string">"/hot"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IMoocJSONResult <span class="title">hot</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> IMoocJSONResult.ok(videoService.getHotwords());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="热搜词联调"><a href="#热搜词联调" class="headerlink" title="热搜词联调"></a>热搜词联调</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">...  </span><br><span class="line"><span class="comment">// 2 搜索栏初始化（热搜词）</span></span><br><span class="line">onLoad: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">    <span class="comment">// 查询热搜词</span></span><br><span class="line">    <span class="keyword">var</span> serverUrl = app.serverUrl;</span><br><span class="line">    wx.request(&#123;</span><br><span class="line">      url: serverUrl+<span class="string">'/video/hot'</span>,</span><br><span class="line">      method:<span class="string">'POST'</span>,</span><br><span class="line">      success:<span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(res);</span><br><span class="line">        <span class="keyword">var</span> hotList = res.data.data;</span><br><span class="line">        <span class="comment">// 搜索栏初始化</span></span><br><span class="line">        WxSearch.init(</span><br><span class="line">          that, <span class="comment">// 本页面一个引用</span></span><br><span class="line">          <span class="comment">// ['慕课网', "小程序", 'SpringBoot', 'linux'], 热点搜索推荐，[]表示不使用</span></span><br><span class="line">          hotList,</span><br><span class="line">          hotList, <span class="comment">// 搜索匹配，[]表示不使用</span></span><br><span class="line">          that.mySearchFunction, <span class="comment">// 提供一个搜索回调函数</span></span><br><span class="line">          that.myGobackFunction <span class="comment">//提供一个返回回调函数</span></span><br><span class="line">        );</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+          
+            <a href="/tags/Spring-Boot/" rel="tag"># Spring Boot</a>
+          
+            <a href="/tags/Wechat/" rel="tag"># Wechat</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/20/MicWechat Note-6/" rel="next" title="Wechat Mini | Note-6">
+                <i class="fa fa-chevron-left"></i> Wechat Mini | Note-6
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/22/MicWechat Note-8/" rel="prev" title="Wechat Mini | Note-8">
+                Wechat Mini | Note-8 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">REX CHEN</p>
+              <p class="site-description motion-element" itemprop="description">日常记录</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#微信小程序开发-Note-7"><span class="nav-number">1.</span> <span class="nav-text">微信小程序开发 Note-7</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#小程序首页视频列表"><span class="nav-number">1.1.</span> <span class="nav-text">小程序首页视频列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义mapper"><span class="nav-number">1.2.</span> <span class="nav-text">自定义mapper</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#视频列表分页查询接口"><span class="nav-number">1.3.</span> <span class="nav-text">视频列表分页查询接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#首页分页联调"><span class="nav-number">1.4.</span> <span class="nav-text">首页分页联调</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#wx-getSystemInfoSync-获取系统信息同步接口"><span class="nav-number">1.4.1.</span> <span class="nav-text">wx.getSystemInfoSync() - 获取系统信息同步接口</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#首页——上拉分页"><span class="nav-number">1.5.</span> <span class="nav-text">首页——上拉分页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#首页——下拉刷新"><span class="nav-number">1.6.</span> <span class="nav-text">首页——下拉刷新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#视频组件与API"><span class="nav-number">1.7.</span> <span class="nav-text">视频组件与API</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#wx-createVideoContext-videoId-this"><span class="nav-number">1.7.1.</span> <span class="nav-text">wx.createVideoContext(videoId, this)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#videoContext"><span class="nav-number">1.7.2.</span> <span class="nav-text">videoContext</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开源搜索视频组件"><span class="nav-number">1.8.</span> <span class="nav-text">开源搜索视频组件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#wsSearchView"><span class="nav-number">1.8.1.</span> <span class="nav-text">wsSearchView</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#搜索插件缓存"><span class="nav-number">1.9.</span> <span class="nav-text">搜索插件缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改全局用户对象（使用缓存）"><span class="nav-number">1.10.</span> <span class="nav-text">修改全局用户对象（使用缓存）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询接口完善-amp-热搜词保存"><span class="nav-number">1.11.</span> <span class="nav-text">查询接口完善 &amp; 热搜词保存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#热搜词查询接口"><span class="nav-number">1.12.</span> <span class="nav-text">热搜词查询接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#热搜词联调"><span class="nav-number">1.13.</span> <span class="nav-text">热搜词联调</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">REX CHEN</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

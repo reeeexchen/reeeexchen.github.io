@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JAVA,Spring Boot," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Blog System | Note-2@2018年7月29日 14:38:38    Knowledge From Imooc 数据持久化JPA​    用于管理Java EE和Java SE环境中的持久化，以及对象/关系(O/R)映射的Java API； 实体@Entity​    表示数据库中的表，每个实体实体对应于表中的行； ​    类必须有一个public或protected的无参构造">
+<meta name="keywords" content="JAVA,Spring Boot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Blog System | Note-2">
+<meta property="og:url" content="http://yoursite.com/2018/07/28/Blog System  Note-2/index.html">
+<meta property="og:site_name" content="REEEEX">
+<meta property="og:description" content="Blog System | Note-2@2018年7月29日 14:38:38    Knowledge From Imooc 数据持久化JPA​    用于管理Java EE和Java SE环境中的持久化，以及对象/关系(O/R)映射的Java API； 实体@Entity​    表示数据库中的表，每个实体实体对应于表中的行； ​    类必须有一个public或protected的无参构造">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-20T06:59:29.653Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Blog System | Note-2">
+<meta name="twitter:description" content="Blog System | Note-2@2018年7月29日 14:38:38    Knowledge From Imooc 数据持久化JPA​    用于管理Java EE和Java SE环境中的持久化，以及对象/关系(O/R)映射的Java API； 实体@Entity​    表示数据库中的表，每个实体实体对应于表中的行； ​    类必须有一个public或protected的无参构造">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/28/Blog System  Note-2/"/>
+
+
+
+
+
+  <title>Blog System | Note-2 | REEEEX</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">REEEEX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">KEEP GOING</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/28/Blog System  Note-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Blog System | Note-2</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-28T00:00:00+08:00">
+                2018-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Blog-System-Note-2"><a href="#Blog-System-Note-2" class="headerlink" title="Blog System | Note-2"></a>Blog System | Note-2</h3><p>@2018年7月29日 14:38:38    Knowledge From Imooc</p>
+<h4 id="数据持久化"><a href="#数据持久化" class="headerlink" title="数据持久化"></a>数据持久化</h4><h5 id="JPA"><a href="#JPA" class="headerlink" title="JPA"></a>JPA</h5><p>​    用于管理Java EE和Java SE环境中的持久化，以及对象/关系(O/R)映射的Java API；</p>
+<h5 id="实体-Entity"><a href="#实体-Entity" class="headerlink" title="实体@Entity"></a>实体@Entity</h5><p>​    表示数据库中的表，每个实体实体对应于表中的行；</p>
+<p>​    类必须有一个public或protected的无参构造函数；</p>
+<p>​    实体实例被当作值以分离对象方式进行传递，则该类必须实现Serializable接口；</p>
+<p>​    唯一的标识：主键或复合主键；</p>
+<h5 id="关系-Relation"><a href="#关系-Relation" class="headerlink" title="关系 Relation"></a>关系 Relation</h5><p>​    一对一：@OneToOne</p>
+<p>​    一对多：@OneToMany</p>
+<p>​    多对一：@ManyToOne</p>
+<p>​    多对多：@ManyToMany</p>
+<h5 id="管理实体的接口-EntityManager"><a href="#管理实体的接口-EntityManager" class="headerlink" title="管理实体的接口 EntityManager"></a>管理实体的接口 EntityManager</h5><p>​    定义用于持久性上下文进行交互的方法；</p>
+<p>​    创建和删除持久实体实例，通过实体的主键查找实体；</p>
+<p>​    允许在实体上运行查询；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取EntityManager实例</span></span><br><span class="line"><span class="meta">@PersistenceUnit</span> <span class="comment">// 持久化单元</span></span><br><span class="line">EntityManagerFactory emf;</span><br><span class="line">EntityManager em;</span><br><span class="line"><span class="meta">@Resource</span></span><br><span class="line">UserTransaction utx;</span><br><span class="line">...</span><br><span class="line">em = emf.createEntityManager();</span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    utx.begin();</span><br><span class="line">    em.persist(SomeEntity);</span><br><span class="line">    em.merge(AnotherEntity);</span><br><span class="line">    em.remove(ThirdEntity);</span><br><span class="line">    utx.commit();</span><br><span class="line">&#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">    utx.rollback();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查找实体</span></span><br><span class="line"><span class="meta">@PersistenceContext</span></span><br><span class="line">EntityManager em;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">enterOrder</span><span class="params">(<span class="keyword">int</span> custID,CustomerOrder newOrder)</span></span>&#123;</span><br><span class="line">    Customer cust = em.find(Customer,custID);</span><br><span class="line">    cust.getOrders().add(newOrder);</span><br><span class="line">    newOrder.setCustomer(cust);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Spring-Data-JPA"><a href="#Spring-Data-JPA" class="headerlink" title="Spring Data JPA"></a>Spring Data JPA</h5><p>​    更大的Spring Data家族的一部分；</p>
+<p>​    对基于JPA的数据访问层的增强支持；</p>
+<p>​    更容易构建基于Spring数据访问技术栈的程序；</p>
+<h5 id="常用接口"><a href="#常用接口" class="headerlink" title="常用接口"></a>常用接口</h5><p>​    CrudRepository</p>
+<p>​    PagingAndSortingRepository</p>
+<p>​    自定义接口：根据方法名创建查询 public interface UserRepository extends Repository&lt;User,Long&gt;{}</p>
+<h5 id="应用"><a href="#应用" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Id</span></span><br><span class="line"><span class="meta">@GeneratedValue</span>(strategy= GenerationType.IDENTITY)</span><br><span class="line"><span class="comment">// Controller</span></span><br><span class="line">findAll();</span><br><span class="line">findOne();</span><br><span class="line">delete();</span><br><span class="line">save();</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># 使用H2控制台：</span><br><span class="line">spring.h2.console.enabled=<span class="keyword">true</span></span><br><span class="line">#查看</span><br><span class="line">localhost:<span class="number">8080</span>/h2-console</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># DataSource</span><br><span class="line">spring.datasource.url=...</span><br><span class="line">spring.datasource.username=...</span><br><span class="line">spring.datasource.password=...</span><br><span class="line">spring.datasource.driver-<span class="class"><span class="keyword">class</span>-<span class="title">name</span></span>=com.mysql.jdbc.Driver</span><br><span class="line"># JPA</span><br><span class="line">spring.jpa.show-sql=<span class="keyword">true</span></span><br><span class="line">spring.jpa.hibernate.ddl-auto=create-drop</span><br></pre></td></tr></table></figure>
+<h4 id="全文搜索"><a href="#全文搜索" class="headerlink" title="全文搜索"></a>全文搜索</h4><h5 id="全文搜索-1"><a href="#全文搜索-1" class="headerlink" title="全文搜索"></a>全文搜索</h5><p>​    概念：将文件中所有文本与搜索项匹配的文字资料检索方法</p>
+<p>​    Knowledge About(<a href="#link1">数据结构</a> &amp;&amp; <a href="#link2">非结构化数据的检索</a>)</p>
+<p>​    实现原理：建立文本库、建立索引、执行搜索、过滤结果</p>
+<p>​    实现技术：Lucene、ElasticSearch（ES）、Solr</p>
+<h5 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h5><p>​    高度可扩展的开源全文搜索和分析引擎；</p>
+<p>​    快速的、近实时性的对大数据进行存储、搜索和分析；</p>
+<p>​    用于支持有复杂的数据搜索需求的企业级应用；</p>
+<p>特点：分布式（分布到多个分片上）、高可用（由分布式所得）、多类型（多种数据类型）、多API、面向文档（不需要事先定义模式）、异步写入（性能高于同步）、近实时、基于Lucene、Apache协议</p>
+<h5 id="核心概念："><a href="#核心概念：" class="headerlink" title="核心概念："></a>核心概念：</h5><p>近实时：</p>
+<p>​    搜索文档到可搜索之间的时间，轻微的延时，1s左右；</p>
+<p>​    每隔n秒刷新数据；</p>
+<p>​    索引建立后，不会直接写入磁盘，存在文件系统缓存中，根据刷新策略，定期同步到磁盘中；</p>
+<p>集群：</p>
+<p>​    一个或多个节点的集合，保存应用的全部数据， 并提供基于全部节点的集成式的索引和搜索功能；</p>
+<p>​    每个集群有唯一名称；</p>
+<p>节点：</p>
+<p>​    集群中的一台服务器，用于保存数据，并且参与整个集群的索引和搜索；</p>
+<p>索引（5个分片，1个副本）：</p>
+<p>​    加快搜索速度，相似文档的集合；</p>
+<p>​    在单个集群中，根据需要，定义任意数量的索引；</p>
+<p>类型：</p>
+<p>​    对一个索引中的文档中，做进一步的细分，根据公共属性划分；</p>
+<p>文档：</p>
+<p>​    进行索引的基本单位，JSON格式；</p>
+<p>分片：</p>
+<p>​    超出单个节点处理的范围，将索引分成多个分片（含副本），存储索引的部分数据；</p>
+<p>副本：</p>
+<p>​    分片的故障不可避免，为了可靠性，设置分片副本，分配到不同节点上；</p>
+<p>​    增加吞吐量，分配到不同副本中；</p>
+<h5 id="应用-1"><a href="#应用-1" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加 Spring Daat Elasticsearch 的依赖</span></span><br><span class="line">compile(<span class="string">'org.springframework.boot:spring-boot-starter-data-elasticsearch'</span>)</span><br><span class="line"><span class="comment">// 添加 JNA 的依赖</span></span><br><span class="line">compile(<span class="string">'net.java.dev.jna:jna:4.3.0'</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># Elasticsearch 服务地址</span><br><span class="line">spring.data.elasticsearch.cluster-nodes=localhost:<span class="number">9300</span></span><br><span class="line"># 设置连接超时时间</span><br><span class="line">spring.data.elasticsearch.properties.transport.tcp.connect_timeout=<span class="number">120</span>s</span><br><span class="line"></span><br><span class="line"><span class="comment">// domain</span></span><br><span class="line"><span class="meta">@Document</span>(indexName=<span class="string">"blog"</span>,type=<span class="string">"blog"</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">// repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">EsBlogRepository</span> <span class="keyword">extends</span> <span class="title">ElasticsearchRepository</span>&lt;<span class="title">EsBlog</span>,<span class="title">String</span>&gt; </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line">进行controller之前，需要启动elasticsearch服务器</span><br><span class="line">PS：注意jar包的版本，以及elasticsearch服务器的版本问题</span><br><span class="line"></span><br><span class="line"><span class="comment">// controller</span></span><br><span class="line"><span class="meta">@GetMapping</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;EsBlog&gt; <span class="title">list</span><span class="params">(@RequestParam(value = <span class="string">"title"</span>)</span>String title,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"summary"</span>)</span>String summary,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"content"</span>)</span>String content,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageIndex"</span>,defaultValue = <span class="string">"0"</span>)</span><span class="keyword">int</span> pageIndex,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageSize"</span>,defaultValue = <span class="string">"10"</span>)</span><span class="keyword">int</span> pageSize)</span>&#123;</span><br><span class="line">    <span class="comment">// 数据在测试用例中初始化</span></span><br><span class="line">    Pageable pageable = <span class="keyword">new</span> PageRequest(pageIndex, pageSize);</span><br><span class="line">    Page&lt;EsBlog&gt; page = esBlogRepository.find...(title,summary,content,pageable);</span><br><span class="line">    <span class="keyword">return</span> page.getContent();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><h5 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a><a name="link1">数据结构</a></h5><p>​    结构化：具有固定格式或有限长度的数据（数据库、元数据）</p>
+<p>​    非结构化：不定长或无固定格式的数据（邮件，word文档）</p>
+<h5 id="非结构化数据的检索"><a href="#非结构化数据的检索" class="headerlink" title="非结构化数据的检索"></a><a name="link2">非结构化数据的检索</a></h5><p>​    顺序扫描 Serial Scanning ： 从头到尾搜索</p>
+<p>​    全文搜索 Full-text Search ： 将非结构化数据部分信息，组织成结构化数据，添加索引，进行搜索</p>
+<p>2018年7月29日 22:35:47</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+          
+            <a href="/tags/Spring-Boot/" rel="tag"># Spring Boot</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/27/Blog System  Note-1/" rel="next" title="Blog System | Note-1">
+                <i class="fa fa-chevron-left"></i> Blog System | Note-1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/29/Blog System  Note-3/" rel="prev" title="Blog System | Note-3">
+                Blog System | Note-3 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">REX CHEN</p>
+              <p class="site-description motion-element" itemprop="description">日常记录</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Blog-System-Note-2"><span class="nav-number">1.</span> <span class="nav-text">Blog System | Note-2</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据持久化"><span class="nav-number">1.1.</span> <span class="nav-text">数据持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#JPA"><span class="nav-number">1.1.1.</span> <span class="nav-text">JPA</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实体-Entity"><span class="nav-number">1.1.2.</span> <span class="nav-text">实体@Entity</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关系-Relation"><span class="nav-number">1.1.3.</span> <span class="nav-text">关系 Relation</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#管理实体的接口-EntityManager"><span class="nav-number">1.1.4.</span> <span class="nav-text">管理实体的接口 EntityManager</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Spring-Data-JPA"><span class="nav-number">1.1.5.</span> <span class="nav-text">Spring Data JPA</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常用接口"><span class="nav-number">1.1.6.</span> <span class="nav-text">常用接口</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#应用"><span class="nav-number">1.1.7.</span> <span class="nav-text">应用@</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全文搜索"><span class="nav-number">1.2.</span> <span class="nav-text">全文搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#全文搜索-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">全文搜索</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ElasticSearch"><span class="nav-number">1.2.2.</span> <span class="nav-text">ElasticSearch</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#核心概念："><span class="nav-number">1.2.3.</span> <span class="nav-text">核心概念：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#应用-1"><span class="nav-number">1.2.4.</span> <span class="nav-text">应用@</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#附录"><span class="nav-number">1.3.</span> <span class="nav-text">附录</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#数据结构"><span class="nav-number">1.3.1.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#非结构化数据的检索"><span class="nav-number">1.3.2.</span> <span class="nav-text">非结构化数据的检索</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">REX CHEN</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
