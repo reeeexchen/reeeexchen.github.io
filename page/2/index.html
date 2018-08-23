@@ -262,6 +262,398 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/15/MicWechat Note-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/15/MicWechat Note-1/" itemprop="url">Wechat Mini | Note-1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-15T00:00:00+08:00">
+                2018-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="微信小程序开发-Note-1"><a href="#微信小程序开发-Note-1" class="headerlink" title="微信小程序开发 Note-1"></a>微信小程序开发 Note-1</h3><p>@ 2018年8月15日 15:46:28</p>
+<hr>
+<h4 id="微信小程序是什么"><a href="#微信小程序是什么" class="headerlink" title="微信小程序是什么"></a>微信小程序是什么</h4><p>是一种全新的连接用户和服务的方式，可以在微信内便捷的获取和传播，同时具有出色的使用体验；</p>
+<p>手机端APP的另一种全新的展现形式；</p>
+<p>不是HTML5应用；</p>
+<p>无须下载过多占用手机内存的app，即开即用；</p>
+<p>必备技术栈：HTML，JS，CSS；</p>
+<p>不是所有app都适用于小程序；</p>
+<p>基于腾讯庞大的社交群体，为原生APP导流；</p>
+<p>创业公司优先推出小程序，开发成本低；</p>
+<p>当作简单的工具使用，需要在APP上频繁的CRUD不适用；</p>
+<hr>
+<h4 id="小程序注册流程"><a href="#小程序注册流程" class="headerlink" title="小程序注册流程"></a>小程序注册流程</h4><p>邮箱，小程序基本设置，开发者设置；</p>
+<h4 id="小程序开发"><a href="#小程序开发" class="headerlink" title="小程序开发"></a>小程序开发</h4><h5 id="hello-world"><a href="#hello-world" class="headerlink" title="hello-world"></a>hello-world</h5><p>下载微信开发工具后，建立快速开发基本模版即可开启第一个小程序项目；</p>
+<p>app.js 只有唯一一个；</p>
+<p>pages是页面目录；</p>
+<p>wxml-html，js-js，wxss-css；</p>
+<h5 id="官方demo"><a href="#官方demo" class="headerlink" title="官方demo"></a>官方demo</h5><p><a href="https://developers.weixin.qq.com/miniprogram/dev/demo.html?t=1477656485442" target="_blank" rel="noopener">体验小程序</a></p>
+<p>包含了小程序的官方组件以及接口；</p>
+<hr>
+<h5 id="小程序工程的构成"><a href="#小程序工程的构成" class="headerlink" title="小程序工程的构成"></a>小程序工程的构成</h5><p>基本文件（app.js,app.json,app.wxss）</p>
+<p>​    ·app.js 外部全局主要的JS文件，当作一个JS文件的父类</p>
+<p>​    ·app.json 全局的配置文件</p>
+<p>​    ·app.wxss 全局的页面样式文件</p>
+<p>页面文件（Page目录下）</p>
+<p>​    `index(index.js，index.wxml，index.wxss，index.json)</p>
+<p>​    xxx.js         私有的JS，相当于的子类</p>
+<p>​    xxx.json     以json对象形式存在的配置</p>
+<p>​    xxx.wxml     页面文件</p>
+<p>​    xxx.wxss     私有的页面样式文件</p>
+<hr>
+<h5 id="第一个小程序demo"><a href="#第一个小程序demo" class="headerlink" title="第一个小程序demo"></a>第一个小程序demo</h5><p>删除部分不需要的文件；</p>
+<p>只保留app.js中的部分内容；</p>
+<p><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/config.html#%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE" target="_blank" rel="noopener">app.json 配置项列表-window</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//app.js</span></span><br><span class="line">App(&#123;</span><br><span class="line">  onLaunch: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//app.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"pages"</span>: [</span><br><span class="line">    <span class="string">"pages/imooc/imooc"</span>,</span><br><span class="line">    <span class="string">"pages/index/index"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">"window"</span>: &#123;</span><br><span class="line">    <span class="string">"backgroundTextStyle"</span>: <span class="string">"light"</span>,</span><br><span class="line">    <span class="string">"navigationBarBackgroundColor"</span>: <span class="string">"#fff"</span>,</span><br><span class="line">    <span class="string">"navigationBarTitleText"</span>: <span class="string">"WeChat"</span>,</span><br><span class="line">    <span class="string">"navigationBarTextStyle"</span>: <span class="string">"black"</span></span><br><span class="line">  &#125;,</span><br><span class="line">    <span class="string">"tabBar"</span>: &#123;</span><br><span class="line">    <span class="string">"list"</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">"pagePath"</span>: <span class="string">"pages/index/index"</span>,</span><br><span class="line">        <span class="string">"text"</span>: <span class="string">"首页"</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">在pages，用于描述当前小程序所有页面路径，这是为了让微信客户端知道当前你的小程序页面定义在哪个目；</span><br><span class="line">在pages，设置的第一行，为打开小程序所显示的主页；</span><br><span class="line"></span><br><span class="line">在<span class="built_in">window</span>字段：定义小程序所有页面的顶部背景颜色，文字颜色定义等；</span><br><span class="line"></span><br><span class="line">在tabBar中，暂时为导航栏；</span><br><span class="line">在networkTimeout字段，各类网络请求的超时时间；</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="数据绑定以及CSS文件"><a href="#数据绑定以及CSS文件" class="headerlink" title="数据绑定以及CSS文件"></a>数据绑定以及CSS文件</h5><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.wxml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"txt-css"</span>&gt;</span>&#123;&#123;mydata&#125;&#125;<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">&#123;&#123;xxx&#125;&#125; 数据绑定的用法；</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//index.js</span></span><br><span class="line"><span class="comment">//获取应用实例</span></span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    mydata: <span class="string">'Data Bind'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//index.wxss</span><br><span class="line"><span class="selector-class">.txt-css</span>&#123;</span><br><span class="line">  <span class="attribute">margin-top</span>: <span class="number">150</span>rpx;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>rpx（responsive pixel）: 可以根据屏幕宽度进行自适应。规定屏幕宽为750rpx。如在 iPhone6 上，屏幕宽度为375px，共有750个物理像素，则750rpx = 375px = 750物理像素，1rpx = 0.5px = 1物理像素。</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">//外部css文件导入 以及 内联样式</span><br><span class="line">@<span class="keyword">import</span> <span class="string">"out.wxss"</span>;</span><br><span class="line"><span class="selector-class">.txt-css</span>&#123;</span><br><span class="line">  <span class="attribute">margin-top</span>: <span class="number">150</span>rpx;</span><br><span class="line">&#125;</span><br><span class="line">// out.wxss</span><br><span class="line"><span class="selector-class">.txt-left</span>&#123;</span><br><span class="line">  <span class="attribute">margin-left</span>: <span class="number">350</span>rpx;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;!<span class="selector-tag">--index</span><span class="selector-class">.wxml--</span>&gt;</span><br><span class="line">&lt;view class="container"&gt;</span><br><span class="line">  &lt;text class="txt-css txt-left" style="color:&#123;&#123;color&#125;&#125;;"&gt;&#123;&#123;mydata&#125;&#125;&lt;/text&gt;</span><br><span class="line">&lt;/view&gt;</span><br><span class="line"></span><br><span class="line">//index.js</span><br><span class="line">//获取应用实例</span><br><span class="line"><span class="selector-tag">Page</span>(&#123;</span><br><span class="line">  <span class="attribute">data</span>: &#123;</span><br><span class="line">    mydata: <span class="string">'Data Bind'</span>,</span><br><span class="line">    color:  <span class="string">"red"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="selector-tag">onLoad</span><span class="selector-pseudo">:function()</span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="小程序页面加载"><a href="#小程序页面加载" class="headerlink" title="小程序页面加载"></a>小程序页面加载</h5><p>默认加载pages中的第一个目录；</p>
+<p>其他目录需要通过触发才能加载；</p>
+<hr>
+<h5 id="小程序APP的生命周期"><a href="#小程序APP的生命周期" class="headerlink" title="小程序APP的生命周期"></a>小程序APP的生命周期</h5><p>onLaunch：初始化事件，只被执行一次；</p>
+<p>onShow：随着onLaunch触发，打开到小程序前台触发的事件；</p>
+<p>onHide：小程序随着前台到后台的转变，隐藏到后台的触发事件；</p>
+<p>onError：抛出异常时触发的事件；</p>
+<p>其他：开发人员定义的事件；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.js</span></span><br><span class="line">App(&#123;</span><br><span class="line">  onLaunch: <span class="function"><span class="keyword">function</span>(<span class="params">options</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"触发onLaunch"</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  onShow: <span class="function"><span class="keyword">function</span>(<span class="params">options</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"触发onShow"</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  onHide: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Do something when hide.</span></span><br><span class="line">  &#125;,</span><br><span class="line">  onError: <span class="function"><span class="keyword">function</span>(<span class="params">msg</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(msg)</span><br><span class="line">  &#125;,</span><br><span class="line">  globalData: <span class="string">'I am global data'</span>,</span><br><span class="line">  courseName: <span class="string">'小程序'</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 全局的 getApp() 函数可以用来获取到小程序实例</span></span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    mydata: <span class="string">'imooc Bind'</span>,</span><br><span class="line">    color: <span class="string">"green"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  onLoad: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> appInstance = getApp()</span><br><span class="line">    <span class="built_in">console</span>.log(appInstance.courseName)</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      mydata: appInstance.courseName</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="手机端的远程调试"><a href="#手机端的远程调试" class="headerlink" title="手机端的远程调试"></a>手机端的远程调试</h4><p>进行手机上的远程调试（debug）时，需要在创建工程时，填上AppID；</p>
+<p>使用手机扫描小程序开发根据提供的预览和远程调试的功能；</p>
+<hr>
+<h4 id="私有页面的生命周期以及导航"><a href="#私有页面的生命周期以及导航" class="headerlink" title="私有页面的生命周期以及导航"></a>私有页面的生命周期以及导航</h4><p><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/page.html#pageprototyperoute" target="_blank" rel="noopener">注册页面，生命周期回调函数</a></p>
+<p>onLoad(Object query)    页面加载时触发</p>
+<p>onShow()            页面显示/切入前台时触发</p>
+<p>onReady()            页面初次渲染完成时触发</p>
+<p>onHide()                页面隐藏/切入后台时触发</p>
+<p>onUnload()            页面卸载时触发</p>
+<p>关于onHide和onUnload，联系到两个API wx.redirectTo(OBJECT) 和 wx.navigateTo(OBJECT)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在页面中写入一个clickMe的点击事件；</span></span><br><span class="line">Page(&#123;</span><br><span class="line">  clickMe:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    wx.navigateTo(&#123;</span><br><span class="line">      url: <span class="string">'../index/index'</span>,</span><br><span class="line">    &#125;),</span><br><span class="line">	wx.redirectTo(&#123;</span><br><span class="line">      url: <span class="string">'../index/index'</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 注意事项1 url的路径问题，明确相对路径和绝对路径；</span></span><br><span class="line"><span class="comment">// 当跳转当另一页面，点击返回时，只触发了onShow事件，没有触发onLaunch和onReady事件；</span></span><br><span class="line"><span class="comment">// redirectTo事件，触发onUnload事件；</span></span><br><span class="line"><span class="comment">// 注意事项2 减少使用navigateTo，防止onHide消耗过多的资源；</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://developers.weixin.qq.com/miniprogram/dev/image/mina-lifecycle.png?t=18081511" alt=""></p>
+<hr>
+<h4 id="小程序的事件触发"><a href="#小程序的事件触发" class="headerlink" title="小程序的事件触发"></a>小程序的事件触发</h4><p><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/view/wxml/event.html" target="_blank" rel="noopener">事件</a></p>
+<p>通过行为进行的人机交互的方式；</p>
+<p>类似html中<code>onClick</code>和<code>onChange</code>事件等；</p>
+<p>如<code>bindtap</code>，当用户点击该组件的时候会在该页面对应的Page中找到相应的事件处理函数。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- event.wxml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">id</span>=<span class="string">"tapTest"</span> <span class="attr">bindtap</span>=<span class="string">"clickMe"</span>&gt;</span> Click me! <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// event.js</span></span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">  &#125;,</span><br><span class="line">  clickMe: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Click Me Was Clicked"</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(e);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h5 id="事件分类"><a href="#事件分类" class="headerlink" title="事件分类"></a>事件分类</h5><p>事件分为<code>冒泡事件</code>和<code>非冒泡事件</code></p>
+<p>​    ·冒泡事件：当一个组件上的事件被触发后，该事件会向父节点传递；</p>
+<p>​    ·非冒泡事件：当一个组件上的事件被触发后，该事件不会向父节点传递；</p>
+<hr>
+<h4 id="小程序的模块化"><a href="#小程序的模块化" class="headerlink" title="小程序的模块化"></a>小程序的模块化</h4><p>抽离通用方法作为通用函数；</p>
+<p>构建<code>utils-common</code>类；</p>
+<p>可以将一些公共的代码抽离成为一个单独的 js 文件，作为一个模块。模块只有通过 <code>module.exports</code> 或者 <code>exports</code> 才能对外暴露接口；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// common.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayHello</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Hello '</span> + name + <span class="string">'!'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayGoodbye</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`Goodbye <span class="subst">$&#123;name&#125;</span> !`</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 区别单引号''和反引号``</span></span><br><span class="line"><span class="built_in">module</span>.exports.sayHello = sayHello</span><br><span class="line">exports.sayGoodbye = sayGoodbye</span><br></pre></td></tr></table></figure>
+<p>在需要使用这些模块的文件中，使用 <code>require(path)</code> 将公共代码引入 ；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> common = <span class="built_in">require</span>(<span class="string">'common.js'</span>)</span><br><span class="line">Page(&#123;</span><br><span class="line">  helloMINA: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    common.sayHello(<span class="string">'MINA'</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  goodbyeMINA: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    common.sayGoodbye(<span class="string">'MINA'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="视图层——数据绑定"><a href="#视图层——数据绑定" class="headerlink" title="视图层——数据绑定"></a>视图层——数据绑定</h4><p>HTML中，JQuery dom操作 $选择器；</p>
+<p>WX中，通过数据绑定 类似于vue/react，通过Mustache表达式；</p>
+<p>作用范围：内容，组件属性（双引号内），控制属性（双引号内），关键字（双引号内）；</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--pages/dataBind/dataBind.wxml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">'container'</span> <span class="attr">id</span>=<span class="string">"myid-&#123;&#123;testid&#125;&#125;"</span>&gt;</span></span><br><span class="line">&#123;&#123;msg&#125;&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">checkbox</span> <span class="attr">checked</span>=<span class="string">"&#123;&#123;true&#125;&#125;"</span>&gt;</span> <span class="tag">&lt;/<span class="name">checkbox</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">checkbox</span> <span class="attr">checked</span>=<span class="string">"&#123;&#123;false&#125;&#125;"</span>&gt;</span> <span class="tag">&lt;/<span class="name">checkbox</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">checkbox</span> <span class="attr">checked</span>=<span class="string">"&#123;&#123;flag&#125;&#125;"</span>&gt;</span> <span class="tag">&lt;/<span class="name">checkbox</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">checkbox</span> <span class="attr">checked</span>=<span class="string">"&#123;&#123;unflag&#125;&#125;"</span>&gt;</span> <span class="tag">&lt;/<span class="name">checkbox</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pages/dataBind/dataBind.js</span></span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    msg:<span class="string">"这是一个msg"</span>,</span><br><span class="line">    testid:<span class="number">1001</span>,</span><br><span class="line">    flag:<span class="literal">true</span>,</span><br><span class="line">    unflag:<span class="literal">false</span>,</span><br><span class="line">    a:<span class="number">1</span>,</span><br><span class="line">    b:<span class="number">2</span>,</span><br><span class="line">    c:<span class="number">3</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 三元运算 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">hidden</span>=<span class="string">"&#123;&#123;flag ? true : false&#125;&#125;"</span>&gt;</span> Hidden <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 算数运算 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span> &#123;&#123;a + b&#125;&#125; + &#123;&#123;c&#125;&#125; + d <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">view中的内容为 3 + 3 + d</span><br><span class="line"><span class="comment">&lt;!-- 字符串运算 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span>&#123;&#123;msg + hello + "test"&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">view中内容为 这是一个msghellotest</span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span>&#123;&#123;a+b + hello&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">view中内容为 3hello</span><br></pre></td></tr></table></figure>
+<h4 id="视图层——列表渲染"><a href="#视图层——列表渲染" class="headerlink" title="视图层——列表渲染"></a>视图层——列表渲染</h4><p>wx:key</p>
+<p>如果列表中项目的位置会动态改变或者有新的项目添加到列表中，并且希望列表中的项目保持自己的特征和状态</p>
+<p><code>wx:key</code> 的值以两种形式提供</p>
+<ol>
+<li>字符串，代表在 for 循环的 array 中 item 的某个 property，该 property 的值需要是列表中唯一的字符串或数字，且不能动态改变。</li>
+<li>保留关键字 <code>*this</code> 代表在 for 循环中的 item 本身，这种表示需要 item 本身是一个唯一的字符串或者数字，如：</li>
+</ol>
+<p>当数据改变触发渲染层重新渲染的时候，会校正带有 key 的组件，框架会确保他们被重新排序，而不是重新创建，以确保使组件保持自身的状态，并且提高列表渲染时的效率</p>
+<h4 id="视图层——条件渲染"><a href="#视图层——条件渲染" class="headerlink" title="视图层——条件渲染"></a>视图层——条件渲染</h4><h5 id="wx-if"><a href="#wx-if" class="headerlink" title="wx:if"></a>wx:if</h5><p>在框架中，使用 <code>wx:if=&quot;&quot;</code> 来判断是否需要渲染该代码块，也可以用 <code>wx:elif</code> 和 <code>wx:else</code> 来添加一个 else 块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;view wx:if=&quot;&#123;&#123;length &gt; 5&#125;&#125;&quot;&gt; 1 &lt;/view&gt;</span><br><span class="line">&lt;view wx:elif=&quot;&#123;&#123;length &gt; 2&#125;&#125;&quot;&gt; 2 &lt;/view&gt;</span><br><span class="line">&lt;view wx:else&gt; 3 &lt;/view&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="block-wx-if"><a href="#block-wx-if" class="headerlink" title="block wx:if"></a>block wx:if</h5><p>因为 <code>wx:if</code> 是一个控制属性，需要将它添加到一个标签上。如果要一次性判断多个组件标签，可以使用一个 <code>&lt;block/&gt;</code> 标签将多个组件包装起来，并在上边使用 <code>wx:if</code> 控制属性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;block wx:if=&quot;&#123;&#123;true&#125;&#125;&quot;&gt;</span><br><span class="line">  &lt;view&gt; view1 &lt;/view&gt;</span><br><span class="line">  &lt;view&gt; view2 &lt;/view&gt;</span><br><span class="line">&lt;/block&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong> <code>&lt;block/&gt;</code> 并不是一个组件，它仅仅是一个包装元素，不会在页面中做任何渲染，只接受控制属性。</p>
+<h5 id="wx-if-vs-hidden"><a href="#wx-if-vs-hidden" class="headerlink" title="wx:if vs hidden"></a><code>wx:if</code> vs <code>hidden</code></h5><p>因为 <code>wx:if</code> 之中的模板也可能包含数据绑定，所以当 <code>wx:if</code> 的条件值切换时，框架有一个局部渲染的过程，因为它会确保条件块在切换时销毁或重新渲染。</p>
+<p>同时 <code>wx:if</code> 也是<strong>惰性的</strong>，如果在初始渲染条件为 <code>false</code>，框架什么也不做，在条件第一次变成真的时候才开始局部渲染</p>
+<p>相比之下，<code>hidden</code> 就简单的多，组件始终会被渲染，只是简单的控制显示与隐藏</p>
+<p>一般来说，<code>wx:if</code> 有更高的切换消耗而 <code>hidden</code> 有更高的初始渲染消耗。因此，如果需要频繁切换的情景下，用 <code>hidden</code> 更好，如果在运行时条件不大可能改变则 <code>wx:if</code> 较好</p>
+<hr>
+<h4 id="通用模板的使用"><a href="#通用模板的使用" class="headerlink" title="通用模板的使用"></a>通用模板的使用</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 定义模板</span></span><br><span class="line"><span class="comment">使用 name 属性，作为模板的名字。然后在&lt;template/&gt;内定义代码片段--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">name</span>=<span class="string">"mytemp"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span>&gt;</span>姓名：&#123;&#123;name&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span>&gt;</span>年龄：&#123;&#123;age&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span>&gt;</span>地址：&#123;&#123;address&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span>&gt;</span>备注：&#123;&#123;remark&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span>&gt;</span>&#123;&#123;msg&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 使用模板</span></span><br><span class="line"><span class="comment">is 属性，声明需要的使用的模板，然后将模板所需要的 data 传入</span></span><br><span class="line"><span class="comment">is 属性可以使用 Mustache 语法，来动态决定具体需要渲染哪个模板 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">'container'</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">template</span> <span class="attr">is</span>=<span class="string">"mytemp"</span> <span class="attr">data</span>=<span class="string">"&#123;&#123;...person,msg,name:'rex',age:'18'&#125;&#125;"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">template</span> <span class="attr">is</span>=<span class="string">"mytemp"</span> <span class="attr">data</span>=<span class="string">"&#123;&#123;...person,msg,name:'rex',age:'18'&#125;&#125;"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--temp.js--&gt;</span></span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    person:&#123;</span><br><span class="line">      address:"BEIJING",</span><br><span class="line">      remark:"This is a Template"</span><br><span class="line">    &#125;,</span><br><span class="line">    msg:"This is a Msg"</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="wxs模块——页面引用-模块调用模块"><a href="#wxs模块——页面引用-模块调用模块" class="headerlink" title="wxs模块——页面引用/模块调用模块"></a>wxs模块——页面引用/模块调用模块</h4><p>WXS（WeiXin Script）是小程序的一套脚本语言，结合 WXML，可以构建出页面的结构；</p>
+<p>wxs 不依赖于运行时的基础库版本，可以在所有版本的小程序中运行；<br>wxs 与 javascript 是不同的语言，有自己的语法，并不和 javascript 一致；<br>wxs 的运行环境和其他 javascript 代码是隔离的，wxs 中不能调用其他 javascript 文件中定义的函数，也不能调用小程序提供的API；<br>wxs 函数不能作为组件的事件回调；</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// module.wxs</span></span><br><span class="line"><span class="keyword">var</span> num2 = <span class="built_in">require</span>(<span class="string">"../wxs/num2.wxs"</span>);</span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'imooc'</span>;</span><br><span class="line"><span class="keyword">var</span> age = <span class="number">18</span>;</span><br><span class="line"><span class="keyword">var</span> method = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(num2.name);</span><br><span class="line">  <span class="built_in">console</span>.log(num2.age);</span><br><span class="line">  <span class="built_in">console</span>.log(num2.method(<span class="string">"num2"</span>));</span><br><span class="line">  <span class="keyword">return</span> obj;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  name: name,</span><br><span class="line">  age: age,</span><br><span class="line">  method: method</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// num2.wxs</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'imooc2'</span>;</span><br><span class="line"><span class="keyword">var</span> age = <span class="number">20</span>;</span><br><span class="line"><span class="keyword">var</span> method = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> obj;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  name: name,</span><br><span class="line">  age: age,</span><br><span class="line">  method: method</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// wxs.wxml</span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 页面级别的引用 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">wxs</span> <span class="attr">src</span>=<span class="string">"../wxs/module.wxs"</span> <span class="attr">module</span>=<span class="string">"item"</span>&gt;</span><span class="tag">&lt;/<span class="name">wxs</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span>&gt;</span>&#123;&#123;item.name&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span>&gt;</span>&#123;&#123;item.age&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span>&gt;</span>&#123;&#123;item.method("这是一个参数")&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="模版的外部引用"><a href="#模版的外部引用" class="headerlink" title="模版的外部引用"></a>模版的外部引用</h4><p>模版在某个wxml中定义完毕后，可以被其他页面引用；</p>
+<p>关键字import；</p>
+<p>import 有作用域的概念，即只会 import 目标文件中定义的 template，而不会 import 目标文件 import 的 template，即不支持间接传递引用（A引用B，B引用C，A不能引用C）； </p>
+<p>WXML 提供两种文件引用方式<code>import</code>和<code>include</code>；</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;view <span class="class"><span class="keyword">class</span></span>=<span class="string">"container"</span>&gt;</span><br><span class="line">&lt;!-- 模版的外部引用 --&gt;</span><br><span class="line">  &lt;<span class="keyword">import</span> src=<span class="string">"../temp/temp.wxml"</span>/&gt;</span><br><span class="line">  &lt;template is=<span class="string">"mytemp"</span> data=<span class="string">"&#123;&#123;name:'imooc',age:'18',...person,msg&#125;&#125;"</span>/&gt;</span><br><span class="line">&lt;/view&gt;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="页面引用外部wxml通用页面"><a href="#页面引用外部wxml通用页面" class="headerlink" title="页面引用外部wxml通用页面"></a>页面引用外部wxml通用页面</h4><p>HTML页面常分为Header，Body，Footer；</p>
+<p>定义通用的Header和Footer；</p>
+<p>关键字include；</p>
+<p><code>include</code> 可以将目标文件<strong>除了</strong> <code>&lt;template/&gt;</code> <code>&lt;wxs/&gt;</code> 外的整个代码引入，相当于是拷贝到 <code>include</code> 位置；</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- index.wxml --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">include</span> <span class="attr">src</span>=<span class="string">"header.wxml"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span> body <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">include</span> <span class="attr">src</span>=<span class="string">"footer.wxml"</span>/&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- header.wxml --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span> header <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- footer.wxml --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span> footer <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>@ 2018年8月15日 20:41:52</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/10/Spring Cloud Note-8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/10/Spring Cloud Note-8/" itemprop="url">Spring Cloud | Note-8</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T00:00:00+08:00">
+                2018-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Spring-Cloud微服务-Note-8"><a href="#Spring-Cloud微服务-Note-8" class="headerlink" title="Spring Cloud微服务 | Note(8)"></a>Spring Cloud微服务 | Note(8)</h3><p>@ 2018年8月10日 15:22:48</p>
+<h4 id="微服务的集中化配置"><a href="#微服务的集中化配置" class="headerlink" title="微服务的集中化配置"></a>微服务的集中化配置</h4><p>配置文件是为了迎合软件的个性化需求；</p>
+<p>解决每个微服务的统一配置；</p>
+<p>管理微服务的外部，中心化的配置中心；</p>
+<h5 id="为什么需要集中化配置"><a href="#为什么需要集中化配置" class="headerlink" title="为什么需要集中化配置"></a>为什么需要集中化配置</h5><p>微服务数量多，配置多；</p>
+<p>手工管理配置繁琐；</p>
+<h6 id="配置分类："><a href="#配置分类：" class="headerlink" title="配置分类："></a>配置分类：</h6><p>​    ·配置来源划分：源代码、文件、数据库连接、远程调用</p>
+<p>​    ·配置环境划分：开发环境、测试环境、预发布环境、生产环境</p>
+<p>​    ·配置集成阶段划分：编译、打包、运行</p>
+<p>​    ·配置加载方式划分：启动加载、动态加载</p>
+<h6 id="配置中心的要求："><a href="#配置中心的要求：" class="headerlink" title="配置中心的要求："></a>配置中心的要求：</h6><p>​    ·面向可配置的编码</p>
+<p>​    ·隔离性</p>
+<p>​    ·一致性</p>
+<p>​    ·集中化配置</p>
+<h6 id="Spring-Cloud-Config"><a href="#Spring-Cloud-Config" class="headerlink" title="Spring Cloud Config"></a>Spring Cloud Config</h6><p>分布式外部化配置；Config Server；Config Client；</p>
+<hr>
+<h5 id="如何继集成Spring-Cloud-Config-Server"><a href="#如何继集成Spring-Cloud-Config-Server" class="headerlink" title="如何继集成Spring Cloud Config Server"></a>如何继集成Spring Cloud Config Server</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line">dependencies&#123;</span><br><span class="line">    compile(<span class="string">'org.springframework.cloud:spring-cloud-config-server'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Application</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="meta">@EnableConfigServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigApplication</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        SpringApplication.run(ConfigApplication.class,args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># config server</span><br><span class="line">server.port=<span class="number">8888</span></span><br><span class="line">spring.application.name=micro-weather-config-server</span><br><span class="line">eureka.client.service-url.defaultZone=http:<span class="comment">//localhost:8761/eureka/</span></span><br><span class="line">spring.cloud.config.server.git.uri=https:...</span><br><span class="line">spring.cloud.config.server.git.search-paths=...</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="如何继集成Spring-Cloud-Config-Client"><a href="#如何继集成Spring-Cloud-Config-Client" class="headerlink" title="如何继集成Spring Cloud Config Client"></a>如何继集成Spring Cloud Config Client</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line">dependencies&#123;</span><br><span class="line">    compile(<span class="string">'org.springframework.cloud:spring-cloud-config-client'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Application</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigClientApplication</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        SpringApplication.run(ConfigClientApplication.class,args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># config server</span><br><span class="line">spring.application.name=micro-weather-config-client</span><br><span class="line">eureka.client.service-url.defaultZone=http:<span class="comment">//localhost:8761/eureka/</span></span><br><span class="line">spring.cloud.config.profile=dev</span><br><span class="line">spring.cloud.config.uri=http:<span class="comment">//localhost:8888</span></span><br></pre></td></tr></table></figure>
+<h5 id="实现微服务的集中化配置"><a href="#实现微服务的集中化配置" class="headerlink" title="实现微服务的集中化配置"></a>实现微服务的集中化配置</h5><p>配置中心的文件命名规则</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/&#123;application&#125;/&#123;profile&#125;/[/&#123;label&#125;]</span><br><span class="line">/&#123;application&#125;-&#123;profile&#125;.yml</span><br><span class="line">/&#123;label&#125;/&#123;application&#125;-&#123;profile&#125;.yml</span><br><span class="line">/&#123;application&#125;-&#123;profile&#125;.properties</span><br><span class="line">/&#123;label&#125;/&#123;application&#125;-&#123;profile&#125;.properties</span><br></pre></td></tr></table></figure>
+<p>启动Eureka Server以及Config Server</p>
+<p>作为Config Client可以在远端获取部署在git上的配置文件的内容</p>
+<hr>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p>@ 2018年8月10日 16:22:38</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/09/Spring Cloud Note-7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1462,524 +1854,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/31/Blog System  Note-5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="REX CHEN">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="REEEEX">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/31/Blog System  Note-5/" itemprop="url">Blog System | Note-5</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-31T00:00:00+08:00">
-                2018-07-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Blog-System-Note-5"><a href="#Blog-System-Note-5" class="headerlink" title="Blog System | Note-5"></a>Blog System | Note-5</h3><p>@2018年7月31日 10:44:13        @Knowledge From Imooc</p>
-<h4 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h4><h5 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h5><p>建立角色与资源的关系、CSRF问题、启用方法级别的安全设置、使用BCrypt加密、登录、记住我</p>
-<h5 id="需求："><a href="#需求：" class="headerlink" title="需求："></a>需求：</h5><p>角色授权、权限设置</p>
-<h5 id="API："><a href="#API：" class="headerlink" title="API："></a>API：</h5><table>
-<thead>
-<tr>
-<th>请求方式</th>
-<th>路径</th>
-<th>参数</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GET</td>
-<td>/login</td>
-<td>获取登录页面</td>
-</tr>
-<tr>
-<td>POST</td>
-<td>/login</td>
-<td>登录(username,password,remember-me)</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h5 id="应用"><a href="#应用" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 改造SecurityConfig</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@EnableWebSecurity</span> </span><br><span class="line"><span class="meta">@EnableGlobalMethodSecurity</span>(prePostEnabled = <span class="keyword">true</span>)  <span class="comment">// 启用方法级别的安全设置</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String KEY = <span class="string">"rex.com"</span>;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> UserDetailsService userDetailsService;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> PasswordEncoder passwordEncoder;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> PasswordEncoder <span class="title">passwordEncoder</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> BCryptPasswordEncoder();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> AuthenticationProvider <span class="title">authenticationProvider</span><span class="params">()</span></span>&#123;</span><br><span class="line">		DaoAuthenticationProvider authenticationProvider = <span class="keyword">new</span> DaoAuthenticationProvider();</span><br><span class="line">		authenticationProvider.setUserDetailsService(userDetailsService);</span><br><span class="line">        <span class="comment">// 加密设置</span></span><br><span class="line">		authenticationProvider.setPasswordEncoder(passwordEncoder);</span><br><span class="line">		<span class="keyword">return</span> authenticationProvider;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 自定义配置</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> http</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		http.authorizeRequests().antMatchers(<span class="string">"/css/**"</span>, <span class="string">"/js/**"</span>, <span class="string">"/fonts/**"</span>, <span class="string">"/index"</span>).permitAll().antMatchers(<span class="string">"/h2-consele/**"</span>).permitAll()</span><br><span class="line">				<span class="comment">// 相应角色访问</span></span><br><span class="line">				.antMatchers(<span class="string">"/admins/**"</span>).hasRole(<span class="string">"ADMIN"</span>).and()</span><br><span class="line">				<span class="comment">// 基于表单登录验证</span></span><br><span class="line">				.formLogin()</span><br><span class="line">				<span class="comment">// 自定义登录界面</span></span><br><span class="line">				.loginPage(<span class="string">"/login"</span>).failureUrl(<span class="string">"/login-error"</span>)</span><br><span class="line">				<span class="comment">// 启用remember-me</span></span><br><span class="line">				.and().rememberMe().key(KEY)</span><br><span class="line">				<span class="comment">// 处理异常,拒绝访问就重定向到403</span></span><br><span class="line">				.and().exceptionHandling().accessDeniedPage(<span class="string">"/403"</span>);</span><br><span class="line">		http.csrf().ignoringAntMatchers(<span class="string">"/h2-console/**"</span>);</span><br><span class="line">		http.headers().frameOptions().sameOrigin();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 认证信息管理</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> auth</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configureGlobal</span><span class="params">(AuthenticationManagerBuilder auth)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">		auth.userDetailsService(userDetailsService);</span><br><span class="line">		auth.authenticationProvider(authenticationProvider());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 修改UserServiceImpl</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserService</span>,<span class="title">UserDetailsService</span></span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> UserDetails <span class="title">loadUserByUsername</span><span class="params">(String username)</span> <span class="keyword">throws</span> UsernameNotFoundException </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> userRepository.findByUsername(username);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="CSRF防护-详见附录"><a href="#CSRF防护-详见附录" class="headerlink" title="CSRF防护(详见附录)"></a>CSRF防护(详见附录)</h5><p>CSRF：跨站请求伪造，也被称为“One Click Attack”或者Session Riding，通常缩写为CSRF或者XSRF，是一种对网站的恶意利用 </p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- CSRF --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"_csrf"</span> <span class="attr">th:content</span>=<span class="string">"$&#123;_csrf.token&#125;"</span>/&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- default header name is X-CSRF-TOKEN --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"_csrf_header"</span> <span class="attr">th:content</span>=<span class="string">"$&#123;_csrf.headerName&#125;"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
-<p>防护：“双提交”cookie。此方法只工作于Ajax请求，但它能够作为无需改变大量form的全局修正方法。如果某个授权的cookie在form post之前正被JavaScript代码读取，那么限制跨域规则将被应用。如果服务器需要在Post请求体或者URL中包含授权cookie的请求，那么这个请求必须来自于受信任的域，因为其它域是不能从信任域读取cookie的</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取 CSRF Token </span></span><br><span class="line"><span class="keyword">var</span> csrfToken = $(<span class="string">"meta[name='_csrf']"</span>).attr(<span class="string">"content"</span>);</span><br><span class="line"><span class="keyword">var</span> csrfHeader = $(<span class="string">"meta[name='_csrf_header']"</span>).attr(<span class="string">"content"</span>);</span><br><span class="line">$.ajax(&#123; </span><br><span class="line">...</span><br><span class="line">beforeSend: <span class="function"><span class="keyword">function</span>(<span class="params">request</span>) </span>&#123;</span><br><span class="line">	request.setRequestHeader(csrfHeader, csrfToken); <span class="comment">// 添加  CSRF Token </span></span><br><span class="line">&#125;,</span><br><span class="line">...</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="博客管理"><a href="#博客管理" class="headerlink" title="博客管理"></a>博客管理</h4><h5 id="需求：-1"><a href="#需求：-1" class="headerlink" title="需求："></a>需求：</h5><p>发表、编辑、删除、分类、标签、上传图片、模糊查询、最新、最热、阅读量统计</p>
-<h5 id="功能：-1"><a href="#功能：-1" class="headerlink" title="功能："></a>功能：</h5><p>用户主页、个人资料设置、头像更换</p>
-<h5 id="文件服务器（图片、文件等）"><a href="#文件服务器（图片、文件等）" class="headerlink" title="文件服务器（图片、文件等）"></a>文件服务器（图片、文件等）</h5><p>MongoDB File Server</p>
-<p>基于 MongoDB 的文件服务器；MongoDB File Server 致力于小型文件的存储，比如图片、文档等；由于MongoDB 支持多种数据格式的存储，对于二进制的存储自然也是不话下，可以方便用于存储文件；</p>
-<h5 id="API：-1"><a href="#API：-1" class="headerlink" title="API："></a>API：</h5><table>
-<thead>
-<tr>
-<th>请求方式</th>
-<th>路径</th>
-<th>参数</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GET</td>
-<td>/u/{username}</td>
-<td>具体某个用户主页(username)</td>
-</tr>
-<tr>
-<td>GET</td>
-<td>/u/{username}/profile</td>
-<td>获取个人设置页面(username)</td>
-</tr>
-<tr>
-<td>POST</td>
-<td>/u/{username}/profile</td>
-<td>保存个人设置(username，User)</td>
-</tr>
-<tr>
-<td>GET</td>
-<td>/u/{username}/avatar</td>
-<td>获取个人头像(username)</td>
-</tr>
-<tr>
-<td>POST</td>
-<td>/u/{username}/avatar</td>
-<td>保存个人头像(username,User)</td>
-</tr>
-<tr>
-<td>GET</td>
-<td>/u/{username}/blogs</td>
-<td>查询用户博客(order,catalog,keyword,async,pageIndex,pageSize)</td>
-</tr>
-<tr>
-<td>GET</td>
-<td>/u/{username}/blogs/edit</td>
-<td>获取新增博客的页面(username)</td>
-</tr>
-<tr>
-<td>POST</td>
-<td>/u/{username}/blogs/edit</td>
-<td>保存博客的页面(username,Blog)</td>
-</tr>
-<tr>
-<td>GET</td>
-<td>/u/{username}/blogs/edit/{id}</td>
-<td>编辑博客的页面(username,id)</td>
-</tr>
-<tr>
-<td>DELETE</td>
-<td>/u/{username}/blogs/edit/{id}</td>
-<td>删除博客(username,id)</td>
-</tr>
-</tbody>
-</table>
-<h5 id="应用-1"><a href="#应用-1" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加 Markdown parser 依赖</span></span><br><span class="line">compile(<span class="string">'es.nitaur.markdown:txtmark:0.16'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加文件服务器 application.properties</span></span><br><span class="line"># 文件服务器</span><br><span class="line">file.server.url=http:<span class="comment">//localhost:8081/upload</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// UserspaceController</span></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/&#123;username&#125;/profile"</span>)</span><br><span class="line"><span class="meta">@PreAuthorize</span>(<span class="string">"authentication.name.equals(#username)"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> ModelAndView <span class="title">profile</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span>String username,Model model)</span>&#123;</span><br><span class="line">    User user = (User)userDetailsService.loadUserByUsername(username);</span><br><span class="line">    model.addAttribute(<span class="string">"user"</span>,user);</span><br><span class="line">    model.addAttribute(<span class="string">"fileServerUrl"</span>,fileServerUrl);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ModelAndView(<span class="string">"/userspace/profile"</span>,<span class="string">"userModel"</span>,model);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"/&#123;username&#125;/profile"</span>)</span><br><span class="line"><span class="meta">@PreAuthorize</span>(<span class="string">"authentication.name.equals(#username)"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">profile</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span> String username, User user) </span>&#123;</span><br><span class="line">    User originalUser = userService.getUserById(user.getId());</span><br><span class="line">    originalUser.setEmail(user.getEmail());</span><br><span class="line">    originalUser.setName(user.getName());</span><br><span class="line">    <span class="comment">// 判断密码是否更改</span></span><br><span class="line">    String rawPassword = originalUser.getPassword();</span><br><span class="line">    PasswordEncoder encoder = <span class="keyword">new</span> BCryptPasswordEncoder();</span><br><span class="line">    String encodePassword = encoder.encode(user.getPassword());</span><br><span class="line">    <span class="keyword">boolean</span> isMatch = encoder.matches(rawPassword, encodePassword);</span><br><span class="line">    <span class="keyword">if</span> (!isMatch) &#123;</span><br><span class="line">        originalUser.setEncodePassword(user.getPassword());</span><br><span class="line">    &#125;</span><br><span class="line">    userService.saveOrUpdateUser(originalUser);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"redirect:/u/"</span> + username + <span class="string">"/profile"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Blog.java</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Blog</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// BlogRepository.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BlogRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Blog</span>,<span class="title">Long</span>&gt; </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// BlogServiceImpl.java</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BlogServiceImpl</span> <span class="keyword">implements</span> <span class="title">BlogService</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Modify UserspaceController.java</span></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/&#123;username&#125;"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">userSpace</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span> String username, Model model) </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/&#123;username&#125;/blogs"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">listBlogsByOrder</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span> String username, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"order"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"new"</span>)</span> String order, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"category"</span>, required = <span class="keyword">false</span>)</span> Long catalogId, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"keyword"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">""</span>)</span> String keyword, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"async"</span>, required = <span class="keyword">false</span>)</span> <span class="keyword">boolean</span> async, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageIndex"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"0"</span>)</span> <span class="keyword">int</span> pageIndex, </span></span><br><span class="line"><span class="function">                                   @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageSize"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"10"</span>)</span> <span class="keyword">int</span> pageSize, </span></span><br><span class="line"><span class="function">                                   Model model) </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/&#123;username&#125;/blogs/&#123;id&#125;"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getBlogById</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span> String username, </span></span><br><span class="line"><span class="function">                          @<span class="title">PathVariable</span><span class="params">(<span class="string">"id"</span>)</span> Long id, Model model) </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/&#123;username&#125;/blogs/edit"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> ModelAndView <span class="title">createBlog</span><span class="params">(@PathVariable(<span class="string">"username"</span>)</span>String username,Model model) </span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><h5 id="CSRF防护"><a href="#CSRF防护" class="headerlink" title="CSRF防护"></a><a href="https://www.ibm.com/developerworks/cn/web/1102_niugang_csrf/" target="_blank" rel="noopener">CSRF防护</a></h5><h5 id="MongoDB-File-Server"><a href="#MongoDB-File-Server" class="headerlink" title="MongoDB File Server"></a><a href="https://github.com/waylau/mongodb-file-server" target="_blank" rel="noopener">MongoDB File Server</a></h5><p>@2018年7月31日 14:40:19</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/30/Blog System  Note-4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="REX CHEN">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="REEEEX">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/30/Blog System  Note-4/" itemprop="url">Blog System | Note-4</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-30T00:00:00+08:00">
-                2018-07-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Blog-System-Note-4"><a href="#Blog-System-Note-4" class="headerlink" title="Blog System | Note-4"></a>Blog System | Note-4</h3><p>@2018年7月30日 15:18:07        @Knowledge From Imooc</p>
-<ul>
-<li>基础知识</li>
-<li><a href="https://reeeexchen.github.io/2018/07/29/Blog%20System%20%20Note-1/" target="_blank" rel="noopener">Note1</a></li>
-<li><a href="https://reeeexchen.github.io/2018/07/29/Blog%20System%20%20Note-2/" target="_blank" rel="noopener">Note2</a></li>
-<li><a href="https://reeeexchen.github.io/2018/07/29/Blog%20System%20%20Note-3/" target="_blank" rel="noopener">Note3</a></li>
-</ul>
-<hr>
-<h4 id="整体框架实现"><a href="#整体框架实现" class="headerlink" title="整体框架实现"></a>整体框架实现</h4><p>需求设计（见Note-1）</p>
-<h4 id="后台整体控制层-Controller"><a href="#后台整体控制层-Controller" class="headerlink" title="后台整体控制层 Controller"></a>后台整体控制层 Controller</h4><p>MainController/BlogController/UserspaceController/AdminController/UserController</p>
-<h4 id="后台API"><a href="#后台API" class="headerlink" title="后台API"></a>后台API</h4><table>
-<thead>
-<tr>
-<th style="text-align:left">请求方式</th>
-<th>API</th>
-<th>参数</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/blogs</td>
-<td>order,keyword,async,pageIndex,pageSize</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/u/{username}</td>
-<td>具体用户的主页</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/u/{username}/profile</td>
-<td>用户的个人设置</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/u/{username}/profile</td>
-<td>保存个人设置 username,User</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/u/{username}/avatar</td>
-<td>获取个人头像 username</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/u/{username}/avatar</td>
-<td>保存个人头像 username</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/u/{username}/blogs</td>
-<td>查询用户博客<br>order,catalog,keyword,async,pageIndex,pageSize</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/u/{username}/blogs/edit</td>
-<td>获取新增文章的页面 username</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/u/{username}/blogs/edit</td>
-<td>新增、编辑文章 username,Blog</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/u/{username}/blogs/edit/{id}</td>
-<td>获取编辑某文章的界面 username,id</td>
-</tr>
-<tr>
-<td style="text-align:left">DELETE</td>
-<td>/u/{username}/blogs/edit/{id}</td>
-<td>删除文章</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/login</td>
-<td>登录</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/login</td>
-<td>username,password,remember-me</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/register</td>
-<td>注册</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/register</td>
-<td>注册成功，跳转至登录 User</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/users</td>
-<td>用户列表 async,pageIndex,pageSize,name</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/users/add</td>
-<td>新增用户界面</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/users</td>
-<td>保存用户 User,authorityId</td>
-</tr>
-<tr>
-<td style="text-align:left">DELETE</td>
-<td>/users/{id}</td>
-<td>删除用户 id</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/users/edit/{id}</td>
-<td>获取某个用户的编辑界面 id</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/comments</td>
-<td>获取评论列表 blogId</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/comments</td>
-<td>保存评论 blogId,commentContent</td>
-</tr>
-<tr>
-<td style="text-align:left">DELETE</td>
-<td>/comments/{id}</td>
-<td>删除评论 id,blogId</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/votes</td>
-<td>保存点赞 blogId</td>
-</tr>
-<tr>
-<td style="text-align:left">DELETE</td>
-<td>/votes</td>
-<td>删除点赞 blogId</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/catalogs</td>
-<td>获取用户分类列表 username</td>
-</tr>
-<tr>
-<td style="text-align:left">POST</td>
-<td>/catalogs</td>
-<td>保存用户雷芬 username,CatalogVO(username,Catalog)</td>
-</tr>
-<tr>
-<td style="text-align:left">GET</td>
-<td>/catalogs/edit/{id}</td>
-<td>获取某ID分类的编辑界面</td>
-</tr>
-<tr>
-<td style="text-align:left">DELETE</td>
-<td>/catalogs/{id}</td>
-<td>删除分类 id,username</td>
-</tr>
-</tbody>
-</table>
-<h4 id="前端整体布局"><a href="#前端整体布局" class="headerlink" title="前端整体布局"></a>前端整体布局</h4><p>/ — index.html / login.html / register.html</p>
-<p>admins — index.html</p>
-<p>fragments — header.html / footer.html / page.html</p>
-<p>users — form.html / list.html / view.html</p>
-<p>userspace — blog.hmtl / blogedit.html / u.html</p>
-<h4 id="用户管理-amp-角色管理"><a href="#用户管理-amp-角色管理" class="headerlink" title="用户管理 &amp; 角色管理"></a>用户管理 &amp; 角色管理</h4><p>注册、登录（在授权管理实现）、增加用户、修改用户、删除用户、搜索用户</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">POST 	/register</span><br><span class="line">GET		/register(User)</span><br><span class="line">GET		/users(async,pageIndex,pageSize,name);</span><br><span class="line">GET		/users/add;</span><br><span class="line">POST 	/users;</span><br><span class="line">DELETE	/users/&#123;id&#125;;</span><br><span class="line">GET		/users/edit/&#123;id&#125;;</span><br></pre></td></tr></table></figure>
-<h5 id="应用"><a href="#应用" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 修改User实体</span></span><br><span class="line"><span class="meta">@NotEmpty</span>(message = <span class="string">"姓名不能为空"</span>)</span><br><span class="line"><span class="meta">@Size</span>(min = <span class="number">2</span>, max = <span class="number">20</span>)</span><br><span class="line"><span class="meta">@Column</span>(nullable = <span class="keyword">false</span>, length = <span class="number">20</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 新增Authority实体</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Authority</span> <span class="keyword">implements</span> <span class="title">GrantedAuthority</span></span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 编写Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">User</span>,<span class="title">Long</span>&gt; </span>&#123;...&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AuthorityRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Authority</span>,<span class="title">Long</span>&gt; </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 完成Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserService</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 完成Impl</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserService</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// VO</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Response</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Util</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConstraintViolationExceptionHandler</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 获取批量异常信息</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> e</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getMessage</span><span class="params">(ConstraintViolationException e)</span></span>&#123;</span><br><span class="line">		List&lt;String&gt; msgList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">		<span class="keyword">for</span>(ConstraintViolation&lt;?&gt; constraintViolation : e.getConstraintViolations())&#123;</span><br><span class="line">			msgList.add(constraintViolation.getMessage());</span><br><span class="line">		&#125;</span><br><span class="line">		String messages = StringUtils.join(msgList.toArray(),<span class="string">";"</span>);</span><br><span class="line">		<span class="keyword">return</span> messages;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对应Controller</span></span><br><span class="line">AdminController,MainController,UserController</span><br><span class="line"><span class="comment">// 前端页面</span></span><br><span class="line">略</span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><p>null</p>
-<p>@2018年7月30日 20:21:17</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2030,7 +1904,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

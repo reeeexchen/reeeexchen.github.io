@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JAVA,Spring Boot,Wechat," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="微信小程序开发 Note-10 保存留言功能12345678// Service@Transactional(propagation = Propagation.REQUIRED)@Overridepublic void saveComment(Comments comment) &amp;#123;    comment.setId(sid.nextShort());    comment.setCre">
+<meta name="keywords" content="JAVA,Spring Boot,Wechat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Wechat Mini | Note-10">
+<meta property="og:url" content="http://yoursite.com/2018/08/24/MicWechat Note-10/index.html">
+<meta property="og:site_name" content="REEEEX">
+<meta property="og:description" content="微信小程序开发 Note-10 保存留言功能12345678// Service@Transactional(propagation = Propagation.REQUIRED)@Overridepublic void saveComment(Comments comment) &amp;#123;    comment.setId(sid.nextShort());    comment.setCre">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-23T06:42:30.202Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Wechat Mini | Note-10">
+<meta name="twitter:description" content="微信小程序开发 Note-10 保存留言功能12345678// Service@Transactional(propagation = Propagation.REQUIRED)@Overridepublic void saveComment(Comments comment) &amp;#123;    comment.setId(sid.nextShort());    comment.setCre">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/24/MicWechat Note-10/"/>
+
+
+
+
+
+  <title>Wechat Mini | Note-10 | REEEEX</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">REEEEX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">KEEP GOING</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/24/MicWechat Note-10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Wechat Mini | Note-10</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T00:00:00+08:00">
+                2018-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="微信小程序开发-Note-10"><a href="#微信小程序开发-Note-10" class="headerlink" title="微信小程序开发 Note-10"></a>微信小程序开发 Note-10</h3><hr>
+<h4 id="保存留言功能"><a href="#保存留言功能" class="headerlink" title="保存留言功能"></a>保存留言功能</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Service</span></span><br><span class="line"><span class="meta">@Transactional</span>(propagation = Propagation.REQUIRED)</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveComment</span><span class="params">(Comments comment)</span> </span>&#123;</span><br><span class="line">    comment.setId(sid.nextShort());</span><br><span class="line">    comment.setCreateTime(<span class="keyword">new</span> Date());</span><br><span class="line">    commentsMapper.insert(comment);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Controller</span></span><br><span class="line"><span class="meta">@ApiOperation</span>(value = <span class="string">"SAVE COMMENT"</span>, notes = <span class="string">"SAVE COMMENT API"</span>)</span><br><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"/saveComment"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> IMoocJSONResult <span class="title">saveComment</span><span class="params">(@RequestBody Comments comment)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 保存留言</span></span><br><span class="line">    videoService.saveComment(comment);</span><br><span class="line">    <span class="keyword">return</span> IMoocJSONResult.ok();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JS</span></span><br><span class="line"><span class="comment">// 留言按钮触发的事件</span></span><br><span class="line">leaveComment: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">        commentFocus: <span class="literal">true</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JS</span></span><br><span class="line"><span class="comment">// 发表留言</span></span><br><span class="line">saveComment: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> content = e.detail.value;</span><br><span class="line">    <span class="keyword">var</span> user = app.getGlobalUserInfo();</span><br><span class="line">    <span class="keyword">var</span> videoInfo = <span class="built_in">JSON</span>.stringify(me.data.videoInfo);</span><br><span class="line">    <span class="keyword">var</span> realUrl = <span class="string">'../videoinfo/videoinfo#videoInfo@'</span> + videoInfo;</span><br><span class="line">    <span class="comment">// 用户判断</span></span><br><span class="line">    <span class="keyword">if</span> (user == <span class="literal">null</span> || user == <span class="literal">undefined</span> || user == <span class="string">''</span>) &#123;</span><br><span class="line">        wx.navigateTo(&#123;</span><br><span class="line">            url: <span class="string">'../userLogin/login?redirectUrl='</span> + realUrl,</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        wx.showLoading(&#123;</span><br><span class="line">            title: <span class="string">'提交中'</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">        wx.request(&#123;</span><br><span class="line">            url: app.serverUrl + <span class="string">'/video/saveComment'</span>,</span><br><span class="line">            method: <span class="string">'POST'</span>,</span><br><span class="line">            header: &#123;</span><br><span class="line">                <span class="string">'content-type'</span>: <span class="string">'application/json'</span>,</span><br><span class="line">                <span class="string">'userId'</span>: user.id,</span><br><span class="line">                <span class="string">'userToken'</span>: user.userToken</span><br><span class="line">            &#125;,</span><br><span class="line">            data: &#123;</span><br><span class="line">                fromUserId: user.id,</span><br><span class="line">                videoId: me.data.videoInfo.id,</span><br><span class="line">                comment:content</span><br><span class="line">            &#125;,</span><br><span class="line">            success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">                wx.hideLoading();</span><br><span class="line">                <span class="built_in">console</span>.log(res.data);</span><br><span class="line">                me.setData(&#123;</span><br><span class="line">                    <span class="comment">// 清空留言文字</span></span><br><span class="line">                    contentValue:<span class="string">""</span>,</span><br><span class="line">                    commentsList:[]</span><br><span class="line">                &#125;);</span><br><span class="line">                me.getCommentsList(<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="留言列表（分页）-amp-联调"><a href="#留言列表（分页）-amp-联调" class="headerlink" title="留言列表（分页） &amp; 联调"></a>留言列表（分页） &amp; 联调</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Service</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> PagedResult <span class="title">getAllComments</span><span class="params">(String videoId, Integer page, Integer pageSize)</span> </span>&#123;</span><br><span class="line">    PageHelper.startPage(page, pageSize);</span><br><span class="line">    List&lt;CommentsVO&gt; list = commentsMapperCustom.queryComments(videoId);</span><br><span class="line">    <span class="keyword">for</span>(CommentsVO c:list)&#123;</span><br><span class="line">        String timeAgo = TimeAgoUtils.format(c.getCreateTime());</span><br><span class="line">        c.setTimeAgoStr(timeAgo);</span><br><span class="line">    &#125;</span><br><span class="line">    PageInfo&lt;CommentsVO&gt; pageList = <span class="keyword">new</span> PageInfo&lt;&gt;(list);</span><br><span class="line">    PagedResult grid = <span class="keyword">new</span> PagedResult();</span><br><span class="line">    grid.setTotal(pageList.getPages());</span><br><span class="line">    grid.setRows(list);</span><br><span class="line">    grid.setPage(page);</span><br><span class="line">    grid.setRecords(pageList.getTotal());</span><br><span class="line">    <span class="keyword">return</span> grid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"queryComments"</span> <span class="attr">resultMap</span>=<span class="string">"BaseResultMap"</span> <span class="attr">parameterType</span>=<span class="string">"String"</span>&gt;</span></span><br><span class="line">    SELECT</span><br><span class="line">    c.*,</span><br><span class="line">    u.face_image AS face_image,</span><br><span class="line">    u.nickname</span><br><span class="line">    FROM comments c LEFT JOIN users u ON c.from_user_id = u.id</span><br><span class="line">    WHERE c.video_id = #&#123;videoId&#125;</span><br><span class="line">    ORDER BY c.create_time DESC</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Controller</span></span><br><span class="line"><span class="meta">@ApiOperation</span>(value = <span class="string">"GET COMMENT LIST"</span>, notes = <span class="string">"GET COMMENT LIST API"</span>)</span><br><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"/getVideoComments"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> IMoocJSONResult <span class="title">getVideoComments</span><span class="params">(String videoId,Integer page,Integer pageSize)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 获取视频留言列表</span></span><br><span class="line">    <span class="keyword">if</span>(StringUtils.isBlank(videoId))&#123;</span><br><span class="line">        <span class="keyword">return</span> IMoocJSONResult.ok();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 分页查询，时间倒序</span></span><br><span class="line">    <span class="keyword">if</span> (page == <span class="keyword">null</span>) &#123;</span><br><span class="line">        page = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(pageSize == <span class="keyword">null</span>)&#123;</span><br><span class="line">        pageSize = <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    PagedResult list = videoService.getAllComments(videoId, page, pageSize);</span><br><span class="line">    <span class="keyword">return</span> IMoocJSONResult.ok(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JS</span></span><br><span class="line"><span class="comment">// 获取留言列表</span></span><br><span class="line">getCommentsList: <span class="function"><span class="keyword">function</span>(<span class="params">page</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> videoId = me.data.videoInfo.id;</span><br><span class="line">    wx.showLoading(&#123;</span><br><span class="line">        title: <span class="string">'留言列表加载中'</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">    wx.request(&#123;</span><br><span class="line">        url: app.serverUrl + <span class="string">'/video/getVideoComments?videoId='</span> + videoId + <span class="string">'&amp;page='</span> + page + <span class="string">'&amp;pageSize=5'</span>,</span><br><span class="line">        method: <span class="string">'POST'</span>,</span><br><span class="line">        success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">            wx.hideLoading();</span><br><span class="line">            <span class="built_in">console</span>.log(res.data);</span><br><span class="line">            <span class="comment">// 返回的数据库留言列表</span></span><br><span class="line">            <span class="keyword">var</span> commentsList = res.data.data.rows;</span><br><span class="line">            <span class="comment">// 当前分页列表</span></span><br><span class="line">            <span class="keyword">var</span> newCommentsList = me.data.commentsList;</span><br><span class="line">            me.setData(&#123;</span><br><span class="line">                commentsList: newCommentsList.concat(commentsList),</span><br><span class="line">                commentsPage: page,</span><br><span class="line">                commentsTotalPage: res.data.data.total</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JS</span></span><br><span class="line"><span class="comment">// 留言列表触底，刷新</span></span><br><span class="line">onReachBottom: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> currentPage = me.data.commentsPage;</span><br><span class="line">    <span class="keyword">var</span> totalPage = me.data.commentsTotalPage;</span><br><span class="line">    <span class="keyword">if</span> (currentPage === totalPage) &#123;</span><br><span class="line">        wx.showToast(&#123;</span><br><span class="line">            title: <span class="string">'没有更多留言'</span>,</span><br><span class="line">            icon: <span class="string">'loading'</span>,</span><br><span class="line">            duration:<span class="number">2000</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> page = currentPage + <span class="number">1</span>;</span><br><span class="line">    me.getCommentsList(page);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="评论回复（SQL设计与查询）"><a href="#评论回复（SQL设计与查询）" class="headerlink" title="评论回复（SQL设计与查询）"></a>评论回复（SQL设计与查询）</h4><p>对于回复评论的评论，需要在数据库comments表中添加多一个新的字段<code>father_comment_id</code>，以表示评论之间的关系，评论的关系则使用新的字段<code>to_user_id</code>；</p>
+<p>并且修改XML中的SQL查询；</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"queryComments"</span> <span class="attr">resultMap</span>=<span class="string">"BaseResultMap"</span> <span class="attr">parameterType</span>=<span class="string">"String"</span>&gt;</span></span><br><span class="line">    SELECT</span><br><span class="line">    c.*,</span><br><span class="line">    u.face_image AS face_image,</span><br><span class="line">    u.nickname,</span><br><span class="line">    tu.nickname  AS toNickname</span><br><span class="line">    FROM comments c</span><br><span class="line">    LEFT JOIN users u ON c.from_user_id = u.id</span><br><span class="line">    LEFT JOIN users tu ON c.to_user_id = tu.id</span><br><span class="line">    WHERE c.video_id = #&#123;videoId&#125;</span><br><span class="line">    ORDER BY c.create_time DESC</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="评论回复功能"><a href="#评论回复功能" class="headerlink" title="评论回复功能"></a>评论回复功能</h4><p>修改部分JS；</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 发表留言</span></span><br><span class="line">saveComment: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// 获取评论回复的fatherid和touseri</span></span><br><span class="line">    <span class="keyword">var</span> fatherCommentId = e.currentTarget.dataset.replyfathercommentid;</span><br><span class="line">    <span class="keyword">var</span> toUserId = e.currentTarget.dataset.replytouserid;</span><br><span class="line">    ...</span><br><span class="line">    wx.request(&#123;</span><br><span class="line">        url: app.serverUrl + <span class="string">'/video/saveComment?fatherCommentId='</span> + fatherCommentId + <span class="string">'&amp;toUserId='</span> + toUserId,</span><br><span class="line">        ...</span><br><span class="line">        )&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改Controller；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ApiOperation</span>(value = <span class="string">"SAVE COMMENT"</span>, notes = <span class="string">"SAVE COMMENT API"</span>)</span><br><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"/saveComment"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> IMoocJSONResult <span class="title">saveComment</span><span class="params">(@RequestBody Comments comment, String fatherCommentId, String toUserId)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 保存留言</span></span><br><span class="line">    <span class="keyword">if</span> (StringUtils.isBlank(fatherCommentId) || StringUtils.isBlank(toUserId)) &#123;</span><br><span class="line">        <span class="keyword">return</span> IMoocJSONResult.errorMsg(<span class="string">"信息不存在(无ID)"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    comment.setFatherCommentId(fatherCommentId);</span><br><span class="line">    comment.setToUserId(toUserId);</span><br><span class="line">    videoService.saveComment(comment);</span><br><span class="line">    <span class="keyword">return</span> IMoocJSONResult.ok();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>回复评论的评论绑定JS；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 回复评论的评论事件</span></span><br><span class="line">replyFocus: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> fatherCommentId = e.currentTarget.dataset.fathercommentid;</span><br><span class="line">    <span class="keyword">var</span> toUserId = e.currentTarget.dataset.touserid;</span><br><span class="line">    <span class="keyword">var</span> toNickname = e.currentTarget.dataset.tonickname;</span><br><span class="line"></span><br><span class="line">    me.setData(&#123;</span><br><span class="line">        placeholder: <span class="string">'回复 - '</span> + toNickname,</span><br><span class="line">        replyFatherCommentId: fatherCommentId,</span><br><span class="line">        replyToUserId: toUserId,</span><br><span class="line">        commentFocus: <span class="literal">true</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+          
+            <a href="/tags/Spring-Boot/" rel="tag"># Spring Boot</a>
+          
+            <a href="/tags/Wechat/" rel="tag"># Wechat</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/23/MicWechat Note-9/" rel="next" title="Wechat Mini | Note-9">
+                <i class="fa fa-chevron-left"></i> Wechat Mini | Note-9
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">REX CHEN</p>
+              <p class="site-description motion-element" itemprop="description">日常记录</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#微信小程序开发-Note-10"><span class="nav-number">1.</span> <span class="nav-text">微信小程序开发 Note-10</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#保存留言功能"><span class="nav-number">1.1.</span> <span class="nav-text">保存留言功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#留言列表（分页）-amp-联调"><span class="nav-number">1.2.</span> <span class="nav-text">留言列表（分页） &amp; 联调</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#评论回复（SQL设计与查询）"><span class="nav-number">1.3.</span> <span class="nav-text">评论回复（SQL设计与查询）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#评论回复功能"><span class="nav-number">1.4.</span> <span class="nav-text">评论回复功能</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">REX CHEN</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
