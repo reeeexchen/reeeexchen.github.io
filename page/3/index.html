@@ -262,6 +262,612 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/02/Spring Cloud Note-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/02/Spring Cloud Note-2/" itemprop="url">Spring Cloud | Note-2</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T00:00:00+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Spring-Cloud微服务-Note-2"><a href="#Spring-Cloud微服务-Note-2" class="headerlink" title="Spring Cloud微服务 | Note(2)"></a>Spring Cloud微服务 | Note(2)</h3><p>@2018年8月2日 09:40:55</p>
+<h4 id="环境："><a href="#环境：" class="headerlink" title="环境："></a>环境：</h4><p>JDK8+，Graedle4+，Spring Boot 2.0+，Apache HttpClient</p>
+<h4 id="数据来源："><a href="#数据来源：" class="headerlink" title="数据来源："></a>数据来源：</h4><p>中华万年历API（注意乱码处理）</p>
+<p><a href="http://wthrcdn.etouch.cn/weather_mini?city=深圳" target="_blank" rel="noopener">http://wthrcdn.etouch.cn/weather_mini?city=深圳</a></p>
+<p><a href="http://wthrcdn.etouch.cn/weather_mini?citykey=101280601" target="_blank" rel="noopener">http://wthrcdn.etouch.cn/weather_mini?citykey=101280601</a></p>
+<h5 id="应用"><a href="#应用" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeatherResponse</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;</span><br><span class="line">   <span class="keyword">private</span> Weather data;</span><br><span class="line">   <span class="keyword">private</span> Integer status;</span><br><span class="line">   <span class="keyword">private</span> String desc;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Weather</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;</span><br><span class="line">	<span class="comment">// 城市</span></span><br><span class="line">	<span class="keyword">private</span> String city;</span><br><span class="line">	<span class="comment">// ...属性根据JSON返回数据编写</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 天气数据接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">WeatherDataService</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 根据城市ID查询天气数据</span></span><br><span class="line">	<span class="function">WeatherResponse <span class="title">getDataByCityId</span><span class="params">(String cityId)</span></span>;</span><br><span class="line">	<span class="comment">// 根据城市名称查询天气数据</span></span><br><span class="line">	<span class="function">WeatherResponse <span class="title">getDataByCityName</span><span class="params">(String cityName)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 实现</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeatherDataServiceImpl</span> <span class="keyword">implements</span> <span class="title">WeatherDataService</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String WEATHER_URL = <span class="string">"http://wthrcdn.etouch.cn/weather_mini?"</span>;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> RestTemplate restTemplate;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> WeatherResponse <span class="title">getDataByCityId</span><span class="params">(String cityId)</span> </span>&#123;</span><br><span class="line">		String url = WEATHER_URL + <span class="string">"citykey="</span> + cityId;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.doGetWeather(url);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">private</span> WeatherResponse <span class="title">doGetWeather</span><span class="params">(String url)</span> </span>&#123;</span><br><span class="line">		ResponseEntity&lt;String&gt; respString = restTemplate.getForEntity(url, String.class);</span><br><span class="line">		<span class="comment">// JSON数据转化为对应类</span></span><br><span class="line">		ObjectMapper mapper = <span class="keyword">new</span> ObjectMapper();</span><br><span class="line">		WeatherResponse resp = <span class="keyword">null</span>;</span><br><span class="line">		String strBody = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">if</span> (respString.getStatusCodeValue() == <span class="number">200</span>) &#123;</span><br><span class="line">			strBody = respString.getBody();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			resp = mapper.readValue(strBody, WeatherResponse.class);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> resp;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// config（见附录）</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RestConfiguration</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> RestTemplateBuilder builder;</span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> RestTemplate <span class="title">restTemplate</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> builder.build();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="使用Redis提升并发访问能力"><a href="#使用Redis提升并发访问能力" class="headerlink" title="使用Redis提升并发访问能力"></a>使用Redis提升并发访问能力</h4><h5 id="Q1：由于依赖的第三方API数据，强依赖会导致长延时（请求-请求-返回-解析-返回），来回两次HTTP请求"><a href="#Q1：由于依赖的第三方API数据，强依赖会导致长延时（请求-请求-返回-解析-返回），来回两次HTTP请求" class="headerlink" title="Q1：由于依赖的第三方API数据，强依赖会导致长延时（请求-请求-返回-解析-返回），来回两次HTTP请求"></a>Q1：由于依赖的第三方API数据，强依赖会导致长延时（请求-请求-返回-解析-返回），来回两次HTTP请求</h5><h5 id="Q2：免费接口的风险，限制访问次数"><a href="#Q2：免费接口的风险，限制访问次数" class="headerlink" title="Q2：免费接口的风险，限制访问次数"></a>Q2：免费接口的风险，限制访问次数</h5><h5 id="Q3：对第三方的并发冲击"><a href="#Q3：对第三方的并发冲击" class="headerlink" title="Q3：对第三方的并发冲击"></a>Q3：对第三方的并发冲击</h5><h5 id="解决办法：Redis"><a href="#解决办法：Redis" class="headerlink" title="解决办法：Redis"></a>解决办法：Redis</h5><p>及时响应；减少服务调用；</p>
+<h5 id="应用-1"><a href="#应用-1" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> Logger logger = LoggerFactory.getLogger(WeatherDataServiceImpl.class);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> TIME_OUT = <span class="number">1800L</span>;</span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> StringRedisTemplate stringRedisTemplate;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 修改WeaterDataServiceImpl中的doGetWeather()</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> WeatherResponse <span class="title">doGetWeather</span><span class="params">(String url)</span> </span>&#123;</span><br><span class="line">    String key = url;</span><br><span class="line">    String strBody = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">// JSON数据转化为对应类</span></span><br><span class="line">    ObjectMapper mapper = <span class="keyword">new</span> ObjectMapper();</span><br><span class="line">    WeatherResponse resp = <span class="keyword">null</span>;</span><br><span class="line">    ValueOperations&lt;String, String&gt; ops = stringRedisTemplate.opsForValue();</span><br><span class="line">    <span class="comment">// 先查询Redis缓存</span></span><br><span class="line">    <span class="keyword">if</span> (stringRedisTemplate.hasKey(key)) &#123;</span><br><span class="line">        logger.info(<span class="string">"REDIS HAS DATA"</span>);</span><br><span class="line">        strBody = ops.get(key);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        logger.info(<span class="string">"REDIS DOESN'T HAS DATA"</span>);</span><br><span class="line">        <span class="comment">// 缓存不存在，调用接口</span></span><br><span class="line">        ResponseEntity&lt;String&gt; respString = restTemplate.getForEntity(url, String.class);</span><br><span class="line">        <span class="keyword">if</span> (respString.getStatusCodeValue() == <span class="number">200</span>) &#123;</span><br><span class="line">            strBody = respString.getBody();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 数据写入缓存</span></span><br><span class="line">        ops.set(url, strBody, TIME_OUT, TimeUnit.SECONDS);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 类型返回</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        resp = mapper.readValue(strBody, WeatherResponse.class);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        logger.error(<span class="string">"ERROR:"</span> + e.toString());</span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">return</span> resp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="实现数据的同步"><a href="#实现数据的同步" class="headerlink" title="实现数据的同步"></a>实现数据的同步</h4><h5 id="Quartz-Scheduler定时获取数据"><a href="#Quartz-Scheduler定时获取数据" class="headerlink" title="Quartz Scheduler定时获取数据"></a>Quartz Scheduler定时获取数据</h5><h5 id="应用-2"><a href="#应用-2" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QuartzConfiguration</span> </span>&#123;</span><br><span class="line">   <span class="comment">// JobDetail</span></span><br><span class="line">   <span class="meta">@Bean</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> JobDetail <span class="title">weatherDataSyncJobDetail</span><span class="params">()</span></span>&#123;</span><br><span class="line">      <span class="keyword">return</span> JobBuilder.newJob(WeatherDataSyncJob.class)</span><br><span class="line">            .withDescription(<span class="string">"WeatherDataSyncJob"</span>).storeDurably().build();</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">// Trigger</span></span><br><span class="line">   <span class="meta">@Bean</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> Trigger <span class="title">weatherDataSyncTrigger</span><span class="params">()</span></span>&#123;</span><br><span class="line">      SimpleScheduleBuilder schedBuilder = SimpleScheduleBuilder.simpleSchedule()</span><br><span class="line">            .withIntervalInSeconds(<span class="number">1800</span>).repeatForever();</span><br><span class="line">      <span class="keyword">return</span> TriggerBuilder.newTrigger().forJob(weatherDataSyncJobDetail())</span><br><span class="line">            .withDescription(<span class="string">"WeatherDataSyncTrigger"</span>).withSchedule(schedBuilder).build();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeatherDataSyncJob</span> <span class="keyword">extends</span> <span class="title">QuartzJobBean</span> </span>&#123;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> Logger logger = LoggerFactory.getLogger(WeatherDataSyncJob.class);</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">executeInternal</span><span class="params">(JobExecutionContext context)</span> <span class="keyword">throws</span> JobExecutionException </span>&#123;</span><br><span class="line">    logger.info(<span class="string">"Weather Data Sync Job"</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="获取城市数据"><a href="#获取城市数据" class="headerlink" title="获取城市数据"></a>获取城市数据</h5><p><a href="http://mobile.weather.com.cn/js/citylist.xml" target="_blank" rel="noopener">http://mobile.weather.com.cn/js/citylist.xml</a></p>
+<p>减少调用服务；缓存数据；使用XML存储文件；服务调用本地XML文件；</p>
+<p>暂用（citilist.xml）</p>
+<p>映射xml数据到java中（使用JASB）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CityList.java</span></span><br><span class="line"><span class="meta">@XmlRootElement</span>(name = <span class="string">"c"</span>)</span><br><span class="line"><span class="meta">@XmlAccessorType</span>(XmlAccessType.FIELD) <span class="comment">// 通过字段访问</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CityList</span> </span>&#123;</span><br><span class="line">	<span class="meta">@XmlElement</span>(name = <span class="string">"d"</span>)</span><br><span class="line">	<span class="keyword">private</span> List&lt;City&gt; cityList;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// City.java</span></span><br><span class="line"><span class="meta">@XmlRootElement</span>(name = <span class="string">"d"</span>)</span><br><span class="line"><span class="meta">@XmlAccessorType</span>(XmlAccessType.FIELD) <span class="comment">// 通过字段访问</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">City</span> </span>&#123;</span><br><span class="line">   <span class="meta">@XmlAttribute</span>(name = <span class="string">"d1"</span>)</span><br><span class="line">   <span class="keyword">private</span> String cityId;</span><br><span class="line">   <span class="meta">@XmlAttribute</span>(name = <span class="string">"d2"</span>)</span><br><span class="line">   <span class="keyword">private</span> String cityName;</span><br><span class="line">   <span class="meta">@XmlAttribute</span>(name = <span class="string">"d3"</span>)</span><br><span class="line">   <span class="keyword">private</span> String cityCode;</span><br><span class="line">   <span class="meta">@XmlAttribute</span>(name = <span class="string">"d4"</span>)</span><br><span class="line">   <span class="keyword">private</span> String province;</span><br><span class="line">   <span class="comment">// ...GETTER SETTER</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Util</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XmlBuilder</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 将XML数据转换成JAVA对应的POJO</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">xmlStrToObject</span><span class="params">(Class&lt;?&gt; clazz, String xmlStr)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		Object xmlObject = <span class="keyword">null</span>;</span><br><span class="line">		Reader reader = <span class="keyword">null</span>;</span><br><span class="line">		JAXBContext context = JAXBContext.newInstance(clazz);</span><br><span class="line">		<span class="comment">// XML转为对象的接口</span></span><br><span class="line">		Unmarshaller unmarshaller = context.createUnmarshaller();</span><br><span class="line">		reader = <span class="keyword">new</span> StringReader(xmlStr);</span><br><span class="line">		xmlObject = unmarshaller.unmarshal(reader);</span><br><span class="line">		<span class="keyword">if</span> (reader != <span class="keyword">null</span>) &#123;</span><br><span class="line">			reader.close();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> xmlObject;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Service</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CityDataServiceImpl</span> <span class="keyword">implements</span> <span class="title">CityDataService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;City&gt; <span class="title">listCity</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 读取XML文件</span></span><br><span class="line">		Resource resource = <span class="keyword">new</span> ClassPathResource(<span class="string">"citylist.xml"</span>);</span><br><span class="line">		BufferedReader br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(resource.getInputStream(), <span class="string">"utf-8"</span>));</span><br><span class="line">		StringBuffer buffer = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">		String line = <span class="string">""</span>;</span><br><span class="line">		<span class="keyword">while</span> ((line = br.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">			buffer.append(line);</span><br><span class="line">		&#125;</span><br><span class="line">		br.close();</span><br><span class="line">		<span class="comment">// XML转化为JAVA对象</span></span><br><span class="line">		CityList cityList = (CityList) XmlBuilder.xmlStrToObject(CityList.class,buffer.toString());</span><br><span class="line">		<span class="keyword">return</span> cityList.getCityList();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Modify WeatherService</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">syncDataByCityId</span><span class="params">(String cityId)</span> </span>&#123;</span><br><span class="line">    String url = WEATHER_URL + <span class="string">"citykey="</span> + cityId;</span><br><span class="line">    <span class="keyword">this</span>.saveWeatherData(url);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">saveWeatherData</span><span class="params">(String url)</span> </span>&#123;</span><br><span class="line">    String key = url;</span><br><span class="line">    String strBody = <span class="keyword">null</span>;</span><br><span class="line">    ValueOperations&lt;String, String&gt; ops = stringRedisTemplate.opsForValue();</span><br><span class="line">    <span class="comment">// 缓存不存在，调用接口</span></span><br><span class="line">    ResponseEntity&lt;String&gt; respString = restTemplate.getForEntity(url, String.class);</span><br><span class="line">    <span class="keyword">if</span> (respString.getStatusCodeValue() == <span class="number">200</span>) &#123;</span><br><span class="line">        strBody = respString.getBody();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 数据写入缓存</span></span><br><span class="line">    ops.set(url, strBody, TIME_OUT, TimeUnit.SECONDS);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>到这一步，基本数据就已经完成了获取和缓存</p>
+<p>推荐GUI界面 <a href="https://redisdesktop.com/download" target="_blank" rel="noopener">Redis-GUI</a></p>
+<p>在GUI里面，可以直观的看到所缓存的数据，包括前面提到的City，Weather</p>
+<p>接下来就是完成基本的UI界面</p>
+<p>到此，整个项目的基本内容就已经实现</p>
+<p>接下来，进入到Spring Cloud内容的学习</p>
+<hr>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><h5 id="RestTemplate"><a href="#RestTemplate" class="headerlink" title="RestTemplate"></a>RestTemplate</h5><p>RestTemplate是Spring提供的用于访问Rest服务的客户端，RestTemplate提供了多种便捷访问远程Http服务的方法，能够大大提高客户端的编写效率;</p>
+<p>@2018年8月2日 14:11:16</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/02/Spring Cloud Note-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/02/Spring Cloud Note-3/" itemprop="url">Spring Cloud | Note-3</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T00:00:00+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Spring-Cloud微服务-Note-3"><a href="#Spring-Cloud微服务-Note-3" class="headerlink" title="Spring Cloud微服务 | Note(3)"></a>Spring Cloud微服务 | Note(3)</h3><p>@2018年8月2日 15:13:33</p>
+<h4 id="单块架构进化为微服务架构"><a href="#单块架构进化为微服务架构" class="headerlink" title="单块架构进化为微服务架构"></a>单块架构进化为微服务架构</h4><h5 id="单块架构"><a href="#单块架构" class="headerlink" title="单块架构"></a>单块架构</h5><p><img src="C:\Users\lenovo\AppData\Local\Temp\1533195168009.png" alt="1533195168009"></p>
+<h6 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h6><p>功能划分清晰；层次关系良好；层层独立；部署简单；相对技术单一；成本低</p>
+<h6 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h6><p>功能太大；升级风险高；维护成本增加；交付周期变长（按系统交付）；可伸缩性差；监控困难</p>
+<hr>
+<h5 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h5><p>随着系统的壮大，单块架构需要转化，转化成每一个服务单元模块，以API交互，平台无关，高内聚低耦合</p>
+<p><img src="C:\Users\lenovo\AppData\Local\Temp\1533195708067.png" alt="1533195708067"></p>
+<hr>
+<h5 id="微服务设计原则（颗粒度设计原则）"><a href="#微服务设计原则（颗粒度设计原则）" class="headerlink" title="微服务设计原则（颗粒度设计原则）"></a>微服务设计原则（颗粒度设计原则）</h5><p>Q：什么是微服务</p>
+<p>A：服务可以运行在自己进程中（独立部署），轻量级交互机制，例如HTTP交互，服务A和B之间，没有太多的技术关联，可以使用不同的数据存储形式（MySQL或NoSQL）</p>
+<h6 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h6><p>1.拆分足够微（颗粒度）：足够小足以即可（亚马逊两个披萨原则，不能太小，不能太大，满足管理成本）</p>
+<p>2.轻量级通信：微服务函数之间的调用需要体现跨域、跨主机，同步（REST），异步（消息中间件）</p>
+<p>3.领域驱动原则：服务需要体现领域业务模型，减少微服务通用语言的复杂性，使团队理解服务上下文边界（明确了解开发的业务功能）</p>
+<p>4.单一职责原则：颗粒度粗（高耦合，不利于维护，修改重合）；高内聚，低耦合，对其它服务的依赖要低，单一界限上下文，通过公开的API访问</p>
+<p>5.DevOps以及两个披萨：开发团队小而精，且具有全栈能力，降低沟通成本</p>
+<p>6.不限于技术栈：与平台无关，根据场景、业务具体选择技术栈</p>
+<hr>
+<h5 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h5><h6 id="服务拆分："><a href="#服务拆分：" class="headerlink" title="服务拆分："></a>服务拆分：</h6><p>​    ·关注服务的颗粒度，颗粒度才用领域驱动设计进行指导，专注某一领域的功能；</p>
+<h6 id="服务注册："><a href="#服务注册：" class="headerlink" title="服务注册："></a>服务注册：</h6><p>​    ·每个微服务，服务之间的通讯实现；服务注册机制（服务注册中心）；通过心跳机制获取状态，并且通过状态通知其他服务；</p>
+<h6 id="服务发现："><a href="#服务发现：" class="headerlink" title="服务发现："></a>服务发现：</h6><p>​    ·通过服务名称等找到所需的服务</p>
+<h6 id="服务消费："><a href="#服务消费：" class="headerlink" title="服务消费："></a>服务消费：</h6><p>​    ·调用其他服务的过程；消费者（调用者），提供商（被调用）</p>
+<h6 id="统一入口："><a href="#统一入口：" class="headerlink" title="统一入口："></a>统一入口：</h6><p>​    ·给服务提供方便的服务名称</p>
+<h6 id="配置管理："><a href="#配置管理：" class="headerlink" title="配置管理："></a>配置管理：</h6><p>​    ·定制功能的配置文件不同；</p>
+<h6 id="熔断机制："><a href="#熔断机制：" class="headerlink" title="熔断机制："></a>熔断机制：</h6><p>​    ·系统的防护；阻挡所有的访问，断开某些服务，返回提示信息，保护系统；</p>
+<h6 id="自动拓展："><a href="#自动拓展：" class="headerlink" title="自动拓展："></a>自动拓展：</h6><p>​    ·服务根据负荷状况，进行自动扩展；</p>
+<hr>
+<h5 id="微服务拆分："><a href="#微服务拆分：" class="headerlink" title="微服务拆分："></a>微服务拆分：</h5><h6 id="意义："><a href="#意义：" class="headerlink" title="意义："></a>意义：</h6><p>​    ·易于实现；利于维护；易于部署，轻量级（Spring Boot内嵌tomcat）；易于更新（服务都是隔离的，易于修改、更新、部署）</p>
+<h6 id="正向的反馈闭环："><a href="#正向的反馈闭环：" class="headerlink" title="正向的反馈闭环："></a>正向的反馈闭环：</h6><p><img src="C:\Users\lenovo\AppData\Local\Temp\1533197427183.png" alt="1533197427183"></p>
+<h6 id="拆分方法："><a href="#拆分方法：" class="headerlink" title="拆分方法："></a>拆分方法：</h6><p>横向拆分：根据不同的业务功能，拆分成不同的微服务</p>
+<p>​    ·数据采集，数据存储，数据查询，数据展示</p>
+<p>纵向拆分：把业务中的不同的功能，模块进行拆分</p>
+<p>​    ·<img src="C:\Users\lenovo\AppData\Local\Temp\1533197559770.png" alt="1533197559770"></p>
+<p>使用DDD（驱动设计原则）：反映领域的业务模型</p>
+<p>​    ·天气数据采集限界上下文：数据采集，数据存储</p>
+<p>​    ·天气预报限界上下文：数据展示</p>
+<p>​    ·天气数据API限界上下文：数据查询</p>
+<p>​    ·城市数据API限界上下文：数据查询</p>
+<hr>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p><a href="https://www.cnblogs.com/wintersun/p/6219259.html" target="_blank" rel="noopener">微服务架构设计</a></p>
+<p><a href="https://www.nginx.com/blog/introduction-to-microservices/" target="_blank" rel="noopener">NGINX-BLOG</a></p>
+<p><a href="http://www.dockone.io/article/394" target="_blank" rel="noopener">微服务架构的优势与不足</a></p>
+<p><a href="http://dockone.io/article/482" target="_blank" rel="noopener">使用API Gateway</a></p>
+<p><a href="http://www.dockone.io/article/549" target="_blank" rel="noopener">深入微服务架构的进程间通信</a></p>
+<p><a href="http://www.dockone.io/article/771" target="_blank" rel="noopener">服务发现的可行方案以及实践案例</a></p>
+<p><a href="http://www.dockone.io/article/936" target="_blank" rel="noopener">微服务的事件驱动数据管理</a></p>
+<p><a href="http://www.dockone.io/article/1066" target="_blank" rel="noopener">选择微服务部署策略</a></p>
+<p><a href="http://www.dockone.io/article/1266" target="_blank" rel="noopener">从单体式架构迁移到微服务架构</a></p>
+<p>@2018年8月2日 16:20:46</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/01/Blog System  Note-6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/01/Blog System  Note-6/" itemprop="url">Blog System | Note-6</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T00:00:00+08:00">
+                2018-08-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Blog-System-Note-5"><a href="#Blog-System-Note-5" class="headerlink" title="Blog System | Note-5"></a>Blog System | Note-5</h3><p>@2018年8月1日 14:43:38        @Knowledge From Imooc</p>
+<hr>
+<p>#### </p>
+<h4 id="搜索功能"><a href="#搜索功能" class="headerlink" title="搜索功能"></a>搜索功能</h4><p>使用Elasticsearchs实现全文检索</p>
+<h5 id="应用"><a href="#应用" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 文档类型的EsBlog实体</span></span><br><span class="line"><span class="meta">@Document</span>(indexName = <span class="string">"blog"</span>,type = <span class="string">"blog"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EsBlog</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;</span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">	<span class="keyword">private</span> String id;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Blog实体的ID</span></span><br><span class="line">	<span class="meta">@Field</span>(index = FieldIndex.not_analyzed)</span><br><span class="line">	<span class="keyword">private</span> Long blogId;</span><br><span class="line">	<span class="keyword">private</span> String title;</span><br><span class="line">	<span class="keyword">private</span> String summary;</span><br><span class="line">	<span class="keyword">private</span> String content;</span><br><span class="line">	<span class="comment">// 不使用全文检索字段</span></span><br><span class="line">	<span class="meta">@Field</span>(index = FieldIndex.not_analyzed)</span><br><span class="line">	<span class="keyword">private</span> String username;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">private</span> String tags;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// EsBlogRepository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">EsBlogRepository</span> <span class="keyword">extends</span> <span class="title">ElasticsearchRepository</span>&lt;<span class="title">EsBlog</span>,<span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// 模糊搜索查询</span></span><br><span class="line">	<span class="function">Page&lt;EsBlog&gt; <span class="title">findDistinctEsBlogByTitleContainingOrSummaryContainingOrContentContainingOrTagsContaining</span><span class="params">(String title,String summary,String content,String tags,Pageable pageable)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// EsBlogService</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">EsBlogService</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 最新博客列表</span></span><br><span class="line">	<span class="function">Page&lt;EsBlog&gt; <span class="title">listNewestEsBlogs</span><span class="params">(String keyword, Pageable pageable)</span></span>;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Impl</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;TagVO&gt; <span class="title">listTop30Tags</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    List&lt;TagVO&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="comment">// given</span></span><br><span class="line">    SearchQuery searchQuery = <span class="keyword">new</span> NativeSearchQueryBuilder()</span><br><span class="line">        .withQuery(matchAllQuery())</span><br><span class="line">        .withSearchType(SearchType.QUERY_THEN_FETCH)</span><br><span class="line">        .withIndices(<span class="string">"blog"</span>).withTypes(<span class="string">"blog"</span>)</span><br><span class="line">        .addAggregation(terms(<span class="string">"tags"</span>).field(<span class="string">"tags"</span>).order(Terms.Order.count(<span class="keyword">false</span>)).size(<span class="number">30</span>))</span><br><span class="line">        .build();</span><br><span class="line">    <span class="comment">// when</span></span><br><span class="line">    Aggregations aggregations = elasticsearchTemplate.query(searchQuery, <span class="keyword">new</span> ResultsExtractor&lt;Aggregations&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Aggregations <span class="title">extract</span><span class="params">(SearchResponse response)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> response.getAggregations();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    StringTerms modelTerms = (StringTerms)aggregations.asMap().get(<span class="string">"tags"</span>);</span><br><span class="line">    Iterator&lt;Terms.Bucket&gt; modelBucketIt = modelTerms.getBuckets().iterator();</span><br><span class="line">    <span class="keyword">while</span> (modelBucketIt.hasNext())&#123;</span><br><span class="line">        Terms.Bucket actiontypeBucket = modelBucketIt.next();</span><br><span class="line">        list.add(<span class="keyword">new</span> TagVO(actiontypeBucket.getKey().toString(),actiontypeBucket.getDocCount()));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> list;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// BlogController</span></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/blogs"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BlogController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> EsBlogService esBlogService;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 博客列表</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@GetMapping</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">listBlogs</span><span class="params">(@RequestParam(value = <span class="string">"order"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"new"</span>)</span> String order,</span></span><br><span class="line"><span class="function">							@<span class="title">RequestParam</span><span class="params">(value = <span class="string">"keyword"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">""</span>)</span> String keyword,</span></span><br><span class="line"><span class="function">							@<span class="title">RequestParam</span><span class="params">(value = <span class="string">"async"</span>, required = <span class="keyword">false</span>)</span> <span class="keyword">boolean</span> async,</span></span><br><span class="line"><span class="function">							@<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageIndex"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"0"</span>)</span> <span class="keyword">int</span> pageIndex,</span></span><br><span class="line"><span class="function">							@<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageSize"</span>, required = <span class="keyword">false</span>, defaultValue = <span class="string">"10"</span>)</span> <span class="keyword">int</span> pageSize,</span></span><br><span class="line"><span class="function">							Model model) </span>&#123;</span><br><span class="line">		Page&lt;EsBlog&gt; page = <span class="keyword">null</span>;</span><br><span class="line">		List&lt;EsBlog&gt; list = <span class="keyword">null</span>;</span><br><span class="line">		<span class="comment">// 系统初始化时，没有博客数据</span></span><br><span class="line">		<span class="keyword">boolean</span> isEmpty = <span class="keyword">true</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// 热门查询</span></span><br><span class="line">			<span class="keyword">if</span> (order.equals(<span class="string">"hot"</span>)) &#123;</span><br><span class="line">				...</span><br><span class="line">			&#125; <span class="keyword">else</span> <span class="keyword">if</span> (order.equals(<span class="string">"new"</span>)) &#123;</span><br><span class="line">				...</span><br><span class="line">			&#125;</span><br><span class="line">			isEmpty = <span class="keyword">false</span>;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">		...</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 所在页面数据列表</span></span><br><span class="line">		list = page.getContent();</span><br><span class="line">		model.addAttribute(<span class="string">"order"</span>, order);</span><br><span class="line">		...</span><br><span class="line">		<span class="comment">// 首次访问页面才加载</span></span><br><span class="line">		<span class="keyword">if</span> (!async &amp;&amp; !isEmpty) &#123;</span><br><span class="line">			List&lt;EsBlog&gt; newest = esBlogService.listTop5NewestEsBlogs();</span><br><span class="line">			model.addAttribute(<span class="string">"newest"</span>, newest);</span><br><span class="line">			...</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> (async == <span class="keyword">true</span> ? <span class="string">"/index :: #mainContainerRepleace"</span> : <span class="string">"/index"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>这一次的博客系统学习，收获颇多（慕课网），</p>
+<p>了解到企业级开发的流程（需求分析-技术选型-框架搭建-原型设计-等等）学习到基本的架构设计，</p>
+<h5 id="BackEnd："><a href="#BackEnd：" class="headerlink" title="BackEnd："></a>BackEnd：</h5><p>Spring，Spring MVC，Spring Data，Spring Security，Hibernate，SpringBoot基础知识的巩固；</p>
+<h5 id="FrontEnd："><a href="#FrontEnd：" class="headerlink" title="FrontEnd："></a>FrontEnd：</h5><p>Thymeleaf模版的学习；Bootstrap的使用，jQuery，HTML5，JS，CSS；</p>
+<p>Elasticsearchs全文检索；</p>
+<p>JpaRepository；</p>
+<p>MongoDB-File-Server的使用；</p>
+<p>Gradle管理；</p>
+<p>继续学习，附下官方文档，保持基础知识的学习，不只是对着代码学着敲而已，官方文档是最好的学习资料。</p>
+<hr>
+<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><p><a href="https://spring.io/guides/gs/spring-boot/" target="_blank" rel="noopener">SpringBoot</a></p>
+<p><a href="https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html" target="_blank" rel="noopener">Thymeleaf</a></p>
+<p><a href="https://getbootstrap.com/docs/4.1/getting-started/introduction/" target="_blank" rel="noopener">Bootstrap</a></p>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html" target="_blank" rel="noopener">Elasticsearch</a></p>
+<p><a href="https://docs.gradle.org/current/userguide/userguide.html" target="_blank" rel="noopener">Gradle</a></p>
+<p>@2018年8月1日 15:02:24</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/01/Spring Cloud Note-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/01/Spring Cloud Note-1/" itemprop="url">Spring Cloud | Note-1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T00:00:00+08:00">
+                2018-08-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Spring-Cloud微服务-Note-1"><a href="#Spring-Cloud微服务-Note-1" class="headerlink" title="Spring Cloud微服务 | Note(1)"></a>Spring Cloud微服务 | Note(1)</h3><p>2018年7月28日 14:01:02</p>
+<h4 id="Spring-Boot-简化开发"><a href="#Spring-Boot-简化开发" class="headerlink" title="Spring Boot 简化开发"></a>Spring Boot 简化开发</h4><p>​    1.抛弃传统JavaEE项目繁琐的配置，学习过程</p>
+<p>​    2.更快入门、Spring血统、开箱即用、零配置</p>
+<h4 id="开启Spring-Boot项目"><a href="#开启Spring-Boot项目" class="headerlink" title="开启Spring Boot项目"></a>开启Spring Boot项目</h4><p>​    检查开发环境 采用IDEA、JDK8+、Gradle4.9、Spring Boot 2.0.3（<a href="https://start.spring.io）" target="_blank" rel="noopener">https://start.spring.io）</a></p>
+<p>​    编译项目 &gt; gradle build</p>
+<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><p>​    1.@RestController 用于请求Rest的Controller 包含注解@Controller &amp; @ResponseBody</p>
+<p>​    2.测试@RunWith(SpringRunner.class) @SpringBootTest @AutoConfigureMockMvc</p>
+<p>​    3.MockMvc(测试)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mockMvc.perform(MockMvcRequestBuilders.get(<span class="string">"/hello"</span>).accept(MediaType.APPLICATION_JSON))</span><br><span class="line">				.andExpect(status().isOk())</span><br><span class="line">				.andExpect(content().string(equalTo(<span class="string">"Hello World"</span>)));</span><br></pre></td></tr></table></figure>
+<p>​    4.静态方法status()/content()/equalTo()</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;</span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;</span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.hamcrest.Matchers.equalTo;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><h4 id="一、目录文件解释"><a href="#一、目录文件解释" class="headerlink" title="一、目录文件解释"></a>一、目录文件解释</h4><blockquote>
+<p>buildscript.gradle (代码块中脚本优先执行)</p>
+<ul>
+<li>ext 用于定义动态属性（sprintBootVersion = ‘2.0.3 RELEASE’）</li>
+<li>repositories 使用中央仓库以及spring仓库</li>
+<li>dependencies 依赖关系</li>
+<li>classpath 声明执行其余脚本时，ClassLoader可使用这些依赖项（可引用ext中动态属性${sprintBootVersion}）</li>
+<li>使用插件</li>
+<li>指定生成编译文件版本 默认jar</li>
+<li>依赖关系（编译阶段、测试阶段）</li>
+</ul>
+</blockquote>
+<h4 id="二、Gradle"><a href="#二、Gradle" class="headerlink" title="二、Gradle"></a>二、Gradle</h4><ol>
+<li>按约定声明构建和建设</li>
+<li>强大的支持多工程的构建</li>
+<li>强大的依赖管理（基于Apache Ivy），提供最大的便利去构建工程</li>
+<li>全力支持已有的 Maven 或者Ivy仓库基础建设</li>
+<li>支持传递性依赖管理，在不需要远程仓库和pom.xml和ivy配置文件的前提下</li>
+<li>基于groovy脚本构建，其build脚本使用groovy语言编写</li>
+<li>具有广泛的领域模型支持构建</li>
+<li>深度 API</li>
+<li>易迁移</li>
+<li>自由和开放源码，Gradle是一个开源项目，基于 ASL</li>
+</ol>
+<h4 id="三、MockMvc"><a href="#三、MockMvc" class="headerlink" title="三、MockMvc"></a>三、MockMvc</h4>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/31/Blog System  Note-5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1589,183 +2195,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/01/JPA学习记录/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="REX CHEN">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="REEEEX">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/01/JPA学习记录/" itemprop="url">About Spring Data JPA</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-01T00:00:00+08:00">
-                2018-07-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="About-Spring-Data-JPA"><a href="#About-Spring-Data-JPA" class="headerlink" title="About Spring Data JPA"></a>About Spring Data JPA</h1><h2 id="1-Spring-Data-JPA"><a href="#1-Spring-Data-JPA" class="headerlink" title="1.Spring Data JPA"></a>1.Spring Data JPA</h2><p>​    Spring Data JPA是Spring Data这一个大家族中的一部分，它使得实现基于JPA的存储（repository）变得更加容易。Spring Data JPA这个模块，增强支持了基于JPA的数据库访问层。Spring Data JPA构建的Spring-powered的驱动应用程序，使得数据访问变得更加简单。</p>
-<h2 id="2-Spring-Data-JPA基本功能"><a href="#2-Spring-Data-JPA基本功能" class="headerlink" title="2.Spring Data JPA基本功能"></a>2.Spring Data JPA基本功能</h2><p>​    实现应用程序的数据访问层，一直都是很麻烦的问题。为了执行简单的查询、分页和审计，需要编写太多冗余的模版代码。Spring Data JPA的出现，就是通过减少实际工作中的工作量来显著改进了数据访问层的实现。作为开发人员，编写repository接口，包括自定义的方法，Spring都自动提供了实现。</p>
-<h2 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h2><ul>
-<li><p>Sophisticated support to build repositories based on Spring and JPA</p>
-</li>
-<li><p>支持基于Spring和JPA构建数据库</p>
-</li>
-<li><p>Support for <a href="http://www.querydsl.com/" target="_blank" rel="noopener">Querydsl</a> predicates and thus type-safe JPA queries</p>
-</li>
-<li><p>支持查询谓词，以及类安全的JPA查询</p>
-</li>
-<li><p>Transparent auditing of domain class</p>
-</li>
-<li><p>域类的透明审计</p>
-</li>
-<li><p>Pagination support, dynamic query execution, ability to integrate custom data access code</p>
-</li>
-<li><p>支持分页、动态查询，可以继承自定义数据库访问</p>
-</li>
-<li><p>Validation of <code>@Query</code> annotated queries at bootstrap time</p>
-</li>
-<li><p>支持验证@Query的注释查询</p>
-</li>
-<li><p>Support for XML based entity mapping</p>
-</li>
-<li><p>支持基于XML的实体映射</p>
-</li>
-<li><p>JavaConfig based repository configuration by introducing <code>@EnableJpaRepositories</code>.</p>
-</li>
-<li><p>通过引入@EnableJpaRepositories，基于JavaConfig的repository的配置</p>
-</li>
-</ul>
-<h2 id="3-核心接口"><a href="#3-核心接口" class="headerlink" title="3.核心接口"></a>3.核心接口</h2><p>Repository接口 ：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Repository</span>&lt;<span class="title">T</span>,<span class="title">ID</span> <span class="keyword">extends</span> <span class="title">Serializable</span>&gt;</span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在这个接口中，定义了所有repository的类型。需要传入两个参数，一个是实体（采用泛型T），另一个则是实体中的ID的数据类型（Integer/String/…）</p>
-<p>最近，在项目中，使用到的是JpaRepository。这里先讲讲JpaRepository</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">JpaRepository</span>&lt;<span class="title">T</span>,<span class="title">ID</span> <span class="keyword">extends</span> <span class="title">Serializable</span>&gt; <span class="keyword">extends</span> <span class="title">PagingAndSortingRepository</span>&lt;<span class="title">T</span>,<span class="title">ID</span>&gt;</span>&#123;</span><br><span class="line">    <span class="function">List&lt;T&gt; <span class="title">findAll</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function">List&lt;T&gt; <span class="title">findAll</span><span class="params">(Sort sort)</span></span>;</span><br><span class="line">    </span><br><span class="line">    &lt;S extends T&gt; <span class="function">List&lt;S&gt; <span class="title">save</span><span class="params">(Iterable&lt;S&gt; entities)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">flush</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function">T <span class="title">saveAndFlush</span><span class="params">(T entity)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">deleteInBatch</span><span class="params">(Iterable&lt;T&gt; entities)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">deleteAllInBatch</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>其实，从方法名上基本都可以理解它们的功能和操作，只需调用即可。也可以进行重写和实现。传入需要的参数或者需要的返回值类型，见仁见智，根据实际情况编写不同的功能。</p>
-<p>举个例子来说：</p>
-<p>对于实体（Student）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">@Entity</span><br><span class="line">@Data</span><br><span class="line">@Table(name = &quot;t_student&quot;)</span><br><span class="line">@DynamicUpdate</span><br><span class="line">public class Student&#123;</span><br><span class="line">	@Id</span><br><span class="line">	@Column(name = &quot;id&quot;)</span><br><span class="line">    private String id;</span><br><span class="line">    @Column(name = &quot;name&quot;)</span><br><span class="line">    private String name;</span><br><span class="line">    @Column(name = &quot;username&quot;)</span><br><span class="line">    private String username;</span><br><span class="line">    @Column(name = &quot;password&quot;)</span><br><span class="line">    private String password;</span><br><span class="line">    @Column(name = &quot;gender&quot;)</span><br><span class="line">    private Integer gender;</span><br><span class="line">    @Column(name = &quot;birth&quot;)</span><br><span class="line">    private Date birth;</span><br><span class="line">    ...</span><br><span class="line">    /*</span><br><span class="line">    * 驼峰命名法</span><br><span class="line">    * @Column(name = &quot;create_time&quot;)</span><br><span class="line">    * private String createTime;</span><br><span class="line">    */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里简单的举了一个例子，是学生的实体类，有一个基本的变量。为什么会有@Entity,@Data…诸如此类的注解？这是从hibernate就有的注解，主要的功能是为了将映射变得更加的容易。</p>
-<p>下一篇就@Annotation的知识补充上</p>
-<p>我们再把Student实体数据访问层的Repository补上</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">StudentRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Student</span>, <span class="title">String</span>&gt;</span>&#123;</span><br><span class="line">    <span class="comment">// 这里的两个参数 填写对应的实体类和实体ID字段的数据类型</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 举例说明 通过性别查找所有的男同学和女同学</span></span><br><span class="line">    <span class="function">List&lt;Student&gt; <span class="title">findAllStudentsByGender</span><span class="params">(Integer gender)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 通过Pageable达到分页的查询效果</span></span><br><span class="line">    <span class="function">Page&lt;Student&gt; <span class="title">findAllStudentsByGender</span><span class="params">(Integer gender,Pageable pageable)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>完成了数据访问层（Repository）之后，就可以编写Service和ServiceImpl的实现了。在Impl中只需将Repository注入（@AutoWired）即可完成对应的功能。</p>
-<h3 id="简单来说"><a href="#简单来说" class="headerlink" title="简单来说"></a>简单来说</h3><p>​    JpaRepository简化了在SSM框架中，所需要的映射文件的配置：</p>
-<p>​    例如：spring-dao.xml，mapper/StudentDao.xml</p>
-<p>SQL语句的编写：</p>
-<p>​    例如：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">"cn.inc.dao.StudentDao"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"queryStudent"</span> <span class="attr">resultType</span>=<span class="string">"cn.inc.entity.Student"</span>&gt;</span></span><br><span class="line">        SELECT *</span><br><span class="line">        FROM inc.t_student</span><br><span class="line">        ORDER BY id DESC</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>虽然说JpaRepository简化了很多在SSM框架中的映射，SQL编写，注入，组件等问题。但其实对于刚入门的我来说，在工作效率上提高了许多，但是感觉是走了很多的捷径去完成了工作而已，一些基础知识和底层的原理并没有深入的了解。这也是为什么要开启学习笔记的原因。</p>
-<p>今天就更新到这里，感谢。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1811,7 +2245,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1824,7 +2258,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>

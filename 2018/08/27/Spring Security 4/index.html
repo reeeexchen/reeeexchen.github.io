@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JAVA,Spring Security,Thread,Swagger,WireMock," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Spring Security Note-4 使用多线程提高REST服务性能Q：为什么需要异步处理服务？ A：当HTTP请求服务之后，中间件的主线程调用一个副线程，当副线程处理完成之后，再由主线程返回结果； 在此过程中，主线程是可以空闲出来，去处理其它请求； 服务器的吞吐量可以达到优于同步处理的效果； 12345678910111213// 同步处理@RestControllerpublic cl">
+<meta name="keywords" content="JAVA,Spring Security,Thread,Swagger,WireMock">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Security | Note-4">
+<meta property="og:url" content="http://yoursite.com/2018/08/27/Spring Security 4/index.html">
+<meta property="og:site_name" content="REEEEX">
+<meta property="og:description" content="Spring Security Note-4 使用多线程提高REST服务性能Q：为什么需要异步处理服务？ A：当HTTP请求服务之后，中间件的主线程调用一个副线程，当副线程处理完成之后，再由主线程返回结果； 在此过程中，主线程是可以空闲出来，去处理其它请求； 服务器的吞吐量可以达到优于同步处理的效果； 12345678910111213// 同步处理@RestControllerpublic cl">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fusoqv6bqjj212j0gqdlz.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuspyqjm07j20qq01nt8q.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuspz0ph7xj20m905x3yo.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuspz90rfgj20mj02o0sn.jpg">
+<meta property="og:updated_time" content="2018-08-31T04:20:23.143Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Security | Note-4">
+<meta name="twitter:description" content="Spring Security Note-4 使用多线程提高REST服务性能Q：为什么需要异步处理服务？ A：当HTTP请求服务之后，中间件的主线程调用一个副线程，当副线程处理完成之后，再由主线程返回结果； 在此过程中，主线程是可以空闲出来，去处理其它请求； 服务器的吞吐量可以达到优于同步处理的效果； 12345678910111213// 同步处理@RestControllerpublic cl">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fusoqv6bqjj212j0gqdlz.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/27/Spring Security 4/"/>
+
+
+
+
+
+  <title>Spring Security | Note-4 | REEEEX</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">REEEEX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">KEEP GOING</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/Spring Security 4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring Security | Note-4</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-27T00:00:00+08:00">
+                2018-08-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Spring-Security-Note-4"><a href="#Spring-Security-Note-4" class="headerlink" title="Spring Security Note-4"></a>Spring Security Note-4</h3><hr>
+<h4 id="使用多线程提高REST服务性能"><a href="#使用多线程提高REST服务性能" class="headerlink" title="使用多线程提高REST服务性能"></a>使用多线程提高REST服务性能</h4><p>Q：为什么需要异步处理服务？</p>
+<p>A：当HTTP请求服务之后，中间件的主线程调用一个副线程，当副线程处理完成之后，再由主线程返回结果；</p>
+<p>在此过程中，主线程是可以空闲出来，去处理其它请求；</p>
+<p>服务器的吞吐量可以达到优于同步处理的效果；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 同步处理</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncController</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"/order"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">order</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"MAIN THREAD START"</span>);</span><br><span class="line">        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">        logger.info(<span class="string">"MAIN THREAD END"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="使用Runnable异步处理REST服务"><a href="#使用Runnable异步处理REST服务" class="headerlink" title="使用Runnable异步处理REST服务"></a>使用Runnable异步处理REST服务</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncController</span> </span>&#123;</span><br><span class="line">   <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line"></span><br><span class="line">   <span class="meta">@RequestMapping</span>(<span class="string">"/order"</span>)</span><br><span class="line">   <span class="function"><span class="keyword">public</span> Callable&lt;String&gt; <span class="title">order</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">      logger.info(<span class="string">"MAIN THREAD START"</span>);</span><br><span class="line">      Callable&lt;String&gt; result = <span class="keyword">new</span> Callable&lt;String&gt;() &#123;</span><br><span class="line">         <span class="meta">@Override</span></span><br><span class="line">         <span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">            logger.info(<span class="string">"VICE THREAD START"</span>);</span><br><span class="line">            Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            logger.info(<span class="string">"VICE THREAD END"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;;</span><br><span class="line">      logger.info(<span class="string">"MAIN THREAD END"</span>);</span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>控制器返回：</p>
+<blockquote>
+<p>2018-08-31 10:34:47.285 Controller      : MAIN THREAD START<br>2018-08-31 10:34:47.285 Controller      : MAIN THREAD END<br>2018-08-31 10:34:47.292 Controller      : VICE THREAD START<br>2018-08-31 10:34:48.292 Controller      : VICE THREAD END</p>
+</blockquote>
+<p>从时间可以看出，主线程和副线程是几乎同时开始，没有停顿，不等待副线程的一秒钟；</p>
+<p>副线程处理的一秒钟，主线程可以继续处理其他的HTTP请求；</p>
+<blockquote>
+<p>为什么我通过Runnable已经可以异步处理服务请求，还需要DeferredResult的处理方式？</p>
+<p>因为Runnable不能处理所有的情况，它的副线程是必须通过主线程来调用的；</p>
+</blockquote>
+<h5 id="使用DeferredResult异步处理REST服务"><a href="#使用DeferredResult异步处理REST服务" class="headerlink" title="使用DeferredResult异步处理REST服务"></a>使用DeferredResult异步处理REST服务</h5><p>在模拟场景下，接受HTTP请求的服务器与处理服务的应用，并不是同一台服务器的情况下；</p>
+<p>则需要由</p>
+<p>1.HTTP请求，由应用1接收请求；</p>
+<p>2.应用1将 请求发送消息到消息队列中；</p>
+<p>3.应用2则实时监听消息队列，并且处理发送的消息；</p>
+<p>4.在应用2处理完成的请求，发送处理的结果返回到消息队列中；</p>
+<p>5.应用1也将实时监听消息队列，监听应用2返回的处理结果；</p>
+<p>6.应用1收到处理结果后，再返回HTTP相应；</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fusoqv6bqjj212j0gqdlz.jpg" alt=""></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 模拟应用1接收请求并且监听，返回</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> MockQueue mockQueue;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> DeferredResultHolder deferredResultHolder;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line"></span><br><span class="line">	<span class="meta">@RequestMapping</span>(<span class="string">"/order"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> DeferredResult&lt;String&gt; <span class="title">order</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		logger.info(<span class="string">"MAIN THREAD START"</span>);</span><br><span class="line">		String orderNumber = RandomStringUtils.randomNumeric(<span class="number">8</span>);</span><br><span class="line">		mockQueue.setPlaceOrder(orderNumber);</span><br><span class="line"></span><br><span class="line">		DeferredResult&lt;String&gt; result = <span class="keyword">new</span> DeferredResult&lt;&gt;();</span><br><span class="line">		deferredResultHolder.getMap().put(orderNumber,result);</span><br><span class="line"></span><br><span class="line">		logger.info(<span class="string">"MAIN THREAD END"</span>);</span><br><span class="line">		<span class="keyword">return</span> result;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 模拟监听器</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QueueListener</span> <span class="keyword">implements</span> <span class="title">ApplicationListener</span>&lt;<span class="title">ContextRefreshedEvent</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MockQueue mockQueue;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> DeferredResultHolder deferredResultHolder;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onApplicationEvent</span><span class="params">(ContextRefreshedEvent contextRefreshedEvent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="comment">// 监听模拟消息队列</span></span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (StringUtils.isNotBlank(mockQueue.getCompleteOrder())) &#123;</span><br><span class="line">                    String orderNumber = mockQueue.getCompleteOrder();</span><br><span class="line">                    logger.info(<span class="string">"返回订单处理结果，"</span> + orderNumber);</span><br><span class="line">                    deferredResultHolder.getMap().get(orderNumber).setResult(<span class="string">"place order success"</span>);</span><br><span class="line">                    mockQueue.setCompleteOrder(<span class="keyword">null</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 模拟消息队列处理请求</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MockQueue</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 订单消息</span></span><br><span class="line">	<span class="keyword">private</span> String placeOrder;</span><br><span class="line">	<span class="comment">// 完成订单消息</span></span><br><span class="line">	<span class="keyword">private</span> String completeOrder;</span><br><span class="line">	<span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPlaceOrder</span><span class="params">(String placeOrder)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		<span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">			logger.info(<span class="string">"接到下单请求，"</span> + placeOrder);</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">			&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">this</span>.completeOrder = placeOrder;</span><br><span class="line">			logger.info(<span class="string">"下单请求处理完毕，"</span> + placeOrder);</span><br><span class="line">		&#125;).start();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DeferredResultHolder</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> Map&lt;String,DeferredResult&lt;String&gt;&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>控制器返回结果:</p>
+<p>2018-08-31 10:58:33.234  INFO 15020 — [nio-8081-exec-1] Controller : MAIN THREAD START<br>2018-08-31 10:58:33.236  INFO 15020 — [nio-8081-exec-1] Controller : MAIN THREAD END<br>2018-08-31 10:58:33.236  INFO 15020 — [      Thread-34] MockQueue : 接到下单请求，51722757<br>2018-08-31 10:58:34.236  INFO 15020 — [      Thread-34] MockQueue : 下单请求处理完毕，51722757<br>2018-08-31 10:58:34.344  INFO 15020 — [      Thread-23] QueueListener : 返回订单处理结果，51722757</p>
+</blockquote>
+<p>通过控制器返回的结果发现，几乎在主线程完成返回的同时，副线程（Thread-34）同时接收到请求，并且在一秒后完成服务的请求，并且返回处理结果，由模拟应用1的线程2接收返回结果（Thread-23）；</p>
+<h5 id="异步处理配置"><a href="#异步处理配置" class="headerlink" title="异步处理配置"></a>异步处理配置</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span></span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> TimeInterceptor timeInterceptor;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configureAsyncSupport</span><span class="params">(AsyncSupportConfigurer configurer)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 需要通过以下两个注册异步请求的拦截器</span></span><br><span class="line">        configurer.registerCallableInterceptors();</span><br><span class="line">        configurer.registerDeferredResultInterceptors();</span><br><span class="line">        <span class="comment">// 设置异步请求的超时时间</span></span><br><span class="line">        configurer.setDefaultTimeout(<span class="number">1000</span>);</span><br><span class="line">        <span class="comment">// 设置自定义的线程池</span></span><br><span class="line">        configurer.setTaskExecutor();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="与前端开发并行工作工具"><a href="#与前端开发并行工作工具" class="headerlink" title="与前端开发并行工作工具"></a>与前端开发并行工作工具</h4><h5 id="使用Swagger自动生成API文档"><a href="#使用Swagger自动生成API文档" class="headerlink" title="使用Swagger自动生成API文档"></a>使用Swagger自动生成API文档</h5><p>首先需要在pom中加入依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger-ui<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p> 在主应用中开启Swagger服务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@EnableSwagger</span>2</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(DemoApplication.class,args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/hello"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Hello Spring Security"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>常用注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/user"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">	<span class="comment">// Swagger注解</span></span><br><span class="line">	<span class="meta">@ApiOperation</span>(value = <span class="string">"用户列表查询服务"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">query</span><span class="params">(UserQueryCondition condition, @PageableDefault(size = <span class="number">17</span>, page = <span class="number">2</span>, sort = <span class="string">"username,asc"</span>)</span> Pageable pageable) </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">    ...</span><br><span class="line">	<span class="function"><span class="keyword">public</span> User <span class="title">getInfo</span><span class="params">(@ApiParam(value = <span class="string">"用户ID"</span>)</span> @<span class="title">PathVariable</span><span class="params">(name = <span class="string">"id"</span>, required = <span class="keyword">false</span>)</span> String id) </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuspyqjm07j20qq01nt8q.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuspz0ph7xj20m905x3yo.jpg" alt=""></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserQueryCondition</span> </span>&#123;</span><br><span class="line">	<span class="meta">@ApiModelProperty</span>(value = <span class="string">"用户年龄起始值"</span>)</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">	<span class="meta">@ApiModelProperty</span>(value = <span class="string">"用户年龄终止值"</span>)</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> ageTo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuspz90rfgj20mj02o0sn.jpg" alt=""></p>
+<h5 id="使用WireMock伪造REST服务"><a href="#使用WireMock伪造REST服务" class="headerlink" title="使用WireMock伪造REST服务"></a>使用WireMock伪造REST服务</h5><p>前后端分离的情况下，不止于HTML的请求，还有IOS，ANDROID的请求服务；</p>
+<p>自我编写假数据是不现实，并且效率很低；</p>
+<p>提供一个统一的伪造REST服务是有必要的；</p>
+<p>WireMock是一个独立的服务器，收到怎么样的请求，返回怎么样的相应；</p>
+<p>WireMock不需要重启，不需要模拟数据，只需要去连接WireMock服务器即可；</p>
+<p><a href="http://wiremock.org/docs/running-standalone/" target="_blank" rel="noopener">WireMock独立运行</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar wiremock-standalone-2.18.0.jar --port 8082</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 添加WireMock的依赖</span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.tomakehurst<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>wiremock<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.httpcomponents<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>httpmime<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MockServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">// 指定连接</span></span><br><span class="line">        WireMock.configureFor(<span class="number">8082</span>);</span><br><span class="line">        <span class="comment">// 清空所有配置</span></span><br><span class="line">        WireMock.removeAllMappings();</span><br><span class="line">        <span class="comment">// 处理请求</span></span><br><span class="line">        mock(<span class="string">"/order/1"</span>, <span class="string">"01"</span>);</span><br><span class="line">        mock(<span class="string">"/order/2"</span>, <span class="string">"02"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">mock</span><span class="params">(String url, String file)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        ClassPathResource resource = <span class="keyword">new</span> ClassPathResource(<span class="string">"mock/response/"</span> + file + <span class="string">".txt"</span>);</span><br><span class="line">        String content = StringUtils.join(FileUtils.readLines(resource.getFile(), <span class="string">"UTF-8"</span>).toArray(), <span class="string">"\n"</span>);</span><br><span class="line">        WireMock.stubFor(WireMock.get(urlPathEqualTo(url)).willReturn(aResponse().withBody(content).withStatus(<span class="number">200</span>)));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+          
+            <a href="/tags/Spring-Security/" rel="tag"># Spring Security</a>
+          
+            <a href="/tags/Thread/" rel="tag"># Thread</a>
+          
+            <a href="/tags/Swagger/" rel="tag"># Swagger</a>
+          
+            <a href="/tags/WireMock/" rel="tag"># WireMock</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/26/Spring Security 3/" rel="next" title="Spring Security | Note-3">
+                <i class="fa fa-chevron-left"></i> Spring Security | Note-3
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">REX CHEN</p>
+              <p class="site-description motion-element" itemprop="description">日常记录</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Security-Note-4"><span class="nav-number">1.</span> <span class="nav-text">Spring Security Note-4</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用多线程提高REST服务性能"><span class="nav-number">1.1.</span> <span class="nav-text">使用多线程提高REST服务性能</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用Runnable异步处理REST服务"><span class="nav-number">1.1.1.</span> <span class="nav-text">使用Runnable异步处理REST服务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用DeferredResult异步处理REST服务"><span class="nav-number">1.1.2.</span> <span class="nav-text">使用DeferredResult异步处理REST服务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#异步处理配置"><span class="nav-number">1.1.3.</span> <span class="nav-text">异步处理配置</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#与前端开发并行工作工具"><span class="nav-number">1.2.</span> <span class="nav-text">与前端开发并行工作工具</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用Swagger自动生成API文档"><span class="nav-number">1.2.1.</span> <span class="nav-text">使用Swagger自动生成API文档</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用WireMock伪造REST服务"><span class="nav-number">1.2.2.</span> <span class="nav-text">使用WireMock伪造REST服务</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">REX CHEN</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
