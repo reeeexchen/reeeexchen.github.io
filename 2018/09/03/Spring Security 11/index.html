@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JAVA,Spring Security,Session," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Spring Security Note-11 Session管理Session超时管理1server.session.timeout=10 在设置了超时时间之后，等待片刻，重新刷新页面； 实际上发现，我们依然能够获取到用户的信息，session并没有清除； 在SpringBoot的源码当中，我们可以发现，默认最少超时时间是一分钟，所以我们设置的时间，应该要大于60秒； 在某些情况下，我们需要提示">
+<meta name="keywords" content="JAVA,Spring Security,Session">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Security | Note-11">
+<meta property="og:url" content="http://yoursite.com/2018/09/03/Spring Security 11/index.html">
+<meta property="og:site_name" content="REEEEX">
+<meta property="og:description" content="Spring Security Note-11 Session管理Session超时管理1server.session.timeout=10 在设置了超时时间之后，等待片刻，重新刷新页面； 实际上发现，我们依然能够获取到用户的信息，session并没有清除； 在SpringBoot的源码当中，我们可以发现，默认最少超时时间是一分钟，所以我们设置的时间，应该要大于60秒； 在某些情况下，我们需要提示">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuvcl2gz0aj213s0ergrz.jpg">
+<meta property="og:updated_time" content="2018-09-02T10:13:53.138Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Security | Note-11">
+<meta name="twitter:description" content="Spring Security Note-11 Session管理Session超时管理1server.session.timeout=10 在设置了超时时间之后，等待片刻，重新刷新页面； 实际上发现，我们依然能够获取到用户的信息，session并没有清除； 在SpringBoot的源码当中，我们可以发现，默认最少超时时间是一分钟，所以我们设置的时间，应该要大于60秒； 在某些情况下，我们需要提示">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuvcl2gz0aj213s0ergrz.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/03/Spring Security 11/"/>
+
+
+
+
+
+  <title>Spring Security | Note-11 | REEEEX</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">REEEEX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">KEEP GOING</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/03/Spring Security 11/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring Security | Note-11</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T00:00:00+08:00">
+                2018-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Spring-Security-Note-11"><a href="#Spring-Security-Note-11" class="headerlink" title="Spring Security Note-11"></a>Spring Security Note-11</h3><hr>
+<h4 id="Session管理"><a href="#Session管理" class="headerlink" title="Session管理"></a>Session管理</h4><h5 id="Session超时管理"><a href="#Session超时管理" class="headerlink" title="Session超时管理"></a>Session超时管理</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server.session.timeout=10</span><br></pre></td></tr></table></figure>
+<p>在设置了超时时间之后，等待片刻，重新刷新页面；</p>
+<p>实际上发现，我们依然能够获取到用户的信息，session并没有清除；</p>
+<p>在SpringBoot的源码当中，我们可以发现，默认最少超时时间是一分钟，所以我们设置的时间，应该要大于60秒；</p>
+<p>在某些情况下，我们需要提示用户session失效，让用户重新登录；</p>
+<h6 id="添加配置"><a href="#添加配置" class="headerlink" title="添加配置"></a>添加配置</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    applyPasswordAuthenticationConfig(http);</span><br><span class="line">    http.</span><br><span class="line">        ...</span><br><span class="line">        .and().sessionManagement().invalidSessionUrl(<span class="string">"/session/invalid"</span>)</span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserSecurityController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/session/invalid"</span>)</span><br><span class="line">	<span class="meta">@ResponseStatus</span>(code = HttpStatus.UNAUTHORIZED)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> SimpleResponse <span class="title">sessionInvalid</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		String message = <span class="string">"SESSION 失效"</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> SimpleResponse(message);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Session并发控制"><a href="#Session并发控制" class="headerlink" title="Session并发控制"></a>Session并发控制</h5><h6 id="添加配置-1"><a href="#添加配置-1" class="headerlink" title="添加配置"></a>添加配置</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    applyPasswordAuthenticationConfig(http);</span><br><span class="line">    http.</span><br><span class="line">        ...</span><br><span class="line">        .and().sessionManagement()</span><br><span class="line">        <span class="comment">// session 过期返回URL</span></span><br><span class="line">        .invalidSessionUrl(<span class="string">"/session/invalid"</span>)</span><br><span class="line">        <span class="comment">// 最大session并发数量</span></span><br><span class="line">        .maximumSessions(<span class="number">1</span>)</span><br><span class="line">        <span class="comment">// false之后登录将会踢下之前的登录，true则是不允许之后登录</span></span><br><span class="line">        .maxSessionsPreventsLogin(<span class="keyword">false</span>)</span><br><span class="line">        <span class="comment">// 登录被踢掉时的自定义操作</span></span><br><span class="line">        .expiredSessionStrategy(<span class="keyword">new</span> ImoocExpiredSessionStrategy())</span><br><span class="line">        .and()</span><br><span class="line">        <span class="comment">// 默认</span></span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocExpiredSessionStrategy</span> <span class="keyword">implements</span> <span class="title">SessionInformationExpiredStrategy</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onExpiredSessionDetected</span><span class="params">(SessionInformationExpiredEvent event)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        event.getResponse().setContentType(<span class="string">"application/json;charset=UTF-8"</span>);</span><br><span class="line">        event.getResponse().getWriter().write(<span class="string">"并发登录"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="重构"><a href="#重构" class="headerlink" title="重构"></a>重构</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SessionProperties</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 最大session数 默认1</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> maximumSessions = <span class="number">1</span>;</span><br><span class="line">	<span class="comment">// 并发登录的默认阻止设置 默认false</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> maxSessionsPreventsLogin;</span><br><span class="line">	<span class="comment">// session失效的跳转地址</span></span><br><span class="line">	<span class="keyword">private</span> String sessionInvalidUrl = SecurityConstants.DEFAULT_SESSION_INVALID_URL;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="session失效以及并发控制的自定义的策略"><a href="#session失效以及并发控制的自定义的策略" class="headerlink" title="session失效以及并发控制的自定义的策略"></a>session失效以及并发控制的自定义的策略</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractSessionStrategy</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 跳转的url</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> String destinationUrl;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 重定向策略</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> RedirectStrategy redirectStrategy = <span class="keyword">new</span> DefaultRedirectStrategy();</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 跳转前是否创建新的session</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> createNewSession = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> ObjectMapper objectMapper = <span class="keyword">new</span> ObjectMapper();</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">AbstractSessionStrategy</span><span class="params">(String invalidSessionUrl)</span> </span>&#123;</span><br><span class="line">		Assert.isTrue(UrlUtils.isValidRedirectUrl(invalidSessionUrl), <span class="string">"url must start with '/' or with 'http(s)'"</span>);</span><br><span class="line">		<span class="keyword">this</span>.destinationUrl = invalidSessionUrl;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onSessionInvalid</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (createNewSession) &#123;</span><br><span class="line">			request.getSession();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		String sourceUrl = request.getRequestURI();</span><br><span class="line">		String targetUrl;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (StringUtils.endsWithIgnoreCase(sourceUrl, <span class="string">".html"</span>)) &#123;</span><br><span class="line">			targetUrl = destinationUrl + <span class="string">".html"</span>;</span><br><span class="line">			logger.info(<span class="string">"session失效,跳转到"</span> + targetUrl);</span><br><span class="line">			redirectStrategy.sendRedirect(request, response, targetUrl);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			String message = <span class="string">"session已失效"</span>;</span><br><span class="line">			<span class="keyword">if</span> (isConcurrency()) &#123;</span><br><span class="line">				message = message + <span class="string">"，有可能是并发登录导致的"</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			response.setStatus(HttpStatus.UNAUTHORIZED.value());</span><br><span class="line">			response.setContentType(<span class="string">"application/json;charset=UTF-8"</span>);</span><br><span class="line">			response.getWriter().write(objectMapper.writeValueAsString(<span class="keyword">new</span> SimpleResponse(message)));</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isConcurrency</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCreateNewSession</span><span class="params">(<span class="keyword">boolean</span> createNewSession)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.createNewSession = createNewSession;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="session超时的配置处理类"><a href="#session超时的配置处理类" class="headerlink" title="session超时的配置处理类"></a>session超时的配置处理类</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocExpiredSessionStrategy</span> <span class="keyword">extends</span> <span class="title">AbstractSessionStrategy</span> <span class="keyword">implements</span> <span class="title">SessionInformationExpiredStrategy</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ImoocExpiredSessionStrategy</span><span class="params">(String invalidSessionUrl)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(invalidSessionUrl);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onExpiredSessionDetected</span><span class="params">(SessionInformationExpiredEvent event)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        onSessionInvalid(event.getRequest(), event.getResponse());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isConcurrency</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="session失效的配置处理类"><a href="#session失效的配置处理类" class="headerlink" title="session失效的配置处理类"></a>session失效的配置处理类</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocInvalidSessionStrategy</span> <span class="keyword">extends</span> <span class="title">AbstractSessionStrategy</span> <span class="keyword">implements</span> <span class="title">InvalidSessionStrategy</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ImoocInvalidSessionStrategy</span><span class="params">(String invalidSessionUrl)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(invalidSessionUrl);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onInvalidSessionDetected</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        onSessionInvalid(request, response);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    applyPasswordAuthenticationConfig(http);</span><br><span class="line">    http.</span><br><span class="line">        ...</span><br><span class="line">        .and().sessionManagement()</span><br><span class="line">        <span class="comment">// session 过期返回URL</span></span><br><span class="line">        .invalidSessionStrategy(invalidSessionStrategy)</span><br><span class="line">        <span class="comment">// 最大session并发数量</span></span><br><span class="line">      .maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())</span><br><span class="line">        <span class="comment">// false之后登录将会踢下之前的登录，true则是不允许之后登录</span></span><br><span class="line">      .maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())</span><br><span class="line">        <span class="comment">// 登录被踢掉时的自定义操作</span></span><br><span class="line">        .expiredSessionStrategy(expiredSessionStrategy)</span><br><span class="line">        .and()</span><br><span class="line">        <span class="comment">// 默认</span></span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="配置注入Bean"><a href="#配置注入Bean" class="headerlink" title="配置注入Bean"></a>配置注入Bean</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserSecurityBeanConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> SecurityProperties securityProperties;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean</span>(InvalidSessionStrategy.class)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> InvalidSessionStrategy <span class="title">invalidSessionStrategy</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ImoocInvalidSessionStrategy(securityProperties.getBrowser().getSession().getSessionInvalidUrl());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean</span>(SessionInformationExpiredStrategy.class)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> SessionInformationExpiredStrategy <span class="title">sessionInformationExpiredStrategy</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ImoocExpiredSessionStrategy(securityProperties.getBrowser().getSession().getSessionInvalidUrl());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="集群Session管理"><a href="#集群Session管理" class="headerlink" title="集群Session管理"></a>集群Session管理</h5><h6 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h6><p>面对一个问题，任何一个软件在面向用户使用的时候，至少部署两台机器；</p>
+<p>在集群环境下，基于Session的认证就会存在问题；</p>
+<p>用户的登录请求发送到Server1时，登录成功后，所有的session等信息，存储在Server1中；</p>
+<p>在后续用户发送的服务请求中， 如果在负载均衡上没有做出处理的话，请求可能会发送到Server2中；</p>
+<p>那么当后面的请求发送到Server2上，在Server2中不存在用户的session等信息认证，那么Server2将会拒绝用户的服务请求，需要再次登录；</p>
+<h6 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h6><p>将session抽取出来，放在一个独立的存取中，不放在服务器上；</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuvcl2gz0aj213s0ergrz.jpg" alt=""></p>
+<h6 id="在Browser添加依赖"><a href="#在Browser添加依赖" class="headerlink" title="在Browser添加依赖"></a>在Browser添加依赖</h6><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.session<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-session<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Spring Social提供的支持Session的类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> StoreType &#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Redis backed sessions.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	REDIS,</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Mongo backed sessions.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	MONGO,</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * JDBC backed sessions.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	JDBC,</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Hazelcast backed sessions.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	HAZELCAST,</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Simple in-memory map of sessions.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	HASH_MAP,</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * No session data-store.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	NONE;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># SESSION</span><br><span class="line">spring.session.store-type=redis</span><br></pre></td></tr></table></figure>
+<p>这样就能做到将session存储在redis中；</p>
+<h6 id="图形验证码"><a href="#图形验证码" class="headerlink" title="图形验证码"></a>图形验证码</h6><p>使ValidateCode实现Serializable接口，才能将图形验证码放入到session当中；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ValidateCode</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>不将图片放入session当中；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 保存校验码</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">(ServletWebRequest request, C validateCode)</span> </span>&#123;</span><br><span class="line">    ValidateCode code = <span class="keyword">new</span> ValidateCode(validateCode.getCode(),validateCode.getExpireTime());</span><br><span class="line">    sessionStrategy.setAttribute(request, getSessionKey(request), code);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+          
+            <a href="/tags/Spring-Security/" rel="tag"># Spring Security</a>
+          
+            <a href="/tags/Session/" rel="tag"># Session</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/02/Spring Security 10/" rel="next" title="Spring Security | Note-10">
+                <i class="fa fa-chevron-left"></i> Spring Security | Note-10
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">REX CHEN</p>
+              <p class="site-description motion-element" itemprop="description">日常记录</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Security-Note-11"><span class="nav-number">1.</span> <span class="nav-text">Spring Security Note-11</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Session管理"><span class="nav-number">1.1.</span> <span class="nav-text">Session管理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Session超时管理"><span class="nav-number">1.1.1.</span> <span class="nav-text">Session超时管理</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#添加配置"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">添加配置</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Session并发控制"><span class="nav-number">1.1.2.</span> <span class="nav-text">Session并发控制</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#添加配置-1"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">添加配置</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#重构"><span class="nav-number">1.1.3.</span> <span class="nav-text">重构</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#session失效以及并发控制的自定义的策略"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">session失效以及并发控制的自定义的策略</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#session超时的配置处理类"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">session超时的配置处理类</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#session失效的配置处理类"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">session失效的配置处理类</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#配置注入Bean"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">配置注入Bean</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#集群Session管理"><span class="nav-number">1.1.4.</span> <span class="nav-text">集群Session管理</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#问题："><span class="nav-number">1.1.4.1.</span> <span class="nav-text">问题：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#解决方案："><span class="nav-number">1.1.4.2.</span> <span class="nav-text">解决方案：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#在Browser添加依赖"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">在Browser添加依赖</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#配置"><span class="nav-number">1.1.4.4.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#图形验证码"><span class="nav-number">1.1.4.5.</span> <span class="nav-text">图形验证码</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">REX CHEN</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

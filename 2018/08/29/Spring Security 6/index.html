@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JAVA,Spring Security," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Spring Security Note-6 认证流程源码详解认证处理流程说明当一个登录请求进入到过滤器链开始到整个认证完成；  1.发送登录请求，进入到UsernamePasswordAuthenticationFilter的类中，它将用户名和密码封装成UsernamePasswordAuthenticationToken的对象，设置认证状况为false，并且将请求的信息发送到details当中">
+<meta name="keywords" content="JAVA,Spring Security">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Security | Note-6">
+<meta property="og:url" content="http://yoursite.com/2018/08/29/Spring Security 6/index.html">
+<meta property="og:site_name" content="REEEEX">
+<meta property="og:description" content="Spring Security Note-6 认证流程源码详解认证处理流程说明当一个登录请求进入到过滤器链开始到整个认证完成；  1.发送登录请求，进入到UsernamePasswordAuthenticationFilter的类中，它将用户名和密码封装成UsernamePasswordAuthenticationToken的对象，设置认证状况为false，并且将请求的信息发送到details当中">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fusz3rx4gvj20xs0k8dla.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuszhoatdvj20cu0ip0wb.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1futweewk06j216d0e945s.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1futwjmuleoj217k0b2wm1.jpg">
+<meta property="og:updated_time" content="2018-09-01T05:13:43.872Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Security | Note-6">
+<meta name="twitter:description" content="Spring Security Note-6 认证流程源码详解认证处理流程说明当一个登录请求进入到过滤器链开始到整个认证完成；  1.发送登录请求，进入到UsernamePasswordAuthenticationFilter的类中，它将用户名和密码封装成UsernamePasswordAuthenticationToken的对象，设置认证状况为false，并且将请求的信息发送到details当中">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fusz3rx4gvj20xs0k8dla.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/29/Spring Security 6/"/>
+
+
+
+
+
+  <title>Spring Security | Note-6 | REEEEX</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">REEEEX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">KEEP GOING</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/29/Spring Security 6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring Security | Note-6</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T00:00:00+08:00">
+                2018-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Spring-Security-Note-6"><a href="#Spring-Security-Note-6" class="headerlink" title="Spring Security Note-6"></a>Spring Security Note-6</h3><hr>
+<h4 id="认证流程源码详解"><a href="#认证流程源码详解" class="headerlink" title="认证流程源码详解"></a>认证流程源码详解</h4><h5 id="认证处理流程说明"><a href="#认证处理流程说明" class="headerlink" title="认证处理流程说明"></a>认证处理流程说明</h5><p>当一个登录请求进入到过滤器链开始到整个认证完成；</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fusz3rx4gvj20xs0k8dla.jpg" alt=""></p>
+<p>1.发送登录请求，进入到<code>UsernamePasswordAuthenticationFilter</code>的类中，它将用户名和密码封装成<code>UsernamePasswordAuthenticationToken</code>的对象，设置认证状况为false，并且将请求的信息发送到details当中，接下来将进入到<code>AuthenticationManager</code>；</p>
+<p>2.<code>AuthenticationManager</code>本身不参与认证的作用，它主要作为一个类似工具的作用，主要起到认证逻辑的对象是集合<code>AuthenticationProvider</code>，对于不同的用户方式，它的认证逻辑是不同的，例如用户名+密码，微信；</p>
+<p>3.不同的Provider支持的类型是不一样的，通过循环找到支持的类型；</p>
+<p>4.通过UserDetailsService的逻辑，获得具体的UserDetails对象并返回；</p>
+<p>5.做完预检查之后，还有一个附加检查，通过PasswordEncoder再次密码的校验，完成之后，最后有一个后检查，所有的检查通过之后，认为这个用户认证是成功的，就可以获取用户的信息；</p>
+<p>6.将用户信息拼装，作为一个已认证的Authentication返回；</p>
+<h5 id="认证结果如何在多个请求之间共享"><a href="#认证结果如何在多个请求之间共享" class="headerlink" title="认证结果如何在多个请求之间共享"></a>认证结果如何在多个请求之间共享</h5><p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuszhoatdvj20cu0ip0wb.jpg" alt=""></p>
+<p>在完成认证的流程之后；</p>
+<p>在调用认证成功处理器之前，有一个<code>SecurityContextHolder.getContext().setAuthentication(authResult)</code>，它将完成认证的Authentication放入到SecurityContext当中;</p>
+<p>在整个处理过程中，都能通过SecurityContextHolder读取已认证的Authentication；</p>
+<p>SecurityContextPersistenceFilter在整个过滤器链请求的最前端，在响应的最后一端；</p>
+<p>检查在Session中是否有SecurityContext，如果在Session中有，那么将取出来放入SecurityContextHolder当中，如果没有；</p>
+<p>在线程SecurityContextHolder当中如果有SecurityContext，那么取出来放入Session当中；</p>
+<h5 id="获取认证用户信息"><a href="#获取认证用户信息" class="headerlink" title="获取认证用户信息"></a>获取认证用户信息</h5><p>SecurityContextHolder获取认证用户的信息；</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/user"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/me"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getCurrentUser</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> SecurityContextHolder.getContext().getAuthentication();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 另一种写法</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/me"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getCurrentUser</span><span class="params">(@AuthenticationPrincipal UserDetails user)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="实现图形验证码功能"><a href="#实现图形验证码功能" class="headerlink" title="实现图形验证码功能"></a>实现图形验证码功能</h4><h5 id="开发生成图形验证码接口"><a href="#开发生成图形验证码接口" class="headerlink" title="开发生成图形验证码接口"></a>开发生成图形验证码接口</h5><p>步骤：根据随机数生成图片；将随机数存到Session中；将生成的图片写到接口的响应中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImageCode</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> BufferedImage image;</span><br><span class="line">    <span class="keyword">private</span> String code;</span><br><span class="line">    <span class="keyword">private</span> LocalDateTime expireTime;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ImageCode</span><span class="params">(BufferedImage image, String code, <span class="keyword">int</span> expireIn)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.image = image;</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">        <span class="keyword">this</span>.expireTime = LocalDateTime.now().plusSeconds(expireIn);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ImageCode</span><span class="params">(BufferedImage image, String code, LocalDateTime expireTime)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.image = image;</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">        <span class="keyword">this</span>.expireTime = expireTime;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isExpired</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> LocalDateTime.now().isAfter(expireTime);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ValidateCodeController</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String SESSION_KEY = <span class="string">"SESSION_KEY_IMAGE_CODE"</span>;</span><br><span class="line">    <span class="keyword">private</span> SessionStrategy sessionStrategy = <span class="keyword">new</span> HttpSessionSessionStrategy();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/code/image"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createCode</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        ImageCode imageCode = createImageCode(request);</span><br><span class="line">        sessionStrategy.setAttribute(<span class="keyword">new</span> ServletWebRequest(request), SESSION_KEY, imageCode);</span><br><span class="line">        ImageIO.write(imageCode.getImage(), <span class="string">"JPEG"</span>, response.getOutputStream());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> ImageCode <span class="title">createImageCode</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Color <span class="title">getRandColor</span><span class="params">(<span class="keyword">int</span> fc, <span class="keyword">int</span> bc)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="在认证流程中加入图形验证码校验"><a href="#在认证流程中加入图形验证码校验" class="headerlink" title="在认证流程中加入图形验证码校验"></a>在认证流程中加入图形验证码校验</h5><p>整合Spring Security校验，自定义一个Filter,将该Filter设置在UsernamePasswordAuthenticationFilter之前执行,这样就会在验证用户名密码之前就校验验证码；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ValidateCodeFilter</span> <span class="keyword">extends</span> <span class="title">OncePerRequestFilter</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> AuthenticationFailureHandler authenticationFailureHandler;</span><br><span class="line">    <span class="keyword">private</span> SessionStrategy sessionStrategy = <span class="keyword">new</span> HttpSessionSessionStrategy();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doFilterInternal</span><span class="params">(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.equals(<span class="string">"/authentication/form"</span>, request.getRequestURI()) &amp;&amp; StringUtils.equalsIgnoreCase(request.getMethod(), <span class="string">"post"</span>)) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                validate(<span class="keyword">new</span> ServletWebRequest(request));</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ValidateCodeException e) &#123;</span><br><span class="line">                authenticationFailureHandler.onAuthenticationFailure(request,response,e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        filterChain.doFilter(request, response);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">validate</span><span class="params">(ServletWebRequest request)</span> <span class="keyword">throws</span> ServletRequestBindingException </span>&#123;</span><br><span class="line">        ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(request,ValidateCodeController.SESSION_KEY);</span><br><span class="line">        String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(),<span class="string">"imageCode"</span>);</span><br><span class="line">        <span class="keyword">if</span>(StringUtils.isBlank(codeInRequest))&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ValidateCodeException(<span class="string">"验证码不能为空"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(codeInSession == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ValidateCodeException(<span class="string">"验证码不存在"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(codeInSession.isExpired())&#123;</span><br><span class="line">            sessionStrategy.removeAttribute(request,ValidateCodeController.SESSION_KEY);</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ValidateCodeException(<span class="string">"验证码已过期"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(!StringUtils.equals(codeInSession.getCode(),codeInRequest))&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ValidateCodeException(<span class="string">"验证码不匹配"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        sessionStrategy.removeAttribute(request,ValidateCodeController.SESSION_KEY);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserSecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> AuthenticationFailureHandler imoocAuthenticationFailHandler;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		ValidateCodeFilter validateCodeFilter = <span class="keyword">new</span> ValidateCodeFilter();</span><br><span class="line">		validateCodeFilter.setAuthenticationFailureHandler(imoocAuthenticationFailHandler);</span><br><span class="line">		<span class="comment">// 表单登录</span></span><br><span class="line">		http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)</span><br><span class="line">            ...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="重构代码"><a href="#重构代码" class="headerlink" title="重构代码"></a>重构代码</h5><p>将图形验证码的基本参数配置，以三级模式的形式，层层覆盖；</p>
+<p>上层是<code>请求级配置</code>，配置值在调用接口时传递；</p>
+<p>中层是<code>应用级配置</code>，配置值在demo中，可被请求级覆盖；</p>
+<p>下层是<code>默认配置</code>，配置值在core中，可被应用级覆盖；</p>
+<h6 id="验证码基本参数可配置"><a href="#验证码基本参数可配置" class="headerlink" title="验证码基本参数可配置"></a>验证码基本参数可配置</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImageCodeProperties</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 图片宽度</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> width = <span class="number">67</span>;</span><br><span class="line">	<span class="comment">// 图片高度</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> height = <span class="number">23</span>;</span><br><span class="line">	<span class="comment">// 验证码位数</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> length = <span class="number">4</span>;</span><br><span class="line">	<span class="comment">// 超时时间</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> expireIn = <span class="number">60</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ValidateCodeProperties</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> ImageCodeProperties image = <span class="keyword">new</span> ImageCodeProperties();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"imooc.security"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecurityProperties</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> BrowserProperties browser = <span class="keyword">new</span> BrowserProperties();</span><br><span class="line">	<span class="keyword">private</span> ValidateCodeProperties code = <span class="keyword">new</span> ValidateCodeProperties();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ValidateCodeController</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String SESSION_KEY = <span class="string">"SESSION_KEY_IMAGE_CODE"</span>;</span><br><span class="line">	<span class="keyword">private</span> SessionStrategy sessionStrategy = <span class="keyword">new</span> HttpSessionSessionStrategy();</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> SecurityProperties securityProperties;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> ImageCode <span class="title">generate</span><span class="params">(ServletWebRequest request)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> width = ServletRequestUtils.getIntParameter(request.getRequest(),<span class="string">"width"</span>,securityProperties.getCode().getImage().getWidth());</span><br><span class="line">		<span class="keyword">int</span> height = ServletRequestUtils.getIntParameter(request.getRequest(),<span class="string">"height"</span>,securityProperties.getCode().getImage().getHeight());</span><br><span class="line">		...</span><br><span class="line">		String code = <span class="string">""</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; securityProperties.getCode().getImage().getLength(); i++) &#123;</span><br><span class="line">			...</span><br><span class="line">		&#125;</span><br><span class="line">		g.dispose();</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> ImageCode(image, code, securityProperties.getCode().getImage().getExpireIn());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="验证码拦截接口可配置"><a href="#验证码拦截接口可配置" class="headerlink" title="验证码拦截接口可配置"></a>验证码拦截接口可配置</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImageCodeProperties</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 用逗号分隔的拦截接口</span></span><br><span class="line">    <span class="keyword">private</span> String url;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ValidateCodeFilter</span> <span class="keyword">extends</span> <span class="title">OncePerRequestFilter</span> <span class="keyword">implements</span> <span class="title">InitializingBean</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> AuthenticationFailureHandler authenticationFailureHandler;</span><br><span class="line">	<span class="keyword">private</span> SessionStrategy sessionStrategy = <span class="keyword">new</span> HttpSessionSessionStrategy();</span><br><span class="line">	<span class="keyword">private</span> Set&lt;String&gt; urls = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">	<span class="keyword">private</span> SecurityProperties securityProperties;</span><br><span class="line">	<span class="keyword">private</span> AntPathMatcher pathMatcher = <span class="keyword">new</span> AntPathMatcher();</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterPropertiesSet</span><span class="params">()</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>.afterPropertiesSet();</span><br><span class="line">		String[] configUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getCode().getImage().getUrl(), <span class="string">","</span>);</span><br><span class="line">		<span class="keyword">for</span>(String configUrl:configUrls)&#123;</span><br><span class="line">			urls.add(configUrl);</span><br><span class="line">		&#125;</span><br><span class="line">		urls.add(<span class="string">"/authentication/form"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doFilterInternal</span><span class="params">(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		<span class="keyword">boolean</span> action = <span class="keyword">false</span>;</span><br><span class="line">		<span class="keyword">for</span>(String url:urls)&#123;</span><br><span class="line">			<span class="keyword">if</span>(pathMatcher.match(url,request.getRequestURI()))&#123;</span><br><span class="line">				action = <span class="keyword">true</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (action) &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				validate(<span class="keyword">new</span> ServletWebRequest(request));</span><br><span class="line">			&#125; <span class="keyword">catch</span> (ValidateCodeException e) &#123;</span><br><span class="line">				authenticationFailureHandler.onAuthenticationFailure(request, response, e);</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		filterChain.doFilter(request, response);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserSecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> SecurityProperties securityProperties;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> AuthenticationFailureHandler imoocAuthenticationFailHandler;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		ValidateCodeFilter validateCodeFilter = <span class="keyword">new</span> ValidateCodeFilter();</span><br><span class="line">		validateCodeFilter.setAuthenticationFailureHandler(imoocAuthenticationFailHandler);</span><br><span class="line">		validateCodeFilter.setSecurityProperties(securityProperties);</span><br><span class="line">		validateCodeFilter.afterPropertiesSet();</span><br><span class="line">		...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">security.code.image.length=6</span><br><span class="line">security.code.image.width=100</span><br><span class="line">security.code.image.url=/user,/user/*</span><br></pre></td></tr></table></figure>
+<h6 id="验证码生成逻辑可配置-以增量的方式，实现变化"><a href="#验证码生成逻辑可配置-以增量的方式，实现变化" class="headerlink" title="验证码生成逻辑可配置(以增量的方式，实现变化)"></a>验证码生成逻辑可配置(以增量的方式，实现变化)</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ValidateCodeGenerator</span> </span>&#123;</span><br><span class="line">	<span class="function">ImageCode <span class="title">generate</span><span class="params">(ServletWebRequest request)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImageCodeGenerator</span> <span class="keyword">implements</span> <span class="title">ValidateCodeGenerator</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> SecurityProperties securityProperties;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ImageCode <span class="title">generate</span><span class="params">(ServletWebRequest request)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> Color <span class="title">getRandColor</span><span class="params">(<span class="keyword">int</span> fc, <span class="keyword">int</span> bc)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ValidateCodeBeanConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> SecurityProperties securityProperties;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean</span>(name = <span class="string">"imageCodeGenerator"</span>) <span class="comment">// 条件</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ValidateCodeGenerator <span class="title">imageValidateCodeGenerator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ImageCodeGenerator codeGenerator = <span class="keyword">new</span> ImageCodeGenerator();</span><br><span class="line">        codeGenerator.setSecurityProperties(securityProperties);</span><br><span class="line">        <span class="keyword">return</span> codeGenerator;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="“记住我”功能"><a href="#“记住我”功能" class="headerlink" title="“记住我”功能"></a>“记住我”功能</h4><p><img src="https://ws1.sinaimg.cn/large/675bae34gy1futweewk06j216d0e945s.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1futwjmuleoj217k0b2wm1.jpg" alt=""></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserProperties</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 记住我超时时间</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> rememberMeSeconds = <span class="number">3600</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserSecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> SecurityProperties securityProperties;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AuthenticationFailureHandler imoocAuthenticationFailHandler;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> DataSource dataSource;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserDetailsService userDetailsService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PasswordEncoder <span class="title">passwordEncoder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> BCryptPasswordEncoder();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 配置TokenRepository</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PersistentTokenRepository <span class="title">persistentTokenRepository</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        JdbcTokenRepositoryImpl tokenRepository = <span class="keyword">new</span> JdbcTokenRepositoryImpl();</span><br><span class="line">        tokenRepository.setDataSource(dataSource);</span><br><span class="line">        tokenRepository.setCreateTableOnStartup(<span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">return</span> tokenRepository;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ValidateCodeFilter validateCodeFilter = <span class="keyword">new</span> ValidateCodeFilter();</span><br><span class="line">        validateCodeFilter.setAuthenticationFailureHandler(imoocAuthenticationFailHandler);</span><br><span class="line">        validateCodeFilter.setSecurityProperties(securityProperties);</span><br><span class="line">        validateCodeFilter.afterPropertiesSet();</span><br><span class="line">        <span class="comment">// 表单登录</span></span><br><span class="line">        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)</span><br><span class="line">            .formLogin().loginPage(<span class="string">"/authentication/require"</span>).loginProcessingUrl(<span class="string">"/authentication/form"</span>)</span><br><span class="line">            <span class="comment">// 登录成功与失败的处理</span></span><br><span class="line">            .successHandler(imoocAuthenticationSuccessHandler).failureHandler(imoocAuthenticationFailHandler)</span><br><span class="line">            <span class="comment">// 记住我的配置</span></span><br><span class="line">            .and().rememberMe().tokenRepository(persistentTokenRepository())</span><br><span class="line">            .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds()).userDetailsService(userDetailsService)</span><br><span class="line">            <span class="comment">// 默认</span></span><br><span class="line">            .and()</span><br><span class="line">            <span class="comment">// 都需要认证</span></span><br><span class="line">            .authorizeRequests()</span><br><span class="line">            <span class="comment">// 当访问以下URL，不需要身份认证</span></span><br><span class="line">            .antMatchers(<span class="string">"/authentication/require"</span>, securityProperties.getBrowser().getLoginPage(), <span class="string">"/code/image"</span>).permitAll()</span><br><span class="line">            <span class="comment">// 任何请求</span></span><br><span class="line">            .anyRequest()</span><br><span class="line">            <span class="comment">// 认证后才能访问</span></span><br><span class="line">            .authenticated().and().csrf().disable();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h5><p>用户发送认证请求到<code>UsernamePasswordAuthenticationFilter</code>，当Spring Security认证成功之后，调用一个<code>RememberMeService</code>的服务，这个服务里存在一个<code>TokenRepository</code>，<code>TokenRepository</code>会生成一个Token，并且将这个Token写入浏览器中的Cookie中，同时<code>TokenRepository</code>将生成的Token与当前的用户身份，写入到数据库中；</p>
+<p>当再次发送请求时，不需要重新登录，而是直接访问一个受保护的服务，这个请求不再走过滤器链中的<code>UsernamePasswordAuthenticationFilter</code>，而是通过过滤器链中的<code>RemberMeAuenticationFilter</code>去获取用户信息，直接读取Cookie中的Token给到<code>RememberMeService</code>，<code>TokenRepository</code>将会根据获取到的Token到数据库中查询对应的用户信息和Token是否匹配和存在；</p>
+<p>如果有记录，就会把用户名取出来，取出来之后会调用<code>UserDetailsService</code>，获取用户信息，然后把用户信息放入到<code>SecurityContext</code>当中；</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+          
+            <a href="/tags/Spring-Security/" rel="tag"># Spring Security</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/28/Spring Security 5/" rel="next" title="Spring Security | Note-5">
+                <i class="fa fa-chevron-left"></i> Spring Security | Note-5
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/30/Spring Security 7/" rel="prev" title="Spring Security | Note-7">
+                Spring Security | Note-7 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">REX CHEN</p>
+              <p class="site-description motion-element" itemprop="description">日常记录</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Security-Note-6"><span class="nav-number">1.</span> <span class="nav-text">Spring Security Note-6</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#认证流程源码详解"><span class="nav-number">1.1.</span> <span class="nav-text">认证流程源码详解</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#认证处理流程说明"><span class="nav-number">1.1.1.</span> <span class="nav-text">认证处理流程说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#认证结果如何在多个请求之间共享"><span class="nav-number">1.1.2.</span> <span class="nav-text">认证结果如何在多个请求之间共享</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#获取认证用户信息"><span class="nav-number">1.1.3.</span> <span class="nav-text">获取认证用户信息</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现图形验证码功能"><span class="nav-number">1.2.</span> <span class="nav-text">实现图形验证码功能</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#开发生成图形验证码接口"><span class="nav-number">1.2.1.</span> <span class="nav-text">开发生成图形验证码接口</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在认证流程中加入图形验证码校验"><span class="nav-number">1.2.2.</span> <span class="nav-text">在认证流程中加入图形验证码校验</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#重构代码"><span class="nav-number">1.2.3.</span> <span class="nav-text">重构代码</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#验证码基本参数可配置"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">验证码基本参数可配置</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#验证码拦截接口可配置"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">验证码拦截接口可配置</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#验证码生成逻辑可配置-以增量的方式，实现变化"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">验证码生成逻辑可配置(以增量的方式，实现变化)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#“记住我”功能"><span class="nav-number">1.3.</span> <span class="nav-text">“记住我”功能</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#原理"><span class="nav-number">1.3.1.</span> <span class="nav-text">原理</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">REX CHEN</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
