@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JAVA,Spring Security,Spring Security OAuth," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Spring Security Note-14 Spring Security OAuth核心源码接下来，通过源码解析的方式，我们去了解如何将之前开发的  用户名密码登录方式 手机短信登录方式 社交帐号登录方式  以上三种自定义的认证方式，嫁接到Spring Security OAuth认证服务器中，并且实现Token的生成存储；  - 步骤略解 /oauth/token的请求会被TokenEnd">
+<meta name="keywords" content="JAVA,Spring Security,Spring Security OAuth">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Security | Note-14">
+<meta property="og:url" content="http://yoursite.com/2018/09/05/Spring Security 14/index.html">
+<meta property="og:site_name" content="REEEEX">
+<meta property="og:description" content="Spring Security Note-14 Spring Security OAuth核心源码接下来，通过源码解析的方式，我们去了解如何将之前开发的  用户名密码登录方式 手机短信登录方式 社交帐号登录方式  以上三种自定义的认证方式，嫁接到Spring Security OAuth认证服务器中，并且实现Token的生成存储；  - 步骤略解 /oauth/token的请求会被TokenEnd">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuw8pkwnlpj215r0j0akt.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuwavmc3l8j216t0nlk5o.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuwbo8b7r5j20s007nwf7.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuwbotbmuoj20ty09hmxx.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuwclwavqjj20gz0b93z2.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuwdeos7vnj20h206q74l.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuwdhm6rqjj20e8075mxf.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuwdefgjzrj20tw04vmxm.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuwdqevj8oj211n0jhwrb.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuwep2vp2sj20gh0c4754.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuwevaq9x5j20rh04hq3e.jpg">
+<meta property="og:updated_time" content="2018-09-03T08:26:00.831Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Security | Note-14">
+<meta name="twitter:description" content="Spring Security Note-14 Spring Security OAuth核心源码接下来，通过源码解析的方式，我们去了解如何将之前开发的  用户名密码登录方式 手机短信登录方式 社交帐号登录方式  以上三种自定义的认证方式，嫁接到Spring Security OAuth认证服务器中，并且实现Token的生成存储；  - 步骤略解 /oauth/token的请求会被TokenEnd">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuw8pkwnlpj215r0j0akt.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/05/Spring Security 14/"/>
+
+
+
+
+
+  <title>Spring Security | Note-14 | REEEEX</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">REEEEX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">KEEP GOING</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/05/Spring Security 14/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring Security | Note-14</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-05T00:00:00+08:00">
+                2018-09-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Spring-Security-Note-14"><a href="#Spring-Security-Note-14" class="headerlink" title="Spring Security Note-14"></a>Spring Security Note-14</h1><hr>
+<h3 id="Spring-Security-OAuth核心源码"><a href="#Spring-Security-OAuth核心源码" class="headerlink" title="Spring Security OAuth核心源码"></a>Spring Security OAuth核心源码</h3><p>接下来，通过源码解析的方式，我们去了解如何将之前开发的</p>
+<blockquote>
+<p>用户名密码登录方式</p>
+<p>手机短信登录方式</p>
+<p>社交帐号登录方式</p>
+</blockquote>
+<p>以上三种自定义的认证方式，嫁接到Spring Security OAuth认证服务器中，并且实现Token的生成存储；</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuw8pkwnlpj215r0j0akt.jpg" alt=""></p>
+<p>-</p>
+<p>步骤略解</p>
+<p>/oauth/token的请求会被<code>TokenEndpoint</code>拦截，通过<code>ClientDetailsService</code>获取<code>ClientDetails</code>（第三方相信），并一起封装在<code>TokenRequest</code>（请求的信息）中；</p>
+<p>用这个<code>TokenRequest</code>会去调用一个<code>TokenGranter</code>的接口，在这后面，封装的是四种授权方式不同的实现，在这个接口里面，会根据你传入的grant_type具体选择一个Token的生成逻辑；</p>
+<p>生成的逻辑，都会产生两个东西<code>OAuth2Request</code>（是之前两个信息<code>ClientDetails</code>和<code>TokenRequest</code>的整合）和<code>Authentication</code>；</p>
+<p>这两个对象组合起来会生成一个叫<code>OAuth2Authentication</code>的对象，最终产生的<code>OAuth2Authentication</code>对象这个包含哪个第三方应用，请求哪个用户授权，授权模式，授权参数等所有的信息；</p>
+<p>这个<code>OAuth2Authentication</code>对象会传入<code>AuthorizationServerTokenServices</code>接口的实现，最终生成一个<code>OAuth2AccessToken</code>令牌；</p>
+<p>TokenStore实现令牌的存取；</p>
+<p>TokenEnhancer实现令牌的增强；</p>
+<p>-</p>
+<h4 id="密码模式"><a href="#密码模式" class="headerlink" title="密码模式"></a>密码模式</h4><p>首先进入到TokenEndpoint中，处理/oauth/token的POST请求，拿到的第三方信息，根据第三方信息去创建一个TokenRequest；</p>
+<p>拿到TokenRequest之后，去进行一系列的判断，最终会传到TokenGranter的grant当中产生最终的Token；</p>
+<h5 id="CompositeTokenGranter"><a href="#CompositeTokenGranter" class="headerlink" title="CompositeTokenGranter"></a>CompositeTokenGranter</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 四种授权模式 &amp; 刷新令牌的模式根据grant_type判断</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> OAuth2AccessToken <span class="title">grant</span><span class="params">(String grantType, TokenRequest tokenRequest)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (TokenGranter granter : tokenGranters) &#123;</span><br><span class="line">        OAuth2AccessToken grant = granter.grant(grantType, tokenRequest);</span><br><span class="line">        <span class="keyword">if</span> (grant!=<span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> grant;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="AbstractTokenGranter"><a href="#AbstractTokenGranter" class="headerlink" title="AbstractTokenGranter"></a>AbstractTokenGranter</h5><p><code>getAccessToken</code>产生最终的Token；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> OAuth2AccessToken <span class="title">getAccessToken</span><span class="params">(ClientDetails client, TokenRequest tokenRequest)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> tokenServices.createAccessToken(getOAuth2Authentication(client, tokenRequest));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="DefaultTokenServices"><a href="#DefaultTokenServices" class="headerlink" title="DefaultTokenServices"></a>DefaultTokenServices</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> OAuth2AccessToken <span class="title">createAccessToken</span><span class="params">(OAuth2Authentication authentication)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">    <span class="comment">// 从tokenStore获取OAuth2AccessToken（如果令牌存在，不同的授权模式下将返回同一个令牌）</span></span><br><span class="line">    OAuth2AccessToken existingAccessToken = tokenStore.getAccessToken(authentication);</span><br><span class="line">    OAuth2RefreshToken refreshToken = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">// 判断是否过期</span></span><br><span class="line">    <span class="keyword">if</span> (existingAccessToken != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (existingAccessToken.isExpired()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (existingAccessToken.getRefreshToken() != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="comment">// 删除过期的令牌</span></span><br><span class="line">                refreshToken = existingAccessToken.getRefreshToken();</span><br><span class="line">                tokenStore.removeRefreshToken(refreshToken);</span><br><span class="line">            &#125;</span><br><span class="line">            tokenStore.removeAccessToken(existingAccessToken);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 如果令牌存在则重新存储</span></span><br><span class="line">            tokenStore.storeAccessToken(existingAccessToken, authentication);</span><br><span class="line">            <span class="comment">// 存储后直接返回</span></span><br><span class="line">            <span class="keyword">return</span> existingAccessToken;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 判断刷新令牌不存在</span></span><br><span class="line">    <span class="keyword">if</span> (refreshToken == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// 创建刷新令牌</span></span><br><span class="line">        refreshToken = createRefreshToken(authentication);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (refreshToken <span class="keyword">instanceof</span> ExpiringOAuth2RefreshToken) &#123;</span><br><span class="line">        <span class="comment">// 过期</span></span><br><span class="line">        ExpiringOAuth2RefreshToken expiring = (ExpiringOAuth2RefreshToken) refreshToken;</span><br><span class="line">        <span class="keyword">if</span> (System.currentTimeMillis() &gt; expiring.getExpiration().getTime()) &#123;</span><br><span class="line">            refreshToken = createRefreshToken(authentication);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 根据刷新令牌创建OAuth2AccessToken</span></span><br><span class="line">    OAuth2AccessToken accessToken = createAccessToken(authentication, refreshToken);</span><br><span class="line">    tokenStore.storeAccessToken(accessToken, authentication);</span><br><span class="line">    refreshToken = accessToken.getRefreshToken();</span><br><span class="line">    <span class="keyword">if</span> (refreshToken != <span class="keyword">null</span>) &#123;</span><br><span class="line">        tokenStore.storeRefreshToken(refreshToken, authentication);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//返 回OAuth2AccessToken</span></span><br><span class="line">    <span class="keyword">return</span> accessToken;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="重构用户名密码登录"><a href="#重构用户名密码登录" class="headerlink" title="重构用户名密码登录"></a>重构用户名密码登录</h3><p>我们通过登录请求，到自定义的Filter重新到登录逻辑进行处理，在自定义的AuthenticationSuccessHandler处理之后，再获得OAuth2Request和Authentication，再达到最后的Token的获取；</p>
+<p>通过请求参数，获取CilentId，根据ClientId通过ClientDetailsService获取ClientDetails，让ClientDetails和TokenRequest一同封装成OAuth2Request；</p>
+<p>最终目标是得到OAuth2Request对象；</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuwavmc3l8j216t0nlk5o.jpg" alt=""></p>
+<p>-</p>
+<h4 id="改造Token的生成"><a href="#改造Token的生成" class="headerlink" title="改造Token的生成"></a>改造Token的生成</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(<span class="string">"imoocAuthenticationSuccessHandler"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocAuthenticationSuccessHandler</span> <span class="keyword">extends</span> <span class="title">SavedRequestAwareAuthenticationSuccessHandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ObjectMapper objectMapper;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ClientDetailsService clientDetailsService;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AuthorizationServerTokenServices authorizationServerTokenServices;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAuthenticationSuccess</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Authentication authentication)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"登录成功"</span>);</span><br><span class="line">        String header = request.getHeader(<span class="string">"Authorization"</span>);</span><br><span class="line">        <span class="keyword">if</span> (header == <span class="keyword">null</span> || !header.startsWith(<span class="string">"Basic "</span>)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnapprovedClientAuthenticationException(<span class="string">"请求头中无CLIENT信息"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 解码获取ClientId</span></span><br><span class="line">        String[] tokens = extractAndDecodeHeader(header, request);</span><br><span class="line">        <span class="keyword">assert</span> tokens.length == <span class="number">2</span>;</span><br><span class="line">        String clientId = tokens[<span class="number">0</span>];</span><br><span class="line">        String clientSecret = tokens[<span class="number">1</span>];</span><br><span class="line">        <span class="comment">// 获取ClientDetails</span></span><br><span class="line">        ClientDetails clientDetails = clientDetailsService.loadClientByClientId(clientId);</span><br><span class="line">        <span class="keyword">if</span> (clientDetails == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnapprovedClientAuthenticationException(<span class="string">"CLIENT_ID对应配置信息不存在:"</span> + clientId);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!StringUtils.equals(clientDetails.getClientSecret(), clientSecret)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnapprovedClientAuthenticationException(<span class="string">"CLIENT_SECRET信息不匹配:"</span> + clientSecret);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// TokenRequest</span></span><br><span class="line">        TokenRequest tokenRequest = <span class="keyword">new</span> TokenRequest(MapUtils.EMPTY_MAP, clientId, clientDetails.getScope(), <span class="string">"custom"</span>);</span><br><span class="line">        <span class="comment">// OAuth2Request</span></span><br><span class="line">        OAuth2Request oAuth2Request = tokenRequest.createOAuth2Request(clientDetails);</span><br><span class="line">        <span class="comment">// 用OAuth2Request和Authentication封装成OAuth2Authentication</span></span><br><span class="line">        OAuth2Authentication oAuth2Authentication = <span class="keyword">new</span> OAuth2Authentication(oAuth2Request, authentication);</span><br><span class="line">        <span class="comment">// 传给AuthorizationServerTokenServices</span></span><br><span class="line">        OAuth2AccessToken token = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);</span><br><span class="line">        response.setContentType(<span class="string">"application/json;charset=UTF-8"</span>);</span><br><span class="line">        response.getWriter().write(objectMapper.writeValueAsString(token));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String[] extractAndDecodeHeader(String header, HttpServletRequest request) <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="keyword">byte</span>[] base64Token = header.substring(<span class="number">6</span>).getBytes(<span class="string">"UTF-8"</span>);</span><br><span class="line">        <span class="keyword">byte</span>[] decoded;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            decoded = Base64.decode(base64Token);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IllegalArgumentException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> BadCredentialsException(<span class="string">"Failed to decode basic authentication token"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        String token = <span class="keyword">new</span> String(decoded, <span class="string">"UTF-8"</span>);</span><br><span class="line">        <span class="keyword">int</span> delim = token.indexOf(<span class="string">":"</span>);</span><br><span class="line">        <span class="keyword">if</span> (delim == -<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> BadCredentialsException(<span class="string">"Invalid basic authentication token"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> String[]&#123;token.substring(<span class="number">0</span>, delim), token.substring(delim + <span class="number">1</span>)&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改造完成，我们还需要在安全配置类中去配置，保护我们的资源安全；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableResourceServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocResourceServerConfig</span> <span class="keyword">extends</span> <span class="title">ResourceServerConfigurerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> SecurityProperties securityProperties;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AuthenticationFailureHandler imoocAuthenticationFailureHandler;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> SpringSocialConfigurer imoocSocialSecurityConfig;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        http.formLogin()</span><br><span class="line">            .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)</span><br><span class="line">            .loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)</span><br><span class="line">            .successHandler(imoocAuthenticationSuccessHandler)</span><br><span class="line">            .failureHandler(imoocAuthenticationFailureHandler);</span><br><span class="line">        http</span><br><span class="line">            <span class="comment">//				.apply(validateCodeSecurityConfig)</span></span><br><span class="line">            <span class="comment">//				.and()</span></span><br><span class="line">            .apply(smsCodeAuthenticationSecurityConfig)</span><br><span class="line">            .and()</span><br><span class="line">            .apply(imoocSocialSecurityConfig)</span><br><span class="line">            .and()</span><br><span class="line">            .authorizeRequests()</span><br><span class="line">            <span class="comment">// 当访问以下URL，不需要身份认证</span></span><br><span class="line">            .antMatchers(</span><br><span class="line">            SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,</span><br><span class="line">            SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,</span><br><span class="line">            SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+<span class="string">"/*"</span>,</span><br><span class="line">            securityProperties.getBrowser().getLoginPage(),</span><br><span class="line">            securityProperties.getBrowser().getSignUpUrl(),</span><br><span class="line">            securityProperties.getBrowser().getSession().getSessionInvalidUrl(),</span><br><span class="line">            securityProperties.getBrowser().getSignOutUrl(),</span><br><span class="line">            <span class="string">"/user/regist"</span></span><br><span class="line">        ).permitAll()</span><br><span class="line">            <span class="comment">// 任何请求</span></span><br><span class="line">            .anyRequest()</span><br><span class="line">            <span class="comment">// 认证后才能访问</span></span><br><span class="line">            .authenticated().and().csrf().disable();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>启动项目测试，做一个登陆的请求，携带用户名和密码并携带：authentication（封装clientId和clientSecret）的信息，因为项目的用户名密码的登录请求路径是authentication/form；</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuwbo8b7r5j20s007nwf7.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuwbotbmuoj20ty09hmxx.jpg" alt=""></p>
+<hr>
+<h3 id="重构短信登录"><a href="#重构短信登录" class="headerlink" title="重构短信登录"></a>重构短信登录</h3><h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>上部分在用户名密码的登录方式中，我们用Token的方式已经重新实现了，但是依然有许多的问题；</p>
+<p>短信验证码登录的逻辑，设计到验证码存储的逻辑，</p>
+<p>在这之前，我们是通过浏览器去发起请求，然后在服务器中生成，存储在SESSION当中的；</p>
+<p>在之后的请求当中，再对验证码进行校验；</p>
+<p>-</p>
+<h4 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h4><p>在APP的架构下，服务器是不存在SESSION的，那么验证码是无处可放的；</p>
+<p>解决的思路，我们是在APP发起请求时，在生成和校验验证码逻辑的过程中，加上deviceId（设备ID），根据你的deviceId放到外部存储当中，进行生成和校验；</p>
+<p>我们需要重构验证码的相关代码；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ValidateCodeProcessor</span> </span>&#123;</span><br><span class="line">	String SESSION_KEY_PREFIX = <span class="string">"SESSION_KEY_FOR_CODE_"</span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">create</span><span class="params">(ServletWebRequest request)</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">validate</span><span class="params">(ServletWebRequest servletWebRequest)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ValidateCodeRepository</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 保存验证码</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">save</span><span class="params">(ServletWebRequest request,ValidateCode code,ValidateCodeType validateCodeType)</span></span>;</span><br><span class="line">    <span class="comment">// 获取验证码</span></span><br><span class="line">    <span class="function">ValidateCode <span class="title">get</span><span class="params">(ServletWebRequest request,ValidateCodeType validateCodeType)</span></span>;</span><br><span class="line">    <span class="comment">// 删除验证码</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">(ServletWebRequest request,ValidateCodeType validateCodeType)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在APP项目中的验证码逻辑；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisValidateCodeRepository</span> <span class="keyword">implements</span> <span class="title">ValidateCodeRepository</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> RedisTemplate&lt;Object, Object&gt; redisTemplate;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">(ServletWebRequest request, ValidateCode code, ValidateCodeType type)</span> </span>&#123;</span><br><span class="line">		redisTemplate.opsForValue().set(buildKey(request, type), code, <span class="number">30</span>, TimeUnit.MINUTES);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ValidateCode <span class="title">get</span><span class="params">(ServletWebRequest request, ValidateCodeType type)</span> </span>&#123;</span><br><span class="line">		Object value = redisTemplate.opsForValue().get(buildKey(request, type));</span><br><span class="line">		<span class="keyword">if</span> (value == <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> (ValidateCode) value;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(ServletWebRequest request, ValidateCodeType type)</span> </span>&#123;</span><br><span class="line">		redisTemplate.delete(buildKey(request, type));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> String <span class="title">buildKey</span><span class="params">(ServletWebRequest request, ValidateCodeType type)</span> </span>&#123;</span><br><span class="line">		String deviceId = request.getHeader(<span class="string">"deviceId"</span>);</span><br><span class="line">		<span class="keyword">if</span> (StringUtils.isBlank(deviceId)) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> ValidateCodeException(<span class="string">"请在请求头中携带deviceId参数"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"code:"</span> + type.toString().toLowerCase() + <span class="string">":"</span> + deviceId;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在Browser项目中的验证码逻辑；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SessionValidateCodeRepository</span> <span class="keyword">implements</span> <span class="title">ValidateCodeRepository</span> </span>&#123;</span><br><span class="line">    String SESSION_KEY_PREFIX = <span class="string">"SESSION_KEY_FOR_CODE_"</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 操作session的工具类</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="keyword">private</span> SessionStrategy sessionStrategy = <span class="keyword">new</span> HttpSessionSessionStrategy();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">(ServletWebRequest request, ValidateCode code, ValidateCodeType validateCodeType)</span> </span>&#123;</span><br><span class="line">        sessionStrategy.setAttribute(request, getSessionKey(request, validateCodeType), code);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 构建验证码放入session时的key</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getSessionKey</span><span class="params">(ServletWebRequest request, ValidateCodeType validateCodeType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> SESSION_KEY_PREFIX + validateCodeType.toString().toUpperCase();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ValidateCode <span class="title">get</span><span class="params">(ServletWebRequest request, ValidateCodeType validateCodeType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (ValidateCode) sessionStrategy.getAttribute(request, getSessionKey(request, validateCodeType));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(ServletWebRequest request, ValidateCodeType codeType)</span> </span>&#123;</span><br><span class="line">        sessionStrategy.removeAttribute(request, getSessionKey(request, codeType));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractValidateCodeProcessor</span>&lt;<span class="title">C</span> <span class="keyword">extends</span> <span class="title">ValidateCode</span>&gt; <span class="keyword">implements</span> <span class="title">ValidateCodeProcessor</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 收集系统中所有的 &#123;<span class="doctag">@link</span> ValidateCodeGenerator&#125; 接口的实现</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, ValidateCodeGenerator&gt; validateCodeGenerators;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ValidateCodeRepository validateCodeRepository;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">create</span><span class="params">(ServletWebRequest request)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        C validateCode = generate(request);</span><br><span class="line">        save(request, validateCode);</span><br><span class="line">        send(request, validateCode);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 生成校验码</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">private</span> C <span class="title">generate</span><span class="params">(ServletWebRequest request)</span> </span>&#123;</span><br><span class="line">        String type = getValidateCodeType(request).toString().toLowerCase();</span><br><span class="line">        String generatorName = type + ValidateCodeGenerator.class.getSimpleName();</span><br><span class="line">        ValidateCodeGenerator validateCodeGenerator = validateCodeGenerators.get(generatorName);</span><br><span class="line">        <span class="keyword">if</span> (validateCodeGenerator == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ValidateCodeException(<span class="string">"验证码生成器"</span> + generatorName + <span class="string">"不存在"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (C) validateCodeGenerator.generate(request);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 保存校验码</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">(ServletWebRequest request, C validateCode)</span> </span>&#123;</span><br><span class="line">        ValidateCode code = <span class="keyword">new</span> ValidateCode(validateCode.getCode(), validateCode.getExpireTime());</span><br><span class="line">        validateCodeRepository.save(request, code, getValidateCodeType(request));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 发送校验码，由子类实现</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">(ServletWebRequest request, C validateCode)</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 根据请求的url获取校验码的类型</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> ValidateCodeType <span class="title">getValidateCodeType</span><span class="params">(ServletWebRequest request)</span> </span>&#123;</span><br><span class="line">        String type = StringUtils.substringBefore(getClass().getSimpleName(), <span class="string">"CodeProcessor"</span>);</span><br><span class="line">        <span class="keyword">return</span> ValidateCodeType.valueOf(type.toUpperCase());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">validate</span><span class="params">(ServletWebRequest request)</span> </span>&#123;</span><br><span class="line">        ValidateCodeType codeType = getValidateCodeType(request);</span><br><span class="line">        C codeInSession = (C) validateCodeRepository.get(request, codeType);</span><br><span class="line"></span><br><span class="line">        String codeInRequest;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), codeType.getParamNameOnValidate());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ServletRequestBindingException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ValidateCodeException(<span class="string">"获取验证码失败"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isBlank(codeInRequest)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ValidateCodeException(codeType + <span class="string">"验证码不能为空"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (codeInSession == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ValidateCodeException(codeType + <span class="string">"验证码不存在"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (codeInSession.isExpired()) &#123;</span><br><span class="line">            validateCodeRepository.remove(request, codeType);</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ValidateCodeException(codeType + <span class="string">"验证码已过期"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!StringUtils.equals(codeInSession.getCode(), codeInRequest)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ValidateCodeException(codeType + <span class="string">"验证码不匹配"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        validateCodeRepository.remove(request, codeType);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuwclwavqjj20gz0b93z2.jpg" alt=""></p>
+<blockquote>
+<p>向手机:13012345678. 发送短信验证码801409</p>
+</blockquote>
+<p>-</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuwdeos7vnj20h206q74l.jpg" alt=""></p>
+<p>-</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuwdhm6rqjj20e8075mxf.jpg" alt=""></p>
+<p>-</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuwdefgjzrj20tw04vmxm.jpg" alt=""></p>
+<p>在工具里发送的验证码登录请求，实际上以上是带上Cookies的HTTP请求，所以我们需要通过一段CMD代码，转化为APP的请求；</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST \</span><br><span class="line">  http://127.0.0.1:8060/authentication/mobile \</span><br><span class="line">  -H 'authorization: Basic aW1vb2M6aW1vb2NzZWNyZXQ=' \</span><br><span class="line">  -H 'cache-control: no-cache' \</span><br><span class="line">  -H 'content-type: application/x-www-form-urlencoded' \</span><br><span class="line">  -H 'deviceid: 007' \</span><br><span class="line">  -H 'postman-token: 3646c210-6b71-316d-f1a2-f7cf91a242a6'</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="重构社交登录"><a href="#重构社交登录" class="headerlink" title="重构社交登录"></a>重构社交登录</h3><p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuwdqevj8oj211n0jhwrb.jpg" alt=""></p>
+<h4 id="简化模式"><a href="#简化模式" class="headerlink" title="简化模式"></a>简化模式</h4><p>用户直接访问app，在app里面点击QQ或微信的第三方登录，QQ或微信返回openId和accessToken，app用openId换取令牌，然后返回令牌；</p>
+<h5 id="封装请求信息TokenOpenIdAuthenticationToken"><a href="#封装请求信息TokenOpenIdAuthenticationToken" class="headerlink" title="封装请求信息TokenOpenIdAuthenticationToken"></a>封装请求信息TokenOpenIdAuthenticationToken</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OpenIdAuthenticationToken</span> <span class="keyword">extends</span> <span class="title">AbstractAuthenticationToken</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Object principal;</span><br><span class="line">    <span class="keyword">private</span> String providerId;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">OpenIdAuthenticationToken</span><span class="params">(String openId, String providerId)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(<span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">this</span>.principal = openId;</span><br><span class="line">        <span class="keyword">this</span>.providerId = providerId;</span><br><span class="line">        setAuthenticated(<span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">OpenIdAuthenticationToken</span><span class="params">(Object principal, Collection&lt;? extends GrantedAuthority&gt; authorities)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(authorities);</span><br><span class="line">        <span class="keyword">this</span>.principal = principal;</span><br><span class="line">        <span class="keyword">super</span>.setAuthenticated(<span class="keyword">true</span>); <span class="comment">// must use super, as we override</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getCredentials</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getPrincipal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.principal;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getProviderId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> providerId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAuthenticated</span><span class="params">(<span class="keyword">boolean</span> isAuthenticated)</span> <span class="keyword">throws</span> IllegalArgumentException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (isAuthenticated) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">super</span>.setAuthenticated(<span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eraseCredentials</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.eraseCredentials();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要一个过滤器，拦截登录请求，然后把信息封装，交到OpenIdAuthenticationToken里面；</p>
+<p>-</p>
+<h5 id="拦截请求OpenIdAuthenticationFilter"><a href="#拦截请求OpenIdAuthenticationFilter" class="headerlink" title="拦截请求OpenIdAuthenticationFilter"></a>拦截请求OpenIdAuthenticationFilter</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SecurityConstants</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * openid参数名</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	String DEFAULT_PARAMETER_NAME_OPENID = <span class="string">"openId"</span>;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * providerId参数名</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	String DEFAULT_PARAMETER_NAME_PROVIDERID = <span class="string">"providerId"</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 默认的OPENID登录请求处理url</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	String DEFAULT_LOGIN_PROCESSING_URL_OPENID = <span class="string">"/authentication/openid"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OpenIdAuthenticationFilter</span> <span class="keyword">extends</span> <span class="title">AbstractAuthenticationProcessingFilter</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String openIdParameter = SecurityConstants.DEFAULT_PARAMETER_NAME_OPENID;</span><br><span class="line">	<span class="keyword">private</span> String providerIdParameter = SecurityConstants.DEFAULT_PARAMETER_NAME_PROVIDERID;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> postOnly = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">OpenIdAuthenticationFilter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>(<span class="keyword">new</span> AntPathRequestMatcher(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_OPENID, <span class="string">"POST"</span>));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Authentication <span class="title">attemptAuthentication</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (postOnly &amp;&amp; !request.getMethod().equals(<span class="string">"POST"</span>)) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> AuthenticationServiceException(<span class="string">"Authentication method not supported: "</span> + request.getMethod());</span><br><span class="line">		&#125;</span><br><span class="line">		String openid = obtainOpenId(request);</span><br><span class="line">		String providerId = obtainProviderId(request);</span><br><span class="line">		<span class="keyword">if</span> (openid == <span class="keyword">null</span>) &#123;</span><br><span class="line">			openid = <span class="string">""</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (providerId == <span class="keyword">null</span>) &#123;</span><br><span class="line">			providerId = <span class="string">""</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		openid = openid.trim();</span><br><span class="line">		providerId = providerId.trim();</span><br><span class="line">		OpenIdAuthenticationToken authRequest = <span class="keyword">new</span> OpenIdAuthenticationToken(openid, providerId);</span><br><span class="line">		setDetails(request, authRequest);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.getAuthenticationManager().authenticate(authRequest);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 获取openId</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> String <span class="title">obtainOpenId</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> request.getParameter(openIdParameter);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 获取提供商id</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> String <span class="title">obtainProviderId</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> request.getParameter(providerIdParameter);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">setDetails</span><span class="params">(HttpServletRequest request, OpenIdAuthenticationToken authRequest)</span> </span>&#123;</span><br><span class="line">		authRequest.setDetails(authenticationDetailsSource.buildDetails(request));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOpenIdParameter</span><span class="params">(String openIdParameter)</span> </span>&#123;</span><br><span class="line">		Assert.hasText(openIdParameter, <span class="string">"Username parameter must not be empty or null"</span>);</span><br><span class="line">		<span class="keyword">this</span>.openIdParameter = openIdParameter;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPostOnly</span><span class="params">(<span class="keyword">boolean</span> postOnly)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.postOnly = postOnly;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">final</span> String <span class="title">getOpenIdParameter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> openIdParameter;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getProviderIdParameter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> providerIdParameter;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setProviderIdParameter</span><span class="params">(String providerIdParameter)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.providerIdParameter = providerIdParameter;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="验证服务器OpenIdAuthenticationProvider"><a href="#验证服务器OpenIdAuthenticationProvider" class="headerlink" title="验证服务器OpenIdAuthenticationProvider"></a>验证服务器OpenIdAuthenticationProvider</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OpenIdAuthenticationProvider</span> <span class="keyword">implements</span> <span class="title">AuthenticationProvider</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> SocialUserDetailsService userDetailsService;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> UsersConnectionRepository usersConnectionRepository;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Authentication <span class="title">authenticate</span><span class="params">(Authentication authentication)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line"></span><br><span class="line">		OpenIdAuthenticationToken authenticationToken = (OpenIdAuthenticationToken) authentication;</span><br><span class="line"></span><br><span class="line">		Set&lt;String&gt; providerUserIds = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">		providerUserIds.add((String) authenticationToken.getPrincipal());</span><br><span class="line">		Set&lt;String&gt; userIds = usersConnectionRepository.findUserIdsConnectedTo(authenticationToken.getProviderId(), providerUserIds);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(CollectionUtils.isEmpty(userIds) || userIds.size() != <span class="number">1</span>) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> InternalAuthenticationServiceException(<span class="string">"无法获取用户信息"</span>);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		String userId = userIds.iterator().next();</span><br><span class="line"></span><br><span class="line">		UserDetails user = userDetailsService.loadUserByUserId(userId);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (user == <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> InternalAuthenticationServiceException(<span class="string">"无法获取用户信息"</span>);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		OpenIdAuthenticationToken authenticationResult = <span class="keyword">new</span> OpenIdAuthenticationToken(user, user.getAuthorities());</span><br><span class="line"></span><br><span class="line">		authenticationResult.setDetails(authenticationToken.getDetails());</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> authenticationResult;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(Class&lt;?&gt; authentication)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> OpenIdAuthenticationToken.class.isAssignableFrom(authentication);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="安全配置类OpenIdAuthenticationSecurityConfig"><a href="#安全配置类OpenIdAuthenticationSecurityConfig" class="headerlink" title="安全配置类OpenIdAuthenticationSecurityConfig"></a>安全配置类OpenIdAuthenticationSecurityConfig</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OpenIdAuthenticationSecurityConfig</span> <span class="keyword">extends</span> <span class="title">SecurityConfigurerAdapter</span>&lt;<span class="title">DefaultSecurityFilterChain</span>, <span class="title">HttpSecurity</span>&gt; </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> AuthenticationFailureHandler imoocAuthenticationFailureHandler;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> SocialUserDetailsService userDetailsService;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> UsersConnectionRepository usersConnectionRepository;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">		OpenIdAuthenticationFilter OpenIdAuthenticationFilter = <span class="keyword">new</span> OpenIdAuthenticationFilter();</span><br><span class="line">		OpenIdAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));</span><br><span class="line">		OpenIdAuthenticationFilter.setAuthenticationSuccessHandler(imoocAuthenticationSuccessHandler);</span><br><span class="line">		OpenIdAuthenticationFilter.setAuthenticationFailureHandler(imoocAuthenticationFailureHandler);</span><br><span class="line"></span><br><span class="line">		OpenIdAuthenticationProvider OpenIdAuthenticationProvider = <span class="keyword">new</span> OpenIdAuthenticationProvider();</span><br><span class="line">		OpenIdAuthenticationProvider.setUserDetailsService(userDetailsService);</span><br><span class="line">		OpenIdAuthenticationProvider.setUsersConnectionRepository(usersConnectionRepository);</span><br><span class="line"></span><br><span class="line">		http.authenticationProvider(OpenIdAuthenticationProvider).addFilterAfter(OpenIdAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="资源服务器配置ImoocResourceServerConfig"><a href="#资源服务器配置ImoocResourceServerConfig" class="headerlink" title="资源服务器配置ImoocResourceServerConfig"></a>资源服务器配置ImoocResourceServerConfig</h5><p>将刚刚写好的OpenId安全配置类加入到配置当中；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableResourceServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocResourceServerConfig</span> <span class="keyword">extends</span> <span class="title">ResourceServerConfigurerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> OpenIdAuthenticationSecurityConfig openIdAuthenticationSecurityConfig;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">            http.</span><br><span class="line">            ...</span><br><span class="line">            .apply(openIdAuthenticationSecurityConfig)</span><br><span class="line">            .and()</span><br><span class="line">            ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>发送请求，通过OpenId获取信息，成功登录；</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuwep2vp2sj20gh0c4754.jpg" alt=""></p>
+<hr>
+<h4 id="标准授权码模式"><a href="#标准授权码模式" class="headerlink" title="标准授权码模式"></a>标准授权码模式</h4><p>标准的授权码模式，APP请求QQ或微信去获取授权码；</p>
+<p>然后将授权码交给我们自己的第三方client，由第三方client带着授权码去QQ；</p>
+<p>或微信申请令牌，然后发放令牌给第三方应用，然后读取用户数据；</p>
+<p>然后第三方应用重新生成自己的令牌返回给APP；</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuwevaq9x5j20rh04hq3e.jpg" alt=""></p>
+<p>在此处换令牌之前获取授权码，停止服务；</p>
+<blockquote>
+<p><a href="http://xxx/qqLogin/weixin" target="_blank" rel="noopener">http://xxx/qqLogin/weixin</a></p>
+<p>?code=061f8yj728JKBJ0DADl72sMEj72f8yjh</p>
+<p>&amp;state=344fadca-77e7-47a4-a3cd-7cd988f1953d</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SocialAuthenticationFilterPostProcessor</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">process</span><span class="params">(SocialAuthenticationFilter socialAuthenticationFilter)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocSpringSocialConfigurer</span> <span class="keyword">extends</span> <span class="title">SpringSocialConfigurer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> &lt;T&gt; <span class="function">T <span class="title">postProcess</span><span class="params">(T object)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">            <span class="keyword">if</span>(socialAuthenticationFilterPostProcessor != <span class="keyword">null</span>)&#123;</span><br><span class="line">                socialAuthenticationFilterPostProcessor.process(filter);</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">return</span> (T) filter;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Order</span>(<span class="number">1</span>)</span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableSocial</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SocialConfig</span> <span class="keyword">extends</span> <span class="title">SocialConfigurerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将SpringSocialFilter添加到安全配置的Bean</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SpringSocialConfigurer <span class="title">imoocSocialSecurityConfig</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ...            configurer.setSocialAuthenticationFilterPostProcessor(socialAuthenticationFilterPostProcessor);</span><br><span class="line">        <span class="keyword">return</span> configurer;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将成功处理器设置进来imoocAuthenticationSuccessHandler</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppSocialAuthenticationFilterPostProcessor</span> <span class="keyword">implements</span> <span class="title">SocialAuthenticationFilterPostProcessor</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(SocialAuthenticationFilter socialAuthenticationFilter)</span> </span>&#123;</span><br><span class="line">        socialAuthenticationFilter.setAuthenticationSuccessHandler(imoocAuthenticationSuccessHandler);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完成返回第三方应用生成的Token给APP；</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+          
+            <a href="/tags/Spring-Security/" rel="tag"># Spring Security</a>
+          
+            <a href="/tags/Spring-Security-OAuth/" rel="tag"># Spring Security OAuth</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/04/Spring Security 12/" rel="next" title="Spring Security | Note-12">
+                <i class="fa fa-chevron-left"></i> Spring Security | Note-12
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/06/Spring Security 15/" rel="prev" title="Spring Security | Note-15">
+                Spring Security | Note-15 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">REX CHEN</p>
+              <p class="site-description motion-element" itemprop="description">日常记录</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Security-Note-14"><span class="nav-number">1.</span> <span class="nav-text">Spring Security Note-14</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Security-OAuth核心源码"><span class="nav-number">1.0.1.</span> <span class="nav-text">Spring Security OAuth核心源码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#密码模式"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">密码模式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#CompositeTokenGranter"><span class="nav-number">1.0.1.1.1.</span> <span class="nav-text">CompositeTokenGranter</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AbstractTokenGranter"><span class="nav-number">1.0.1.1.2.</span> <span class="nav-text">AbstractTokenGranter</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DefaultTokenServices"><span class="nav-number">1.0.1.1.3.</span> <span class="nav-text">DefaultTokenServices</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重构用户名密码登录"><span class="nav-number">1.0.2.</span> <span class="nav-text">重构用户名密码登录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#改造Token的生成"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">改造Token的生成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重构短信登录"><span class="nav-number">1.0.3.</span> <span class="nav-text">重构短信登录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">解决</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试"><span class="nav-number">1.0.3.3.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重构社交登录"><span class="nav-number">1.0.4.</span> <span class="nav-text">重构社交登录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简化模式"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">简化模式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#封装请求信息TokenOpenIdAuthenticationToken"><span class="nav-number">1.0.4.1.1.</span> <span class="nav-text">封装请求信息TokenOpenIdAuthenticationToken</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#拦截请求OpenIdAuthenticationFilter"><span class="nav-number">1.0.4.1.2.</span> <span class="nav-text">拦截请求OpenIdAuthenticationFilter</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#验证服务器OpenIdAuthenticationProvider"><span class="nav-number">1.0.4.1.3.</span> <span class="nav-text">验证服务器OpenIdAuthenticationProvider</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安全配置类OpenIdAuthenticationSecurityConfig"><span class="nav-number">1.0.4.1.4.</span> <span class="nav-text">安全配置类OpenIdAuthenticationSecurityConfig</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#资源服务器配置ImoocResourceServerConfig"><span class="nav-number">1.0.4.1.5.</span> <span class="nav-text">资源服务器配置ImoocResourceServerConfig</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标准授权码模式"><span class="nav-number">1.0.4.2.</span> <span class="nav-text">标准授权码模式</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">REX CHEN</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

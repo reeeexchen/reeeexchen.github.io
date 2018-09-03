@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JAVA,Spring Security,OAuth," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Spring Security Note-13 开发APP认证框架基于服务器在之前的学习中，我们所保存的用户信息，Session等都是保存在服务器中的； 用户通过浏览器，每次访问服务的时候，服务器都会检查浏览器的Cookies中是否包含JSESSIONID； 如果不包含JSESSIONID，就会新建一个SESSION，新建的SESSION就会写到Cookies中，每次用户请求时，都会去检查SESS">
+<meta name="keywords" content="JAVA,Spring Security,OAuth">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Security | Note-13">
+<meta property="og:url" content="http://yoursite.com/2018/09/04/Spring Security 13/index.html">
+<meta property="og:site_name" content="REEEEX">
+<meta property="og:description" content="Spring Security Note-13 开发APP认证框架基于服务器在之前的学习中，我们所保存的用户信息，Session等都是保存在服务器中的； 用户通过浏览器，每次访问服务的时候，服务器都会检查浏览器的Cookies中是否包含JSESSIONID； 如果不包含JSESSIONID，就会新建一个SESSION，新建的SESSION就会写到Cookies中，每次用户请求时，都会去检查SESS">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuw5uy63h5j20zp0j0jw5.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuw6ax8nj8j20zc0hjajb.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuw7xl71oij206f00s3ya.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuw7y6z3caj20rk0bjq45.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuw7zetcrej20s509tdgo.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuw86r7xgrj20ri08e3zb.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuw877ngkjj20s00a0wfb.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuw8cs72o0j20rc0dz75e.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuw8ew5fsyj20nv085wf2.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuw8f9qwwej20ts0dt3zl.jpg">
+<meta property="og:updated_time" content="2018-09-03T04:21:28.333Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Security | Note-13">
+<meta name="twitter:description" content="Spring Security Note-13 开发APP认证框架基于服务器在之前的学习中，我们所保存的用户信息，Session等都是保存在服务器中的； 用户通过浏览器，每次访问服务的时候，服务器都会检查浏览器的Cookies中是否包含JSESSIONID； 如果不包含JSESSIONID，就会新建一个SESSION，新建的SESSION就会写到Cookies中，每次用户请求时，都会去检查SESS">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuw5uy63h5j20zp0j0jw5.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/04/Spring Security 13/"/>
+
+
+
+
+
+  <title>Spring Security | Note-13 | REEEEX</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">REEEEX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">KEEP GOING</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/04/Spring Security 13/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring Security | Note-13</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-04T00:00:00+08:00">
+                2018-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Spring-Security-Note-13"><a href="#Spring-Security-Note-13" class="headerlink" title="Spring Security Note-13"></a>Spring Security Note-13</h3><hr>
+<h4 id="开发APP认证框架"><a href="#开发APP认证框架" class="headerlink" title="开发APP认证框架"></a>开发APP认证框架</h4><h5 id="基于服务器"><a href="#基于服务器" class="headerlink" title="基于服务器"></a>基于服务器</h5><p>在之前的学习中，我们所保存的用户信息，Session等都是保存在服务器中的；</p>
+<p>用户通过浏览器，每次访问服务的时候，服务器都会检查浏览器的Cookies中是否包含JSESSIONID；</p>
+<p>如果不包含JSESSIONID，就会新建一个SESSION，新建的SESSION就会写到Cookies中，每次用户请求时，都会去检查SESSION，拿出用户的信息；</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuw5uy63h5j20zp0j0jw5.jpg" alt=""></p>
+<h5 id="更新换代"><a href="#更新换代" class="headerlink" title="更新换代"></a>更新换代</h5><p>前后端分离的服务，将HTML服务与应用服务分离开，单独部署到Web Server上；</p>
+<p>在这种部署模式下，用户通过浏览器直接访问的是Web Server而不是Application Server，然后针对HTML的渲染由Web Server完成，ajax请求发给Web Server之后，再向Application Server发送请求，拿到数据；</p>
+<p>不管是APP还是前后端分离的部署，最根本的出现就是：</p>
+<blockquote>
+<p>用户不再是通过浏览器直接访问应用</p>
+<p>而是通过第三方应用（APP，Web Server）</p>
+</blockquote>
+<p>在这种架构模式下，继续使用Cookies和Session就会出现问题：</p>
+<p>1.开发繁琐（浏览器已经封装好）</p>
+<p>2.安全性和客户体验差（认证工作由服务器完成，SESSION失效与登录）</p>
+<p>3.有些前端技术不支持Cookies（微信小程序）</p>
+<h5 id="Spring-Security-OAuth"><a href="#Spring-Security-OAuth" class="headerlink" title="Spring Security OAuth"></a>Spring Security OAuth</h5><p>解决这种架构下的方法，其中一种是通过令牌（Token）的方式解决；</p>
+<p>令牌是一种类似SESSION的唯一标识，在SESSION模式下，是往Cookies中写入JSESSIONID，而令牌是直接发给用户一个唯一标识的Token，用户每次访问带着令牌，Application Server去认证自身发出的令牌；</p>
+<p>-</p>
+<p>在接下来的开发过程中，开发和认证的方式，就改变成了令牌的收发和认证，使用OAuth协议来解决开发问题；</p>
+<p>在OAuth协议中，Spring Social封装了大部分的开发内容，直接使用就可以完成第三方应用Client基本功能；</p>
+<p>接下来学习的Spring Security OAuth则是封装了服务提供商的绝大部分行为，可以实现发令牌，认证令牌；</p>
+<p>-</p>
+<p>为了完成服务提供商的功能，我们需要实现认证服务器和资源服务器的功能；</p>
+<p>在认证服务器中，需要完成4种授权模式，确认用户的身份和权限，通过4种授权模式，根据这些信息生成Token和存储；</p>
+<p>在资源服务器下，我们需要保护资源（REST服务），通过Spring Security的过滤器链进行保护，在Spring Security OAuth中，通过在过滤器链上加入<code>OAuth2AuthenticationProcessingFilter</code>的方式，对请求中拿出Token，在存储策略中进行认证；</p>
+<p>在实际开发中，我们不希望用户通过4种标准的授权模式（手机短信），我们希望通过自定义的认证方式，在认证服务器中实现认证；</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuw6ax8nj8j20zc0hjajb.jpg" alt=""></p>
+<hr>
+<h4 id="实现标准的OAuth2服务提供商（Provider）"><a href="#实现标准的OAuth2服务提供商（Provider）" class="headerlink" title="实现标准的OAuth2服务提供商（Provider）"></a>实现标准的OAuth2服务提供商（Provider）</h4><p>1.首先我们将SimpleRespon移动到Core项目当中；</p>
+<p>2.将BrowserSecurityConfig的PasswordEncoder移动到Core项目的SecurityCoreConfig；</p>
+<h5 id="认证服务器"><a href="#认证服务器" class="headerlink" title="认证服务器"></a>认证服务器</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableAuthorizationServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocAuthorizationServerConfig</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="资源服务器"><a href="#资源服务器" class="headerlink" title="资源服务器"></a>资源服务器</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableResourceServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocResourceServerConfig</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>-</p>
+<h5 id="访问四种授权模式"><a href="#访问四种授权模式" class="headerlink" title="访问四种授权模式"></a>访问四种授权模式</h5><p>访问/oauth/authorize 需要附带参数：</p>
+<blockquote>
+<p>response_type : code</p>
+<p>client_id : xxx</p>
+<p>redirect_uri : http://</p>
+<p>scope : all</p>
+</blockquote>
+<p>启动时默认生成的</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">security.oauth2.client.client-id = 64f9b36e-d819-4526-8047-d6f80cf16123</span><br><span class="line">security.oauth2.client.client-secret = 1d5527b0-33f8-4a9d-8536-312ff78d69d0</span><br></pre></td></tr></table></figure>
+<h6 id="在配置文件中配置"><a href="#在配置文件中配置" class="headerlink" title="在配置文件中配置"></a>在配置文件中配置</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">security.oauth2.client.client-id=imooc</span><br><span class="line">security.oauth2.client.client-secret=imoocsecret</span><br></pre></td></tr></table></figure>
+<h6 id="修改MyUserDetailService"><a href="#修改MyUserDetailService" class="headerlink" title="修改MyUserDetailService"></a>修改MyUserDetailService</h6><p>添加ROLE_USER的角色（默认必须有这个角色）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> SocialUserDetails <span class="title">buildUser</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// TODO 根据用户名（数据库）查找用户信息</span></span><br><span class="line">    <span class="comment">// 根据查找到的用户信息，判断用户是否被冻结</span></span><br><span class="line">    String password = passwordEncoder.encode(<span class="string">"123456"</span>);</span><br><span class="line">    logger.info(<span class="string">"PASSWORD FROM DB : "</span> + password);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> SocialUser(username, password,</span><br><span class="line">                          <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>,</span><br><span class="line">                      AuthorityUtils.commaSeparatedStringToAuthorityList(<span class="string">"admin,ROLE_USER"</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>-</p>
+<h5 id="授权码模式"><a href="#授权码模式" class="headerlink" title="授权码模式"></a>授权码模式</h5><h6 id="获取授权码"><a href="#获取授权码" class="headerlink" title="获取授权码"></a>获取授权码</h6><blockquote>
+<p><a href="http://localhost:8060/oauth/authorize?response_type=code&amp;client_id=imooc&amp;redirect_uri=http://example.com&amp;scope=all" target="_blank" rel="noopener">http://localhost:8060/oauth/authorize?response_type=code&amp;client_id=imooc&amp;redirect_uri=http://example.com&amp;scope=all</a></p>
+</blockquote>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuw7xl71oij206f00s3ya.jpg" alt=""></p>
+<h6 id="在工具内验证授权码模式请求："><a href="#在工具内验证授权码模式请求：" class="headerlink" title="在工具内验证授权码模式请求："></a>在工具内验证授权码模式请求：</h6><p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuw7y6z3caj20rk0bjq45.jpg" alt=""></p>
+<h6 id="返回结果"><a href="#返回结果" class="headerlink" title="返回结果"></a>返回结果</h6><p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuw7zetcrej20s509tdgo.jpg" alt=""></p>
+<p>-</p>
+<h5 id="密码模式"><a href="#密码模式" class="headerlink" title="密码模式"></a>密码模式</h5><h6 id="发送请求"><a href="#发送请求" class="headerlink" title="发送请求"></a>发送请求</h6><p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuw86r7xgrj20ri08e3zb.jpg" alt=""></p>
+<h6 id="返回结果-1"><a href="#返回结果-1" class="headerlink" title="返回结果"></a>返回结果</h6><p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuw877ngkjj20s00a0wfb.jpg" alt=""></p>
+<p>-</p>
+<h5 id="获取用户信息"><a href="#获取用户信息" class="headerlink" title="获取用户信息"></a>获取用户信息</h5><p>对比我们可以发现，在expires_in没过期的前提下，同一个用户在两种授权模式下的access_token是一样的；</p>
+<h6 id="401"><a href="#401" class="headerlink" title="401"></a>401</h6><p>在不附带参数的情况下，获取用户数据的话，会报出401的错误；</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuw8cs72o0j20rc0dz75e.jpg" alt=""></p>
+<p>-</p>
+<h6 id="200"><a href="#200" class="headerlink" title="200"></a>200</h6><p>当我们获取到access_token之后，就可以通过access_token &amp; token_type获取用户信息；</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuw8ew5fsyj20nv085wf2.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuw8f9qwwej20ts0dt3zl.jpg" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+          
+            <a href="/tags/Spring-Security/" rel="tag"># Spring Security</a>
+          
+            <a href="/tags/OAuth/" rel="tag"># OAuth</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/03/Spring Security 11/" rel="next" title="Spring Security | Note-11">
+                <i class="fa fa-chevron-left"></i> Spring Security | Note-11
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/04/Spring Security 12/" rel="prev" title="Spring Security | Note-12">
+                Spring Security | Note-12 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">REX CHEN</p>
+              <p class="site-description motion-element" itemprop="description">日常记录</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Security-Note-13"><span class="nav-number">1.</span> <span class="nav-text">Spring Security Note-13</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#开发APP认证框架"><span class="nav-number">1.1.</span> <span class="nav-text">开发APP认证框架</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#基于服务器"><span class="nav-number">1.1.1.</span> <span class="nav-text">基于服务器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#更新换代"><span class="nav-number">1.1.2.</span> <span class="nav-text">更新换代</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Spring-Security-OAuth"><span class="nav-number">1.1.3.</span> <span class="nav-text">Spring Security OAuth</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现标准的OAuth2服务提供商（Provider）"><span class="nav-number">1.2.</span> <span class="nav-text">实现标准的OAuth2服务提供商（Provider）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#认证服务器"><span class="nav-number">1.2.1.</span> <span class="nav-text">认证服务器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#资源服务器"><span class="nav-number">1.2.2.</span> <span class="nav-text">资源服务器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#访问四种授权模式"><span class="nav-number">1.2.3.</span> <span class="nav-text">访问四种授权模式</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#在配置文件中配置"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">在配置文件中配置</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#修改MyUserDetailService"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">修改MyUserDetailService</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#授权码模式"><span class="nav-number">1.2.4.</span> <span class="nav-text">授权码模式</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#获取授权码"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">获取授权码</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#在工具内验证授权码模式请求："><span class="nav-number">1.2.4.2.</span> <span class="nav-text">在工具内验证授权码模式请求：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#返回结果"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">返回结果</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#密码模式"><span class="nav-number">1.2.5.</span> <span class="nav-text">密码模式</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#发送请求"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">发送请求</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#返回结果-1"><span class="nav-number">1.2.5.2.</span> <span class="nav-text">返回结果</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#获取用户信息"><span class="nav-number">1.2.6.</span> <span class="nav-text">获取用户信息</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#401"><span class="nav-number">1.2.6.1.</span> <span class="nav-text">401</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#200"><span class="nav-number">1.2.6.2.</span> <span class="nav-text">200</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">REX CHEN</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
