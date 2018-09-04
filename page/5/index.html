@@ -262,6 +262,491 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/28/Blog System  Note-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/28/Blog System  Note-2/" itemprop="url">Blog System | Note-2</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-28T00:00:00+08:00">
+                2018-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Blog-System-Note-2"><a href="#Blog-System-Note-2" class="headerlink" title="Blog System | Note-2"></a>Blog System | Note-2</h3><p>@2018年7月29日 14:38:38    Knowledge From Imooc</p>
+<h4 id="数据持久化"><a href="#数据持久化" class="headerlink" title="数据持久化"></a>数据持久化</h4><h5 id="JPA"><a href="#JPA" class="headerlink" title="JPA"></a>JPA</h5><p>​    用于管理Java EE和Java SE环境中的持久化，以及对象/关系(O/R)映射的Java API；</p>
+<h5 id="实体-Entity"><a href="#实体-Entity" class="headerlink" title="实体@Entity"></a>实体@Entity</h5><p>​    表示数据库中的表，每个实体实体对应于表中的行；</p>
+<p>​    类必须有一个public或protected的无参构造函数；</p>
+<p>​    实体实例被当作值以分离对象方式进行传递，则该类必须实现Serializable接口；</p>
+<p>​    唯一的标识：主键或复合主键；</p>
+<h5 id="关系-Relation"><a href="#关系-Relation" class="headerlink" title="关系 Relation"></a>关系 Relation</h5><p>​    一对一：@OneToOne</p>
+<p>​    一对多：@OneToMany</p>
+<p>​    多对一：@ManyToOne</p>
+<p>​    多对多：@ManyToMany</p>
+<h5 id="管理实体的接口-EntityManager"><a href="#管理实体的接口-EntityManager" class="headerlink" title="管理实体的接口 EntityManager"></a>管理实体的接口 EntityManager</h5><p>​    定义用于持久性上下文进行交互的方法；</p>
+<p>​    创建和删除持久实体实例，通过实体的主键查找实体；</p>
+<p>​    允许在实体上运行查询；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取EntityManager实例</span></span><br><span class="line"><span class="meta">@PersistenceUnit</span> <span class="comment">// 持久化单元</span></span><br><span class="line">EntityManagerFactory emf;</span><br><span class="line">EntityManager em;</span><br><span class="line"><span class="meta">@Resource</span></span><br><span class="line">UserTransaction utx;</span><br><span class="line">...</span><br><span class="line">em = emf.createEntityManager();</span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    utx.begin();</span><br><span class="line">    em.persist(SomeEntity);</span><br><span class="line">    em.merge(AnotherEntity);</span><br><span class="line">    em.remove(ThirdEntity);</span><br><span class="line">    utx.commit();</span><br><span class="line">&#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">    utx.rollback();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查找实体</span></span><br><span class="line"><span class="meta">@PersistenceContext</span></span><br><span class="line">EntityManager em;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">enterOrder</span><span class="params">(<span class="keyword">int</span> custID,CustomerOrder newOrder)</span></span>&#123;</span><br><span class="line">    Customer cust = em.find(Customer,custID);</span><br><span class="line">    cust.getOrders().add(newOrder);</span><br><span class="line">    newOrder.setCustomer(cust);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Spring-Data-JPA"><a href="#Spring-Data-JPA" class="headerlink" title="Spring Data JPA"></a>Spring Data JPA</h5><p>​    更大的Spring Data家族的一部分；</p>
+<p>​    对基于JPA的数据访问层的增强支持；</p>
+<p>​    更容易构建基于Spring数据访问技术栈的程序；</p>
+<h5 id="常用接口"><a href="#常用接口" class="headerlink" title="常用接口"></a>常用接口</h5><p>​    CrudRepository</p>
+<p>​    PagingAndSortingRepository</p>
+<p>​    自定义接口：根据方法名创建查询 public interface UserRepository extends Repository&lt;User,Long&gt;{}</p>
+<h5 id="应用"><a href="#应用" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Id</span></span><br><span class="line"><span class="meta">@GeneratedValue</span>(strategy= GenerationType.IDENTITY)</span><br><span class="line"><span class="comment">// Controller</span></span><br><span class="line">findAll();</span><br><span class="line">findOne();</span><br><span class="line">delete();</span><br><span class="line">save();</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># 使用H2控制台：</span><br><span class="line">spring.h2.console.enabled=<span class="keyword">true</span></span><br><span class="line">#查看</span><br><span class="line">localhost:<span class="number">8080</span>/h2-console</span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># DataSource</span><br><span class="line">spring.datasource.url=...</span><br><span class="line">spring.datasource.username=...</span><br><span class="line">spring.datasource.password=...</span><br><span class="line">spring.datasource.driver-<span class="class"><span class="keyword">class</span>-<span class="title">name</span></span>=com.mysql.jdbc.Driver</span><br><span class="line"># JPA</span><br><span class="line">spring.jpa.show-sql=<span class="keyword">true</span></span><br><span class="line">spring.jpa.hibernate.ddl-auto=create-drop</span><br></pre></td></tr></table></figure>
+<h4 id="全文搜索"><a href="#全文搜索" class="headerlink" title="全文搜索"></a>全文搜索</h4><h5 id="全文搜索-1"><a href="#全文搜索-1" class="headerlink" title="全文搜索"></a>全文搜索</h5><p>​    概念：将文件中所有文本与搜索项匹配的文字资料检索方法</p>
+<p>​    Knowledge About(<a href="#link1">数据结构</a> &amp;&amp; <a href="#link2">非结构化数据的检索</a>)</p>
+<p>​    实现原理：建立文本库、建立索引、执行搜索、过滤结果</p>
+<p>​    实现技术：Lucene、ElasticSearch（ES）、Solr</p>
+<h5 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h5><p>​    高度可扩展的开源全文搜索和分析引擎；</p>
+<p>​    快速的、近实时性的对大数据进行存储、搜索和分析；</p>
+<p>​    用于支持有复杂的数据搜索需求的企业级应用；</p>
+<p>特点：分布式（分布到多个分片上）、高可用（由分布式所得）、多类型（多种数据类型）、多API、面向文档（不需要事先定义模式）、异步写入（性能高于同步）、近实时、基于Lucene、Apache协议</p>
+<h5 id="核心概念："><a href="#核心概念：" class="headerlink" title="核心概念："></a>核心概念：</h5><p>近实时：</p>
+<p>​    搜索文档到可搜索之间的时间，轻微的延时，1s左右；</p>
+<p>​    每隔n秒刷新数据；</p>
+<p>​    索引建立后，不会直接写入磁盘，存在文件系统缓存中，根据刷新策略，定期同步到磁盘中；</p>
+<p>集群：</p>
+<p>​    一个或多个节点的集合，保存应用的全部数据， 并提供基于全部节点的集成式的索引和搜索功能；</p>
+<p>​    每个集群有唯一名称；</p>
+<p>节点：</p>
+<p>​    集群中的一台服务器，用于保存数据，并且参与整个集群的索引和搜索；</p>
+<p>索引（5个分片，1个副本）：</p>
+<p>​    加快搜索速度，相似文档的集合；</p>
+<p>​    在单个集群中，根据需要，定义任意数量的索引；</p>
+<p>类型：</p>
+<p>​    对一个索引中的文档中，做进一步的细分，根据公共属性划分；</p>
+<p>文档：</p>
+<p>​    进行索引的基本单位，JSON格式；</p>
+<p>分片：</p>
+<p>​    超出单个节点处理的范围，将索引分成多个分片（含副本），存储索引的部分数据；</p>
+<p>副本：</p>
+<p>​    分片的故障不可避免，为了可靠性，设置分片副本，分配到不同节点上；</p>
+<p>​    增加吞吐量，分配到不同副本中；</p>
+<h5 id="应用-1"><a href="#应用-1" class="headerlink" title="应用@"></a>应用@</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加 Spring Daat Elasticsearch 的依赖</span></span><br><span class="line">compile(<span class="string">'org.springframework.boot:spring-boot-starter-data-elasticsearch'</span>)</span><br><span class="line"><span class="comment">// 添加 JNA 的依赖</span></span><br><span class="line">compile(<span class="string">'net.java.dev.jna:jna:4.3.0'</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line"># Elasticsearch 服务地址</span><br><span class="line">spring.data.elasticsearch.cluster-nodes=localhost:<span class="number">9300</span></span><br><span class="line"># 设置连接超时时间</span><br><span class="line">spring.data.elasticsearch.properties.transport.tcp.connect_timeout=<span class="number">120</span>s</span><br><span class="line"></span><br><span class="line"><span class="comment">// domain</span></span><br><span class="line"><span class="meta">@Document</span>(indexName=<span class="string">"blog"</span>,type=<span class="string">"blog"</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">// repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">EsBlogRepository</span> <span class="keyword">extends</span> <span class="title">ElasticsearchRepository</span>&lt;<span class="title">EsBlog</span>,<span class="title">String</span>&gt; </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line">进行controller之前，需要启动elasticsearch服务器</span><br><span class="line">PS：注意jar包的版本，以及elasticsearch服务器的版本问题</span><br><span class="line"></span><br><span class="line"><span class="comment">// controller</span></span><br><span class="line"><span class="meta">@GetMapping</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;EsBlog&gt; <span class="title">list</span><span class="params">(@RequestParam(value = <span class="string">"title"</span>)</span>String title,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"summary"</span>)</span>String summary,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"content"</span>)</span>String content,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageIndex"</span>,defaultValue = <span class="string">"0"</span>)</span><span class="keyword">int</span> pageIndex,</span></span><br><span class="line"><span class="function">                         @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"pageSize"</span>,defaultValue = <span class="string">"10"</span>)</span><span class="keyword">int</span> pageSize)</span>&#123;</span><br><span class="line">    <span class="comment">// 数据在测试用例中初始化</span></span><br><span class="line">    Pageable pageable = <span class="keyword">new</span> PageRequest(pageIndex, pageSize);</span><br><span class="line">    Page&lt;EsBlog&gt; page = esBlogRepository.find...(title,summary,content,pageable);</span><br><span class="line">    <span class="keyword">return</span> page.getContent();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><h5 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a><a name="link1">数据结构</a></h5><p>​    结构化：具有固定格式或有限长度的数据（数据库、元数据）</p>
+<p>​    非结构化：不定长或无固定格式的数据（邮件，word文档）</p>
+<h5 id="非结构化数据的检索"><a href="#非结构化数据的检索" class="headerlink" title="非结构化数据的检索"></a><a name="link2">非结构化数据的检索</a></h5><p>​    顺序扫描 Serial Scanning ： 从头到尾搜索</p>
+<p>​    全文搜索 Full-text Search ： 将非结构化数据部分信息，组织成结构化数据，添加索引，进行搜索</p>
+<p>2018年7月29日 22:35:47</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/27/Blog System  Note-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/27/Blog System  Note-1/" itemprop="url">Blog System | Note-1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-27T00:00:00+08:00">
+                2018-07-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Blog-System-Note-1"><a href="#Blog-System-Note-1" class="headerlink" title="Blog System | Note-1"></a>Blog System | Note-1</h3><p>@2018年7月29日 09:49:20    Knowledge From Imooc</p>
+<h4 id="Core-Function"><a href="#Core-Function" class="headerlink" title="Core Function"></a>Core Function</h4><p>用户管理：注册、登录、增加、修改、删除、搜索</p>
+<p>安全设置：角色授权、权限设置</p>
+<p>博客管理：发表、编辑、删除、分类、设置标签、上传图片、模糊查询、排序、统计</p>
+<p>评论管理：发表、删除、统计</p>
+<p>点赞管理：点赞、取消、统计</p>
+<p>分类管理：创建、编辑、删除、查询</p>
+<p>标签管理：创建、删除、查询</p>
+<p>首页搜索：全文检索、最新文章、最热文章、热门标签、用户、文章、最新发布</p>
+<h4 id="Core-Technology"><a href="#Core-Technology" class="headerlink" title="Core Technology"></a>Core Technology</h4><p>FrontEnd：Bootstrap、Thymeleaf、jQuery、HTML5、JS、CSS</p>
+<p>BackEnd：Spring、Spring Boot、Spring MVC、Spring Data、Spring Security、Hibernate</p>
+<p>DataSource：MySQL、H2、MongoDB（存储非结构化数据）</p>
+<p>Other：ElasticSearch（搜索）、Gradle（管理构建）</p>
+<h4 id="Thymeleaf-amp-Spring-Boot"><a href="#Thymeleaf-amp-Spring-Boot" class="headerlink" title="Thymeleaf &amp; Spring Boot"></a>Thymeleaf &amp; Spring Boot</h4><blockquote>
+<p>Thymeleaf是Java模版引擎，自然模版，原型即页面，OGNL，SpringEL，遵守WEB标准，支持HTML5</p>
+<p>Thymeleaf标准方言</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="tag">&lt;<span class="name">span</span> <span class="attr">th:tex</span>=<span class="string">""</span>&gt;</span> 引入命名空间</span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">span</span> <span class="attr">data-th-text</span>=<span class="string">""</span>&gt;</span> 自定义属性</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>标准表达式，设置属性值，迭代器，条件语句，模版布局，属性优先级，注释，内联，基本对象，工具对象</p>
+</blockquote>
+<h4 id="Thymeleaf基本入门"><a href="#Thymeleaf基本入门" class="headerlink" title="Thymeleaf基本入门"></a>Thymeleaf基本入门</h4><h5 id="变量表达式"><a href="#变量表达式" class="headerlink" title="变量表达式"></a>变量表达式</h5><blockquote>
+<p>语法：${…} </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="tag">&lt;<span class="name">span</span> <span class="attr">th:text</span>=<span class="string">"$&#123;book.author.name&#125;"</span>&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h5 id="消息表达式-文本外部化、国际化、i18n"><a href="#消息表达式-文本外部化、国际化、i18n" class="headerlink" title="消息表达式(文本外部化、国际化、i18n)"></a>消息表达式(文本外部化、国际化、i18n)</h5><blockquote>
+<p>语法：#{…}    </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="tag">&lt;<span class="name">th</span> <span class="attr">th:text</span>=<span class="string">"#&#123;header.address.city&#125;"</span>&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h5 id="选择表达式"><a href="#选择表达式" class="headerlink" title="选择表达式"></a>选择表达式</h5><blockquote>
+<p>语法：*{}    </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="tag">&lt;<span class="name">div</span> <span class="attr">th:object</span>=<span class="string">"$&#123;book&#125;"</span>&gt;</span></span><br><span class="line">&gt;     ...</span><br><span class="line">&gt;     <span class="tag">&lt;<span class="name">span</span> <span class="attr">th:text</span>=<span class="string">"*&#123;title&#125;"</span>&gt;</span>...<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">&gt; <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>与变量表达式的区别：选择表达式是在当前选择的对象，而不是全部上下文变量映射执行</p>
+</blockquote>
+<h5 id="链接表达式"><a href="#链接表达式" class="headerlink" title="链接表达式"></a>链接表达式</h5><blockquote>
+<p>语法: @{}</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; &lt;a th:href="@&#123;http://www.baidu.com&#125;" ... &lt;/a&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h5 id="分段表达式"><a href="#分段表达式" class="headerlink" title="分段表达式"></a>分段表达式</h5><blockquote>
+<p>语法： th:insert 或 th:replace</p>
+</blockquote>
+<h5 id="字面量（文字），算术操作，比较和等价，三元运算符，无操作（-）："><a href="#字面量（文字），算术操作，比较和等价，三元运算符，无操作（-）：" class="headerlink" title="字面量（文字），算术操作，比较和等价，三元运算符，无操作（_）："></a>字面量（文字），算术操作，比较和等价，三元运算符，无操作（_）：</h5><blockquote>
+<p>文字，数字，布尔，null</p>
+<p>+，-，*，/，%</p>
+<p>.&gt;，&lt;，==，!=，&gt;=，&lt;=</p>
+</blockquote>
+<h5 id="设置属性值-Setting-Attribute-Values"><a href="#设置属性值-Setting-Attribute-Values" class="headerlink" title="设置属性值(Setting Attribute Values)"></a>设置属性值(Setting Attribute Values)</h5><blockquote>
+<p>设置任意属性值(Setting the value of any attribute)</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="tag">&lt;<span class="name">from</span> <span class="attr">action</span>=<span class="string">"subscribe.html"</span> <span class="attr">th:attr</span>=<span class="string">"action=@&#123;/subscribe&#125;"</span>&gt;</span></span><br><span class="line">&gt; ==&gt;	<span class="tag">&lt;<span class="name">from</span> <span class="attr">action</span>=<span class="string">"/abc/subscribe"</span>&gt;</span></span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"Subscribe"</span> <span class="attr">th:attr</span>=<span class="string">"value=#&#123;subscribe.submit&#125;"</span>/&gt;</span></span><br><span class="line">&gt; ==&gt;	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"Subscribe"</span>&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>设置值到指定的属性(Setting value to specific attributes)</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="tag">&lt;<span class="name">from</span> <span class="attr">action</span>=<span class="string">"subscribe.html"</span> <span class="attr">th:action</span>=<span class="string">"@&#123;/subscribe&#125;"</span>&gt;</span></span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"Subscribe"</span> <span class="attr">th:value</span>=<span class="string">"#&#123;subscribe.submit&#125;"</span>/&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>固定值布尔属性(Fixed-value boolean attributes)</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">name</span>=<span class="string">"option2"</span> <span class="attr">checked</span> /&gt;</span> <span class="comment">&lt;!-- HTML --&gt;</span></span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">name</span>=<span class="string">"option1"</span> <span class="attr">checked</span>=<span class="string">"checked"</span> /&gt;</span> <span class="comment">&lt;!-- XHTML --&gt;</span></span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">name</span>=<span class="string">"active"</span> <span class="attr">th:checked</span>=<span class="string">"$&#123;user.active&#125;"</span> /&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h5 id="迭代器-Iteration"><a href="#迭代器-Iteration" class="headerlink" title="迭代器 Iteration"></a>迭代器 Iteration</h5><blockquote>
+<p>基本迭代        th:each</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="tag">&lt;<span class="name">li</span> <span class="attr">th:each</span>=<span class="string">"book"</span> <span class="attr">:</span> $&#123;<span class="attr">book</span>&#125;  <span class="attr">th:text</span>=<span class="string">"$&#123;book.title&#125;"</span>&gt;</span>Book Of Java<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>状态变量</p>
+<p>​    -index,count,size,current,even/odd,first,last</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">&gt;   <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">&gt;     <span class="tag">&lt;<span class="name">th</span>&gt;</span>NAME<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">&gt;     <span class="tag">&lt;<span class="name">th</span>&gt;</span>IN STOCK<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">&gt;   <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">&gt;   <span class="tag">&lt;<span class="name">tr</span> <span class="attr">th:each</span>=<span class="string">"prod,iterStat : $&#123;prods&#125;"</span> <span class="attr">th:class</span>=<span class="string">"$&#123;iterStat.odd&#125;? 'odd'"</span>&gt;</span></span><br><span class="line">&gt;     <span class="tag">&lt;<span class="name">td</span> <span class="attr">th:text</span>=<span class="string">"$&#123;prod.name&#125;"</span>&gt;</span>Onions<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">&gt;     <span class="tag">&lt;<span class="name">td</span> <span class="attr">th:text</span>=<span class="string">"$&#123;prod.inStock&#125;? #&#123;true&#125; : #&#123;false&#125;"</span>&gt;</span>yes<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">&gt;   <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">&gt; <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h5 id="条件语句-Conditional-Evaluation"><a href="#条件语句-Conditional-Evaluation" class="headerlink" title="条件语句 Conditional Evaluation"></a>条件语句 Conditional Evaluation</h5><blockquote>
+<p>th:if        th:unless</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"comments.html"</span> </span></span><br><span class="line"><span class="tag">&gt;</span>          th:href="@&#123;/product/comments(prodId=$&#123;prod.id&#125;)&#125;" </span><br><span class="line">&gt;          th:if(unless)="$&#123;not #lists.isEmpty(prod.comments)&#125;"&gt;view<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">&gt;     <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>th:switch</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="tag">&lt;<span class="name">div</span> <span class="attr">th:switch</span>=<span class="string">"$&#123;user.role&#125;"</span>&gt;</span></span><br><span class="line">&gt;   <span class="tag">&lt;<span class="name">p</span> <span class="attr">th:case</span>=<span class="string">"'admin'"</span>&gt;</span>User is an administrator<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">&gt;   <span class="tag">&lt;<span class="name">p</span> <span class="attr">th:case</span>=<span class="string">"#&#123;roles.manager&#125;"</span>&gt;</span>User is a manager<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">&gt;   <span class="tag">&lt;<span class="name">p</span> <span class="attr">th:case</span>=<span class="string">"*"</span>&gt;</span>User is some other thing<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">&gt; <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h5 id="模版布局-Template-Layout"><a href="#模版布局-Template-Layout" class="headerlink" title="模版布局 Template Layout"></a>模版布局 Template Layout</h5><blockquote>
+<p>定义和引用片段</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; // 定义</span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">div</span> <span class="attr">th:fragment</span>=<span class="string">"copy"</span>&gt;</span></span><br><span class="line">&gt; 	&amp;copy; 2011 The Good Thymes Virtual Grocery</span><br><span class="line">&gt; <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&gt; // 引用</span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">div</span> <span class="attr">th:insert</span>=<span class="string">"~&#123;footer :: copy&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>不使用fragments</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; // 定义</span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"copy-section"</span>&gt;</span></span><br><span class="line">&gt;   &amp;copy; 2011 The Good Thymes Virtual Grocery</span><br><span class="line">&gt; <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&gt; // 引用</span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">div</span> <span class="attr">th:insert</span>=<span class="string">"~&#123;footer :: #copy-section&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>th:insert 和 th:replace 和 th:include的区别</p>
+<p>​    -th:insert 简单的插入指定的片段作为正文的主标签</p>
+<p>​    -th:replace 指定实际片段来替换其主标签</p>
+<p>e.g</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="tag">&lt;<span class="name">footer</span> <span class="attr">th:fragment</span>=<span class="string">"copy"</span>&gt;</span></span><br><span class="line">&gt;   &amp;copy; 2018</span><br><span class="line">&gt; <span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line">&gt; // use</span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">div</span> <span class="attr">th:insert</span>=<span class="string">"footer :: copy"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">div</span> <span class="attr">th:replace</span>=<span class="string">"footer :: copy"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">div</span> <span class="attr">th:include</span>=<span class="string">"footer :: copy"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&gt; // result</span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">&gt;     <span class="tag">&lt;<span class="name">footer</span>&gt;</span></span><br><span class="line">&gt; 		&amp;copy; 2018</span><br><span class="line">&gt;     <span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line">&gt; <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&gt; </span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">footer</span>&gt;</span></span><br><span class="line">&gt; 	&amp;copy; 2018</span><br><span class="line">&gt; <span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line">&gt; </span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">&gt;     &amp;copy; 2018</span><br><span class="line">&gt; <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h5 id="属性优先级-Attribute-Precedence"><a href="#属性优先级-Attribute-Precedence" class="headerlink" title="属性优先级 Attribute Precedence"></a>属性优先级 Attribute Precedence</h5><p>Q:同一个标签写入多个th:*属性,谁先执行?<a href="https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#attribute-precedence" target="_blank" rel="noopener">属性优先级表</a></p>
+<p>A:根据优先级表，与标签前后顺序无关，与优先级有关</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">th:each</span>=<span class="string">"item : $&#123;items&#125;"</span> <span class="attr">th:text</span>=<span class="string">"$&#123;item.description&#125;"</span>&gt;</span>Item description here...<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h5 id="注释-Comments-and-Blocks"><a href="#注释-Comments-and-Blocks" class="headerlink" title="注释 Comments and Blocks"></a>注释 Comments and Blocks</h5><blockquote>
+<p>标准HTML/XML</p>
+<p>​    -<!-- User info follows --></p>
+<p>Thymeleaf解析器级注释块</p>
+<p>​    删除所有 <code>&lt;!--/*</code> 和 <code>*/--</code> 之间的内容</p>
+<p>原型注释块</p>
+<p>​    当模版静态打开时，注释块则不显示；当模版执行时，注释的代码被显示<code>&lt;!--/*/</code> …<code>/*/--&gt;</code> </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="tag">&lt;<span class="name">span</span>&gt;</span>hello!<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">&gt; <span class="comment">&lt;!--/*/</span></span><br><span class="line"><span class="comment">&gt;   &lt;div th:text="$&#123;...&#125;"&gt;</span></span><br><span class="line"><span class="comment">&gt;     ...</span></span><br><span class="line"><span class="comment">&gt;   &lt;/div&gt;</span></span><br><span class="line"><span class="comment">&gt; /*/--&gt;</span></span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">span</span>&gt;</span>goodbye!<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h5 id="内联-Inlining"><a href="#内联-Inlining" class="headerlink" title="内联 Inlining"></a>内联 Inlining</h5><blockquote>
+<p>直接将表达式写入文本当中</p>
+<p>[[…]] 对应 th:text 转换特殊符号</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="tag">&lt;<span class="name">p</span>&gt;</span>The message is "[[$&#123;msg&#125;]]"<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">p</span>&gt;</span>The message is "This is &amp;lt;b&amp;gt;great!&amp;lt;/b&amp;gt;"<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>[(…)] 对应 th:utext utext不转换特殊符号</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="tag">&lt;<span class="name">p</span>&gt;</span>The message is "[($&#123;msg&#125;)]"<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">p</span>&gt;</span>The message is "This is <span class="tag">&lt;<span class="name">b</span>&gt;</span>great!<span class="tag">&lt;/<span class="name">b</span>&gt;</span>"<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>禁用内联</p>
+<p>​    -th:inline=”none”</p>
+<p>JS内联</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">th:inline</span>=<span class="string">"javascript"</span>&gt;</span><span class="undefined"></span></span></span><br><span class="line"><span class="xml">&gt;     var username = [[$&#123;session.user.name&#125;]];</span></span><br><span class="line"><span class="xml">&gt; <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&gt; <span class="comment">// RESULT	</span></span><br><span class="line">&gt; <span class="xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">th:inline</span>=<span class="string">"javascript"</span>&gt;</span><span class="undefined"></span></span></span><br><span class="line"><span class="xml">&gt;     var username = "Sebastian \"Fruity\" Applejuice";</span></span><br><span class="line"><span class="xml">&gt; <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h5 id="表达式基本对象"><a href="#表达式基本对象" class="headerlink" title="表达式基本对象"></a>表达式基本对象</h5><blockquote>
+<p>#ctx : 上下文对象</p>
+<p>#locale：直接访问与java.util.Locale 关联的当前的请求</p>
+<p>request/session/application等</p>
+<p>Web上下文对象</p>
+<p>​    -#request #session #servletContext</p>
+</blockquote>
+<h4 id="Thymeleaf与Spring-Boot集成"><a href="#Thymeleaf与Spring-Boot集成" class="headerlink" title="Thymeleaf与Spring Boot集成"></a>Thymeleaf与Spring Boot集成</h4><p>修改build.gradle</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ext[<span class="string">'thymeleaf.version'</span>] = <span class="string">'3.0.3.RELEASE'</span></span><br><span class="line">ext[<span class="string">'thymeleaf-layout-dialect.version'</span>] = <span class="string">'2.2.0'</span></span><br><span class="line"><span class="comment">// 添加 Thymeleaf 的依赖</span></span><br><span class="line">compile(<span class="string">'org.springframework.boot:spring-boot-starter-thymeleaf'</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="Coding"><a href="#Coding" class="headerlink" title="Coding"></a>Coding</h4><h5 id="API设计"><a href="#API设计" class="headerlink" title="API设计"></a>API设计</h5><p>GET /users        返回用户列表list.html</p>
+<p>GET /users/{id}    返回用户view.html</p>
+<p>GET /users/form    返回新增或修改用户的form.html</p>
+<p>POST /users        新增或修改用户，成功后重定向</p>
+<p>GET /users/delete/{id}        根据id删除用户数据</p>
+<p>GET /users/modify/{id}        根据id修改用户数据</p>
+<h5 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h5><p>未使用数据库或持久化数据层时，可使用ConcurrentMap的方式暂时存储数据在内存当中，充当测试数据</p>
+<h5 id="Different"><a href="#Different" class="headerlink" title="Different"></a>Different</h5><table>
+<thead>
+<tr>
+<th style="text-align:center">SSM</th>
+<th style="text-align:center">Spring Boot</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Service</td>
+<td style="text-align:center">Repository</td>
+</tr>
+<tr>
+<td style="text-align:center">ServiceImpl</td>
+<td style="text-align:center">RepositoryImpl</td>
+</tr>
+<tr>
+<td style="text-align:center">Entity</td>
+<td style="text-align:center">Domain</td>
+</tr>
+</tbody>
+</table>
+<p>FrontEnd</p>
+<p>引入Thymeleaf命名空间</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">xmlns:th</span>=<span class="string">"http://www.thymeleaf.org"</span> </span></span><br><span class="line"><span class="tag"><span class="attr">xmlns:layout</span>=<span class="string">"http://www.ultraq.net.nz/web/thymeleaf/layout"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>具体运用：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:replace</span>=<span class="string">"~&#123;fragments/header :: header&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h3</span> <span class="attr">th:text</span>=<span class="string">"$&#123;userModel.title&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">// th:href</span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">th:href</span>=<span class="string">"@&#123;/users/form&#125;"</span>&gt;</span>创建用户<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">th:href</span>=<span class="string">"@&#123;'/users/delete/'+$&#123;userModel.user.id&#125;&#125;"</span>&gt;</span>删除<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">// th:if</span><br><span class="line"><span class="tag">&lt;<span class="name">tr</span> <span class="attr">th:if</span>=<span class="string">"$&#123;userModel.userList.size()&#125; == 0"</span>&gt;</span><span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">// th:each</span><br><span class="line"><span class="tag">&lt;<span class="name">tr</span> <span class="attr">th:each</span>=<span class="string">"user : $&#123;userModel.userList&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">td</span> <span class="attr">th:text</span>=<span class="string">"$&#123;user.id&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">td</span> <span class="attr">th:text</span>=<span class="string">"$&#123;user.email&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">th:href</span>=<span class="string">"@&#123;'/users/'+$&#123;user.id&#125;&#125;"</span> <span class="attr">th:text</span>=<span class="string">"$&#123;user.name&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><h4 id="一、目录文件解释"><a href="#一、目录文件解释" class="headerlink" title="一、目录文件解释"></a>一、目录文件解释</h4><blockquote>
+<p>buildscript.gradle (代码块中脚本优先执行)</p>
+<ul>
+<li>ext 用于定义动态属性（sprintBootVersion = ‘2.0.3 RELEASE’）</li>
+<li>repositories 使用中央仓库以及spring仓库</li>
+<li>dependencies 依赖关系</li>
+<li>classpath 声明执行其余脚本时，ClassLoader可使用这些依赖项（可引用ext中动态属性${sprintBootVersion}）</li>
+<li>使用插件</li>
+<li>指定生成编译文件版本 默认jar</li>
+<li>依赖关系（编译阶段、测试阶段）</li>
+</ul>
+</blockquote>
+<h4 id="二、Gradle"><a href="#二、Gradle" class="headerlink" title="二、Gradle"></a>二、Gradle</h4><ol>
+<li>按约定声明构建和建设</li>
+<li>强大的支持多工程的构建</li>
+<li>强大的依赖管理（基于Apache Ivy），提供最大的便利去构建工程</li>
+<li>全力支持已有的 Maven 或者Ivy仓库基础建设</li>
+<li>支持传递性依赖管理，在不需要远程仓库和pom.xml和ivy配置文件的前提下</li>
+<li>基于groovy脚本构建，其build脚本使用groovy语言编写</li>
+<li>具有广泛的领域模型支持构建</li>
+<li>深度 API</li>
+<li>易迁移</li>
+<li>自由和开放源码，Gradle是一个开源项目，基于 ASL</li>
+</ol>
+<h4 id="三、Thymeleaf"><a href="#三、Thymeleaf" class="headerlink" title="三、Thymeleaf"></a>三、Thymeleaf</h4><p><a href="https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html" target="_blank" rel="noopener">Tutorial:Using Thymeleaf 3.0</a></p>
+<p>@2018年7月29日 14:19:06</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/09/REVIEW-JAVA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -653,7 +1138,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -665,10 +1150,10 @@
               
               
               <div class="site-state-item site-state-tags">
-                
+                <a href="/tags/index.html">
                   <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">标签</span>
-                
+                </a>
               </div>
             
 
