@@ -190,12 +190,12 @@
         </li>
       
         
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            关于
+            归档
           </a>
         </li>
       
@@ -210,22 +210,12 @@
         </li>
       
         
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
+            关于
           </a>
         </li>
       
@@ -454,7 +444,7 @@
         
           
             <h2 id="Spring-Security-Note-16"><a href="#Spring-Security-Note-16" class="headerlink" title="Spring Security Note-16"></a>Spring Security Note-16</h2><hr>
-<h3 id="基于JWT实现SSO单点登录"><a href="#基于JWT实现SSO单点登录" class="headerlink" title="基于JWT实现SSO单点登录"></a>基于JWT实现SSO单点登录</h3><p>-</p>
+<h3 id="基于JWT实现SSO单点登录"><a href="#基于JWT实现SSO单点登录" class="headerlink" title="基于JWT实现SSO单点登录"></a>基于JWT实现SSO单点登录</h3><hr>
 <h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>在实际生活的应用中，我们举个例子而言，对于淘宝和天猫这两个完全不同的域名，是两个完全不同的服务器上；</p>
 <p>我们在淘宝进行登录的时候，跳转到了一个域名为</p>
 <blockquote>
@@ -463,7 +453,7 @@
 <p>意味着，服务器又换了一个，到此已经出现了三个服务器；</p>
 <p>登录后，页面又跳转回到了淘宝，此时我们重新刷新天猫，天猫也以直接完成了登录状态；</p>
 <p>虽然这两个网站是独立的域名，独立的服务器，但是在其中一个网站登录，在另一个网站上实现了登录；</p>
-<p>-</p>
+<hr>
 <h4 id="步骤流程"><a href="#步骤流程" class="headerlink" title="步骤流程"></a>步骤流程</h4><p>应用A（淘宝） 应用B（天猫） 和认证服务器（登录服务器）；</p>
 <p>0.用户访问请求登录应用A；</p>
 <p>1.应用A将会向认证服务器发起请求授权的请求；</p>
@@ -480,12 +470,49 @@
 <p>12.真正的业务是部署在一个独立的资源服务器，我们只需要使用JWT访问资源服务器即可；</p>
 <p>PS：尽管应用A和应用B的JWT不同，但是解析出来的用户信息是一致的；</p>
 <p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuxhgyr3g5j214w0j1118.jpg" alt=""></p>
-<p>-</p>
+<hr>
 <h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p>我们需要重新新建项目sso-demo，在sso这个项目中，我们需要对认证服务器进行一个重新的构造，这个认证服务器是基于浏览器，session的技术；</p>
 <p>创建四个项目；</p>
 <p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuxhvelpnij203o02zt8j.jpg" alt=""></p>
 <h5 id="认证服务器配置SSOAuthorizationServerConfig"><a href="#认证服务器配置SSOAuthorizationServerConfig" class="headerlink" title="认证服务器配置SSOAuthorizationServerConfig"></a>认证服务器配置SSOAuthorizationServerConfig</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 认证服务器</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: REX</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: Create in 14:34 2018/9/4</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableAuthorizationServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SSOAuthorizationServerConfig</span> <span class="keyword">extends</span> <span class="title">AuthorizationServerConfigurerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(ClientDetailsServiceConfigurer clients)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 配置两个应用</span></span><br><span class="line">        clients.inMemory()</span><br><span class="line">            .withClient(<span class="string">"app1"</span>).secret(<span class="string">"appsecret1"</span>)</span><br><span class="line">            .authorizedGrantTypes(<span class="string">"authorization_code"</span>, <span class="string">"refresh_token"</span>).scopes(<span class="string">"all"</span>)</span><br><span class="line">            .and()</span><br><span class="line">            .withClient(<span class="string">"app2"</span>).secret(<span class="string">"appsecret2"</span>)</span><br><span class="line">            .authorizedGrantTypes(<span class="string">"authorization_code"</span>, <span class="string">"refresh_token"</span>).scopes(<span class="string">"all"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 安全配置</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(AuthorizationServerSecurityConfigurer security)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 授权表达式</span></span><br><span class="line">        security.tokenKeyAccess(<span class="string">"isAuthenticated()"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 配置入口</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(AuthorizationServerEndpointsConfigurer endpoints)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        endpoints.tokenStore(jwtTokenStore()).accessTokenConverter(jwtAccessTokenConverter());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 配置JWT</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> TokenStore <span class="title">jwtTokenStore</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> JwtTokenStore(jwtAccessTokenConverter());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> JwtAccessTokenConverter <span class="title">jwtAccessTokenConverter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        JwtAccessTokenConverter converter = <span class="keyword">new</span> JwtAccessTokenConverter();</span><br><span class="line">        <span class="comment">// 指定密签</span></span><br><span class="line">        converter.setSigningKey(<span class="string">"REX"</span>);</span><br><span class="line">        <span class="keyword">return</span> converter;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h5 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">server.port=9999</span><br><span class="line">server.context-path=/server</span><br><span class="line">security.user.password=123123</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="应用A"><a href="#应用A" class="headerlink" title="应用A"></a>应用A</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@EnableOAuth</span>2Sso</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SSOClient1Application</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(SSOClient1Application.class,args);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/user"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Authentication <span class="title">user</span><span class="params">(Authentication user)</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> user;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># OAuth认证（与服务器配置要一致）</span><br><span class="line">security.oauth2.client.client-id=app1</span><br><span class="line">security.oauth2.client.client-secret=appsecret1</span><br><span class="line"># 认证服务器</span><br><span class="line">security.oauth2.client.user-authorization-uri=http://127.0.0.1:9999/server/oauth/authorize</span><br><span class="line"># 返回授权码</span><br><span class="line">security.oauth2.client.access-token-uri=http://127.0.0.1:9999/server/oauth/token</span><br><span class="line"># 解析的密钥URL</span><br><span class="line">security.oauth2.resource.jwt.key-uri=http://127.0.0.1:9999/server/oauth/token_key</span><br><span class="line"># SERVER</span><br><span class="line">server.port=8080</span><br><span class="line">server.context-path=/client1</span><br></pre></td></tr></table></figure>
+<h4 id="应用B"><a href="#应用B" class="headerlink" title="应用B"></a>应用B</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># OAuth认证（与服务器配置要一致）</span><br><span class="line">security.oauth2.client.client-id=app2</span><br><span class="line">security.oauth2.client.client-secret=appsecret2</span><br><span class="line"># 认证服务器</span><br><span class="line">security.oauth2.client.user-authorization-uri=http://127.0.0.1:9999/server/oauth/authorize</span><br><span class="line"># 返回授权码</span><br><span class="line">security.oauth2.client.access-token-uri=http://127.0.0.1:9999/server/oauth/token</span><br><span class="line"># 解析的密钥URL</span><br><span class="line">security.oauth2.resource.jwt.key-uri=http://127.0.0.1:9999/server/oauth/token_key</span><br><span class="line"># SERVER</span><br><span class="line">server.port=8060</span><br><span class="line">server.context-path=/client2</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>1.首先访问127.0.0.1:8080/client1/index.html</p>
+<p>2.跳转登录认证（9999）</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuxj5s7ydcj20r100taa0.jpg" alt=""></p>
+<blockquote>
+<p>username:user</p>
+<p>password:123123</p>
+</blockquote>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuxj564bvlj20ci0630so.jpg" alt=""></p>
+<p>3.是否授权给APP1访问受保护的资源？</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuxj6qtie6j20df04j3yk.jpg" alt=""></p>
+<p>4.得到授权后返回，此时已获得认证服务器的授权</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuxj9resfpj20a904z0ts.jpg" alt=""></p>
+<p>5.访问<code>/user</code>，获取用户信息</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuxjao8gw6j20ji0puwfu.jpg" alt=""></p>
+<p>6.访问Client2，这时候，认证服务器已经知道我的用户信息，不需要重新登录，只需要授权即可</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuxjbiaii1j20dg04tdfw.jpg" alt=""></p>
+<p>7.此时即可完成Client1和Client2页面之间任意的跳转</p>
+<p>8.这时候我们会发现Client1和Client2访问<code>/user</code>所获得的<code>tokenValue</code>是不同的，但是用户信息是一样的；</p>
+<hr>
+<h3 id="改善"><a href="#改善" class="headerlink" title="改善"></a>改善</h3><p>登录页面和A跳转B的隐藏授权；</p>
+<h4 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h4><p>在Server项目中，重新configure为表单登录的方式；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SSOSecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        http.formLogin().and().authorizeRequests().anyRequest().authenticated();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不将用户名和密码写死，通过重新实现UserDetailsService的方式，从数据库中读写用户名和密码；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SSOUserDetailsService</span> <span class="keyword">implements</span> <span class="title">UserDetailsService</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> UserDetails <span class="title">loadUserByUsername</span><span class="params">(String username)</span> <span class="keyword">throws</span> UsernameNotFoundException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> User(username,<span class="string">""</span>, AuthorityUtils.commaSeparatedStringToAuthorityList(<span class="string">"ROLE_USER"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>覆盖</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SSOSecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserDetailsService userDetailsService;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PasswordEncoder <span class="title">passwordEncoder</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> BCryptPasswordEncoder();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(AuthenticationManagerBuilder auth)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>-</p>
+<h4 id="授权"><a href="#授权" class="headerlink" title="授权"></a>授权</h4><p>找到授权的表单的页面在<code>WhitelabelApprovalEndpoint</code>类，在进入时直接跳转授权，不需要点击；</p>
+<p>重新写一个<code>WhitelabelApprovalEndpoint</code>，将@FrameworkEndpoint改为@RestController进行处理；</p>
+<p>并且复制一份<code>SpelView</code>为<code>SsoSpelView</code>；</p>
+<p>我们直接将confirmationForm提交，并且隐藏<code>&lt;body&gt;&lt;/body&gt;</code>；</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">'display:none;'</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">h1</span>&gt;</span>OAuth Approval<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">p</span>&gt;</span>Do you authorize '$&#123;authorizationRequest.clientId&#125;' to access your protected resources?<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">'confirmationForm'</span> <span class="attr">name</span>=<span class="string">'confirmationForm'</span> <span class="attr">action</span>=<span class="string">'$&#123;path&#125;/oauth/authorize'</span> <span class="attr">method</span>=<span class="string">'post'</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">'user_oauth_approval'</span> <span class="attr">value</span>=<span class="string">'true'</span> <span class="attr">type</span>=<span class="string">'hidden'</span>/&gt;</span>%csrf%%scopes%<span class="tag">&lt;<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">'authorize'</span> <span class="attr">value</span>=<span class="string">'Authorize'</span> <span class="attr">type</span>=<span class="string">'submit'</span>/&gt;</span><span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">            %denial%</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"><span class="built_in">document</span>.getElementById(<span class="string">'confirmationForm'</span>).submit()</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span>"</span><br></pre></td></tr></table></figure>
 
           
         
@@ -929,136 +956,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/04/Spring Security 12/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="REX CHEN">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="REEEEX">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/04/Spring Security 12/" itemprop="url">Spring Security | Note-12</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-04T00:00:00+08:00">
-                2018-09-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Spring-Security-Note-12"><a href="#Spring-Security-Note-12" class="headerlink" title="Spring Security Note-12"></a>Spring Security Note-12</h3><hr>
-<h4 id="退出登录"><a href="#退出登录" class="headerlink" title="退出登录"></a>退出登录</h4><h5 id="如何退出登录"><a href="#如何退出登录" class="headerlink" title="如何退出登录"></a>如何退出登录</h5><p>退出登录，需要访问一个特定的服务，默认情况下，服务的路径是/logout；</p>
-<p>并且退出成功后跳转的URL是登录URL + ?logout的路径；</p>
-<h5 id="Spring-Security默认的退出处理逻辑"><a href="#Spring-Security默认的退出处理逻辑" class="headerlink" title="Spring Security默认的退出处理逻辑"></a>Spring Security默认的退出处理逻辑</h5><p>使当前session失效；</p>
-<p>清除与当前用户相关的remember-me记录；</p>
-<p>清空当前的SecurityContext；</p>
-<p>重定向到登录页；</p>
-<h5 id="与退出登录相关的配置"><a href="#与退出登录相关的配置" class="headerlink" title="与退出登录相关的配置"></a>与退出登录相关的配置</h5><h6 id="自定义成功退出的逻辑处理"><a href="#自定义成功退出的逻辑处理" class="headerlink" title="自定义成功退出的逻辑处理"></a>自定义成功退出的逻辑处理</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocLogoutSuccessHandler</span> <span class="keyword">implements</span> <span class="title">LogoutSuccessHandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line">    <span class="keyword">private</span> String signOutUrl;</span><br><span class="line">    <span class="keyword">private</span> ObjectMapper objectMapper = <span class="keyword">new</span> ObjectMapper();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ImoocLogoutSuccessHandler</span><span class="params">(String signOutUrl)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.signOutUrl = signOutUrl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLogoutSuccess</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Authentication authentication)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"退出成功"</span>);</span><br><span class="line">        <span class="comment">// 自定义退出成功的逻辑</span></span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isBlank(signOutUrl)) &#123;</span><br><span class="line">            <span class="comment">// 无页面，返回JSON</span></span><br><span class="line">            response.setContentType(<span class="string">"application/json;charset=UTF-8"</span>);</span><br><span class="line">            response.getWriter().write(objectMapper.writeValueAsString(<span class="keyword">new</span> SimpleResponse(<span class="string">"退出成功"</span>)));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            response.sendRedirect(signOutUrl);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h6 id="注入Bean"><a href="#注入Bean" class="headerlink" title="注入Bean"></a>注入Bean</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserSecurityBeanConfig</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> SecurityProperties securityProperties;</span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="meta">@ConditionalOnMissingBean</span>(LogoutSuccessHandler.class)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> LogoutSuccessHandler <span class="title">logoutSuccessHandler</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> ImoocLogoutSuccessHandler(securityProperties.getBrowser().getSignOutUrl());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h6 id="BrowserProperties配置URL"><a href="#BrowserProperties配置URL" class="headerlink" title="BrowserProperties配置URL"></a>BrowserProperties配置URL</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserProperties</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String signOutUrl = <span class="string">"/logout.html"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h6 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    applyPasswordAuthenticationConfig(http);</span><br><span class="line">    http.</span><br><span class="line">        ...</span><br><span class="line">        <span class="comment">// 默认</span></span><br><span class="line">        .and()</span><br><span class="line">        .logout().logoutUrl(<span class="string">"/signOut"</span>)</span><br><span class="line">        <span class="comment">// 成功退出的自定义URL</span></span><br><span class="line">        <span class="comment">// .logoutSuccessUrl("/imooc-logout.html")</span></span><br><span class="line">        <span class="comment">// 成功退出的自定义逻辑（与URL冲突）</span></span><br><span class="line">        .logoutSuccessHandler(logoutSuccessHandler)</span><br><span class="line">        <span class="comment">// 删除Cookies</span></span><br><span class="line">        .deleteCookies(<span class="string">"JSESSIONID"</span>)</span><br><span class="line">        .and()</span><br><span class="line">        <span class="comment">// 都需要认证</span></span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/04/Spring Security 13/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1194,6 +1091,136 @@
 <h6 id="200"><a href="#200" class="headerlink" title="200"></a>200</h6><p>当我们获取到access_token之后，就可以通过access_token &amp; token_type获取用户信息；</p>
 <p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuw8ew5fsyj20nv085wf2.jpg" alt=""></p>
 <p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuw8f9qwwej20ts0dt3zl.jpg" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/04/Spring Security 12/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/04/Spring Security 12/" itemprop="url">Spring Security | Note-12</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-04T00:00:00+08:00">
+                2018-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Spring-Security-Note-12"><a href="#Spring-Security-Note-12" class="headerlink" title="Spring Security Note-12"></a>Spring Security Note-12</h3><hr>
+<h4 id="退出登录"><a href="#退出登录" class="headerlink" title="退出登录"></a>退出登录</h4><h5 id="如何退出登录"><a href="#如何退出登录" class="headerlink" title="如何退出登录"></a>如何退出登录</h5><p>退出登录，需要访问一个特定的服务，默认情况下，服务的路径是/logout；</p>
+<p>并且退出成功后跳转的URL是登录URL + ?logout的路径；</p>
+<h5 id="Spring-Security默认的退出处理逻辑"><a href="#Spring-Security默认的退出处理逻辑" class="headerlink" title="Spring Security默认的退出处理逻辑"></a>Spring Security默认的退出处理逻辑</h5><p>使当前session失效；</p>
+<p>清除与当前用户相关的remember-me记录；</p>
+<p>清空当前的SecurityContext；</p>
+<p>重定向到登录页；</p>
+<h5 id="与退出登录相关的配置"><a href="#与退出登录相关的配置" class="headerlink" title="与退出登录相关的配置"></a>与退出登录相关的配置</h5><h6 id="自定义成功退出的逻辑处理"><a href="#自定义成功退出的逻辑处理" class="headerlink" title="自定义成功退出的逻辑处理"></a>自定义成功退出的逻辑处理</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocLogoutSuccessHandler</span> <span class="keyword">implements</span> <span class="title">LogoutSuccessHandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line">    <span class="keyword">private</span> String signOutUrl;</span><br><span class="line">    <span class="keyword">private</span> ObjectMapper objectMapper = <span class="keyword">new</span> ObjectMapper();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ImoocLogoutSuccessHandler</span><span class="params">(String signOutUrl)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.signOutUrl = signOutUrl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLogoutSuccess</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Authentication authentication)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"退出成功"</span>);</span><br><span class="line">        <span class="comment">// 自定义退出成功的逻辑</span></span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isBlank(signOutUrl)) &#123;</span><br><span class="line">            <span class="comment">// 无页面，返回JSON</span></span><br><span class="line">            response.setContentType(<span class="string">"application/json;charset=UTF-8"</span>);</span><br><span class="line">            response.getWriter().write(objectMapper.writeValueAsString(<span class="keyword">new</span> SimpleResponse(<span class="string">"退出成功"</span>)));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            response.sendRedirect(signOutUrl);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="注入Bean"><a href="#注入Bean" class="headerlink" title="注入Bean"></a>注入Bean</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserSecurityBeanConfig</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> SecurityProperties securityProperties;</span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="meta">@ConditionalOnMissingBean</span>(LogoutSuccessHandler.class)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> LogoutSuccessHandler <span class="title">logoutSuccessHandler</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> ImoocLogoutSuccessHandler(securityProperties.getBrowser().getSignOutUrl());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="BrowserProperties配置URL"><a href="#BrowserProperties配置URL" class="headerlink" title="BrowserProperties配置URL"></a>BrowserProperties配置URL</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserProperties</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String signOutUrl = <span class="string">"/logout.html"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    applyPasswordAuthenticationConfig(http);</span><br><span class="line">    http.</span><br><span class="line">        ...</span><br><span class="line">        <span class="comment">// 默认</span></span><br><span class="line">        .and()</span><br><span class="line">        .logout().logoutUrl(<span class="string">"/signOut"</span>)</span><br><span class="line">        <span class="comment">// 成功退出的自定义URL</span></span><br><span class="line">        <span class="comment">// .logoutSuccessUrl("/imooc-logout.html")</span></span><br><span class="line">        <span class="comment">// 成功退出的自定义逻辑（与URL冲突）</span></span><br><span class="line">        .logoutSuccessHandler(logoutSuccessHandler)</span><br><span class="line">        <span class="comment">// 删除Cookies</span></span><br><span class="line">        .deleteCookies(<span class="string">"JSESSIONID"</span>)</span><br><span class="line">        .and()</span><br><span class="line">        <span class="comment">// 都需要认证</span></span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
