@@ -79,18 +79,23 @@
 
 
 
-<meta name="description" content="Spring Security Note-17 Spring Security授权简介Spring Security源码解析权限表达式基于数据库Rbac数据模型控制权限">
+<meta name="description" content="Spring Security Note-17 Spring Security授权简介Spring Security授权定义我们所谓的菜单，按钮触发的对应的一个后台的URL，授权并不是看见与否，而是能否访问； 安全问题，涉及的是访问与否的问题； 在用户体验的情况下，会给出所谓的按钮和菜单，但是在没有权限访问的前提下，最终依然没有访问的能力，给出的是提示； 涉及的用户体验和安全，要求不同，给出的解决">
 <meta name="keywords" content="JAVA,Spring Security">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring Security | Note-17">
 <meta property="og:url" content="http://yoursite.com/2018/09/08/Spring Security 17/index.html">
 <meta property="og:site_name" content="REEEEX">
-<meta property="og:description" content="Spring Security Note-17 Spring Security授权简介Spring Security源码解析权限表达式基于数据库Rbac数据模型控制权限">
+<meta property="og:description" content="Spring Security Note-17 Spring Security授权简介Spring Security授权定义我们所谓的菜单，按钮触发的对应的一个后台的URL，授权并不是看见与否，而是能否访问； 安全问题，涉及的是访问与否的问题； 在用户体验的情况下，会给出所谓的按钮和菜单，但是在没有权限访问的前提下，最终依然没有访问的能力，给出的是提示； 涉及的用户体验和安全，要求不同，给出的解决">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-03T10:21:13.510Z">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuyfwgmi09j21740b2gv0.jpg">
+<meta property="og:image" content="c:/Users/lenovo/AppData/Local/Temp/1536113901081.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/702434/201803/702434-20180320160102243-1707373872.png">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuyhmqnvxrj211q0j6dmr.jpg">
+<meta property="og:updated_time" content="2018-09-05T04:22:01.440Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring Security | Note-17">
-<meta name="twitter:description" content="Spring Security Note-17 Spring Security授权简介Spring Security源码解析权限表达式基于数据库Rbac数据模型控制权限">
+<meta name="twitter:description" content="Spring Security Note-17 Spring Security授权简介Spring Security授权定义我们所谓的菜单，按钮触发的对应的一个后台的URL，授权并不是看见与否，而是能否访问； 安全问题，涉及的是访问与否的问题； 在用户体验的情况下，会给出所谓的按钮和菜单，但是在没有权限访问的前提下，最终依然没有访问的能力，给出的是提示； 涉及的用户体验和安全，要求不同，给出的解决">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/675bae34gy1fuyfwgmi09j21740b2gv0.jpg">
 
 
 
@@ -321,7 +326,130 @@
 
       
         <h1 id="Spring-Security-Note-17"><a href="#Spring-Security-Note-17" class="headerlink" title="Spring Security Note-17"></a>Spring Security Note-17</h1><hr>
-<h3 id="Spring-Security授权简介"><a href="#Spring-Security授权简介" class="headerlink" title="Spring Security授权简介"></a>Spring Security授权简介</h3><h3 id="Spring-Security源码解析"><a href="#Spring-Security源码解析" class="headerlink" title="Spring Security源码解析"></a>Spring Security源码解析</h3><h3 id="权限表达式"><a href="#权限表达式" class="headerlink" title="权限表达式"></a>权限表达式</h3><h3 id="基于数据库Rbac数据模型控制权限"><a href="#基于数据库Rbac数据模型控制权限" class="headerlink" title="基于数据库Rbac数据模型控制权限"></a>基于数据库Rbac数据模型控制权限</h3>
+<h3 id="Spring-Security授权简介"><a href="#Spring-Security授权简介" class="headerlink" title="Spring Security授权简介"></a>Spring Security授权简介</h3><h4 id="Spring-Security授权定义"><a href="#Spring-Security授权定义" class="headerlink" title="Spring Security授权定义"></a>Spring Security授权定义</h4><p>我们所谓的菜单，按钮触发的对应的一个后台的URL，授权并不是看见与否，而是能否访问；</p>
+<p>安全问题，涉及的是访问与否的问题；</p>
+<p>在用户体验的情况下，会给出所谓的按钮和菜单，但是在没有权限访问的前提下，最终依然没有访问的能力，给出的是提示；</p>
+<p>涉及的用户体验和安全，要求不同，给出的解决方案是不同，最终我们只需要将自定义开发权限模块和Spring Security对接即可；</p>
+<h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><p>业务系统（普通用户）、内管系统（公司运营人员），对于这两个系统来说，授权是不同的；</p>
+<p>在业务系统当中，只区分是否登录（浏览、操作）或区分简单的角色（普通、VIP），权限规则基本不变；</p>
+<p>在内管系统当中，角色众多，权限复杂，权限规则随着体系和业务的发展不断变化；</p>
+<p>在应用系统内部，需要两份数据，一份是系统配置信息（每个URL需要的权限），一份是用户权限信息（用户1有ABC权限），对于请求，将会对两份数据进行比对以获取访问请求；</p>
+<h4 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h4><p>在BrowserSecurityConfig的authorizeRequests()已经进行URL的配置；</p>
+<p>接下去对于角色的验证</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 指定URL的角色</span></span><br><span class="line">.antMatchers(<span class="string">"/user"</span>).hasRole(<span class="string">"ADMIN"</span>)</span><br><span class="line"><span class="comment">// 指定请求方法</span></span><br><span class="line">.antMatchers(HttpMethod.GET,<span class="string">"/user/*"</span>).hasRole(<span class="string">"ADMIN"</span>)</span><br></pre></td></tr></table></figure>
+<p>在<code>MyUserDetailService</code>，可以指定返回用户的权限</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> SocialUserDetails <span class="title">buildUser</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO 根据用户名（数据库）查找用户信息</span></span><br><span class="line">		<span class="comment">// 根据查找到的用户信息，判断用户是否被冻结</span></span><br><span class="line">		String password = passwordEncoder.encode(<span class="string">"123456"</span>);</span><br><span class="line">		logger.info(<span class="string">"PASSWORD FROM DB : "</span> + password);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> SocialUser(username, password,</span><br><span class="line">				<span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>,</span><br><span class="line">				AuthorityUtils.commaSeparatedStringToAuthorityList(<span class="string">"admin,ROLE_USER,ROLE_ADMIN"</span>));</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="Spring-Security源码解析"><a href="#Spring-Security源码解析" class="headerlink" title="Spring Security源码解析"></a>Spring Security源码解析</h3><p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuyfwgmi09j21740b2gv0.jpg" alt=""></p>
+<p>在这里的学习中，我们重点关注橙色的部分<code>Filter Security Interceptor</code>，它最终决定你的请求是否能够通过，访问到REST API ；</p>
+<p>如果不能访问，它会抛出异常，并且说明原因，由蓝色部分<code>Exception Translation Filter</code>来处理；</p>
+<p><code>Anonymous Authentication Filter</code>匿名认证过滤器，位于绿色过滤器链段最后一端；</p>
+<h4 id="Anonymous-Authentication-Filter"><a href="#Anonymous-Authentication-Filter" class="headerlink" title="Anonymous Authentication Filter"></a>Anonymous Authentication Filter</h4><p>这个类十分简单，它主要关注你当前的<code>SecurityContextHolder</code>是否有<code>Authentication</code>，判断是否为空，实际上就是在判断，前面绿色过滤器链是否完成身份认证，如果为空，那么就会创建一个<code>Authentication</code>；</p>
+<p>这个由匿名认证过滤器创建的<code>Authentication</code>，是匿名的<code>principal</code>；</p>
+<p>通过<code>Anonymous Authentication Filter</code>，最终都会带有你的身份，去到<code>Filter Security Interceptor</code>，由它来判断你的身份是否有对API的访问权限；</p>
+<p><img src="C:\Users\lenovo\AppData\Local\Temp\1536113901081.png" alt="1536113901081"></p>
+<p>上面此图，是与Spring Security授权相关的类和接口；</p>
+<p>最核心的三个类<code>FilterSecurityInterceptor</code> &amp; <code>AccessDecisionManager</code> &amp; <code>AccessDecisionVoter</code>；</p>
+<h4 id="Filter-Security-Interceptor"><a href="#Filter-Security-Interceptor" class="headerlink" title="Filter Security Interceptor"></a>Filter Security Interceptor</h4><p>整个控制授权的主入口；</p>
+<h4 id="Access-Decision-Manager"><a href="#Access-Decision-Manager" class="headerlink" title="Access Decision Manager"></a>Access Decision Manager</h4><p>访问决定的管理者，它由一个抽象类<code>Abstract Access Decision Manager</code>，和三个具体实现<code>AffirmativeBased</code> &amp; <code>ConsensusBased</code> &amp; <code>UnanimouosBased</code>；</p>
+<p>它在抽象类中，管理一组<code>AccessDecisionVoter</code>；</p>
+<p><code>Abstract Access Decision Manager</code>则会综合所有投票者的决定，给出一个最终的结果；</p>
+<p>最终的结果，是有三套具体实现的逻辑；</p>
+<p><code>AffirmativeBased</code> 只要有一个通过就通过；</p>
+<p><code>ConsensusBased</code> 多数通过逻辑；</p>
+<p><code>UnanimouosBased</code>只要有一个不通过就不通过；</p>
+<p>默认Spring Security使用的是第一个逻辑，只要有一个通过就通过的逻辑；</p>
+<h4 id="Access-Decision-Voter"><a href="#Access-Decision-Voter" class="headerlink" title="Access Decision Voter"></a>Access Decision Voter</h4><p>Voter是投票者，有一组投票者，每个投票者有不同的处理逻辑；</p>
+<p>判断Authentication是否有某种角色，是否经过完全的身份认证；</p>
+<p>每个投票者根据自己的逻辑，投出自己的一票，投出过还是不过；</p>
+<h4 id="Security-Config"><a href="#Security-Config" class="headerlink" title="Security Config"></a>Security Config</h4><p>判断你的授权是否通过，需要两块数据的配置信息；</p>
+<p><code>Security Config</code>会将系统配置信息读取出来，封装成一组<code>Config Attribute</code>的对象；</p>
+<p>这一组对象中，每一个<code>Config Attribute</code>都会带有每一个URL所需要的权限；</p>
+<h4 id="Security-Context-Holder"><a href="#Security-Context-Holder" class="headerlink" title="Security Context Holder"></a>Security Context Holder</h4><p>当前用户的权限信息，会封装在<code>Authentication</code>当中；</p>
+<p>-</p>
+<p>在进入到<code>Access Decision Manager之前</code>，会封装三部分的信息<code>Config Attribute</code>，<code>Authentication</code>，<code>请求信息</code>，成一个对象，进行授权认证的判断；</p>
+<p>在Spring Security3.x以后，新产生的<code>Wen Expression Voter</code>包办了所有的Voter的工作，在WEB的环境下，所有的Voter的工作由它承担；</p>
+<hr>
+<h3 id="权限表达式"><a href="#权限表达式" class="headerlink" title="权限表达式"></a>权限表达式</h3><p>Spring Security允许我们在定义URL访问或方法访问所应有的权限时使用Spring EL表达式，在定义所需的访问权限时如果对应的表达式返回结果为true则表示拥有对应的权限，反之则无；</p>
+<table>
+<thead>
+<tr>
+<th><strong>表达式</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hasRole([role])</td>
+<td>当前用户是否拥有指定角色。</td>
+</tr>
+<tr>
+<td>hasAnyRole([role1,role2])</td>
+<td>多个角色是一个以逗号进行分隔的字符串。如果当前用户拥有指定角色中的任意一个则返回true。</td>
+</tr>
+<tr>
+<td>hasAuthority([auth])</td>
+<td>等同于hasRole</td>
+</tr>
+<tr>
+<td>hasAnyAuthority([auth1,auth2])</td>
+<td>等同于hasAnyRole</td>
+</tr>
+<tr>
+<td>Principle</td>
+<td>代表当前用户的principle对象</td>
+</tr>
+<tr>
+<td>authentication</td>
+<td>直接从SecurityContext获取的当前Authentication对象</td>
+</tr>
+<tr>
+<td>permitAll</td>
+<td>总是返回true，表示允许所有的</td>
+</tr>
+<tr>
+<td>denyAll</td>
+<td>总是返回false，表示拒绝所有的</td>
+</tr>
+<tr>
+<td>isAnonymous()</td>
+<td>当前用户是否是一个匿名用户</td>
+</tr>
+<tr>
+<td>isRememberMe()</td>
+<td>表示当前用户是否是通过Remember-Me自动登录的</td>
+</tr>
+<tr>
+<td>isAuthenticated()</td>
+<td>表示当前用户是否已经登录认证成功了。</td>
+</tr>
+<tr>
+<td>isFullyAuthenticated()</td>
+<td>如果当前用户既不是一个匿名用户，同时又不是通过Remember-Me自动登录的，则返回true。</td>
+</tr>
+</tbody>
+</table>
+<p>-</p>
+<h4 id="多权限表达式"><a href="#多权限表达式" class="headerlink" title="多权限表达式"></a>多权限表达式</h4><p><img src="https://images2018.cnblogs.com/blog/702434/201803/702434-20180320160102243-1707373872.png" alt="img"></p>
+<p>-</p>
+<p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuyhmqnvxrj211q0j6dmr.jpg" alt=""></p>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><h5 id="配置提供者"><a href="#配置提供者" class="headerlink" title="配置提供者"></a>配置提供者</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AuthorizeConfigProvider</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">config</span><span class="params">(ExpressionUrlAuthorizationConfigurer&lt;HttpSecurity&gt;.ExpressionInterceptUrlRegistry config)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="具体实现配置提供者"><a href="#具体实现配置提供者" class="headerlink" title="具体实现配置提供者"></a>具体实现配置提供者</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocAuthorizeConfigProvider</span> <span class="keyword">implements</span> <span class="title">AuthorizeConfigProvider</span></span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> SecurityProperties securityProperties;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">config</span><span class="params">(ExpressionUrlAuthorizationConfigurer&lt;HttpSecurity&gt;.ExpressionInterceptUrlRegistry config)</span> </span>&#123;</span><br><span class="line">        config.antMatchers(</span><br><span class="line">            SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,</span><br><span class="line">            SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,</span><br><span class="line">            SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+<span class="string">"/*"</span>,</span><br><span class="line">            securityProperties.getBrowser().getLoginPage(),</span><br><span class="line">            securityProperties.getBrowser().getSignUpUrl(),</span><br><span class="line">            securityProperties.getBrowser().getSession().getSessionInvalidUrl(),</span><br><span class="line">            securityProperties.getBrowser().getSignOutUrl()</span><br><span class="line">        ).permitAll();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="配置管理器"><a href="#配置管理器" class="headerlink" title="配置管理器"></a>配置管理器</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AuthorizeConfigManager</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">config</span><span class="params">(ExpressionUrlAuthorizationConfigurer&lt;HttpSecurity&gt;.ExpressionInterceptUrlRegistry config)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="具体实现配置管理器"><a href="#具体实现配置管理器" class="headerlink" title="具体实现配置管理器"></a>具体实现配置管理器</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocAuthorizeConfigManager</span> <span class="keyword">implements</span> <span class="title">AuthorizeConfigManager</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> Set&lt;AuthorizeConfigProvider&gt; authorizeConfigProviders;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">config</span><span class="params">(ExpressionUrlAuthorizationConfigurer&lt;HttpSecurity&gt;.ExpressionInterceptUrlRegistry config)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (AuthorizeConfigProvider authorizeConfigProvider : authorizeConfigProviders) &#123;</span><br><span class="line">			authorizeConfigProvider.config(config);</span><br><span class="line">		&#125;</span><br><span class="line">        config.anyRequest().authenticated();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="修改浏览器安全配置"><a href="#修改浏览器安全配置" class="headerlink" title="修改浏览器安全配置"></a>修改浏览器安全配置</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserSecurityConfig</span> <span class="keyword">extends</span> <span class="title">AbstractChannelSecurityConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AuthorizeConfigManager authorizeConfigManager;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        applyPasswordAuthenticationConfig(http);</span><br><span class="line">        http.apply(validateCodeSecurityConfig)</span><br><span class="line">            ...</span><br><span class="line">            <span class="comment">// 删除Cookies</span></span><br><span class="line">            .deleteCookies(<span class="string">"JSESSIONID"</span>)</span><br><span class="line">            .and()</span><br><span class="line">            .csrf().disable();</span><br><span class="line">        authorizeConfigManager.config(http.authorizeRequests());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="修改APP资源管理器安全配置"><a href="#修改APP资源管理器安全配置" class="headerlink" title="修改APP资源管理器安全配置"></a>修改APP资源管理器安全配置</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableResourceServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocResourceServerConfig</span> <span class="keyword">extends</span> <span class="title">ResourceServerConfigurerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AuthorizeConfigManager authorizeConfigManager;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        http.formLogin()</span><br><span class="line">            .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)</span><br><span class="line">            .loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)</span><br><span class="line">            .successHandler(imoocAuthenticationSuccessHandler)</span><br><span class="line">            .failureHandler(imoocAuthenticationFailureHandler);</span><br><span class="line">        http</span><br><span class="line">            .apply(validateCodeSecurityConfig)</span><br><span class="line">            .and()</span><br><span class="line">            .apply(smsCodeAuthenticationSecurityConfig)</span><br><span class="line">            .and()</span><br><span class="line">            .apply(imoocSocialSecurityConfig)</span><br><span class="line">            .and()</span><br><span class="line">            .apply(openIdAuthenticationSecurityConfig)</span><br><span class="line">            .and().csrf().disable();</span><br><span class="line">        authorizeConfigManager.config(http.authorizeRequests());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="基于数据库RBAC数据模型控制权限"><a href="#基于数据库RBAC数据模型控制权限" class="headerlink" title="基于数据库RBAC数据模型控制权限"></a>基于数据库RBAC数据模型控制权限</h3><p>在内管系统中，以满足角色众多，权限复杂，权限规则随着业务的发展不断变化的问题，我们需要将权限放入到数据库当中，以添加，修改，删除数据的方式满足需要；</p>
+<h4 id="通用RBAC数据模型"><a href="#通用RBAC数据模型" class="headerlink" title="通用RBAC数据模型"></a>通用RBAC数据模型</h4><p>RBAC（Role-Based Access Control）：有大约5张表组成，3张实体表，2张关系表，分别是：</p>
+<p>用户表：存储用户信息，由业务人员维护；</p>
+<p>角色表：存储角色信息，由业务人员维护；</p>
+<p>资源表：存储资源信息，菜单，按钮及其URL等，由开发人员维护；</p>
+<p>用户-角色关系表（n-n）：存储用户和角色的对应关系，由业务人员维护；</p>
+<p>角色-资源关系表（n-n）：存储角色和资源的对应关系，由业务人员维护；</p>
+<h4 id="声明权限服务"><a href="#声明权限服务" class="headerlink" title="声明权限服务"></a>声明权限服务</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RbacServiceImpl</span> <span class="keyword">implements</span> <span class="title">RbacService</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> AntPathMatcher antPathMatcher = <span class="keyword">new</span> AntPathMatcher();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasPermission</span><span class="params">(HttpServletRequest request, Authentication authentication)</span> </span>&#123;</span><br><span class="line">        Object principal = authentication.getPrincipal();</span><br><span class="line">        <span class="keyword">boolean</span> hasPermission = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (principal <span class="keyword">instanceof</span> UserDetails) &#123;</span><br><span class="line">            String username = ((UserDetails) principal).getUsername();</span><br><span class="line">            <span class="comment">// 读取用户所拥有权限的所有URL</span></span><br><span class="line">            Set&lt;String&gt; urls = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">            <span class="keyword">for</span> (String url : urls) &#123;</span><br><span class="line">                <span class="keyword">if</span> (antPathMatcher.match(url, request.getRequestURI())) &#123;</span><br><span class="line">                    hasPermission = <span class="keyword">true</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> hasPermission;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Order</span>(Integer.MAX_VALUE)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoAuthorizeConfigProvider</span> <span class="keyword">implements</span> <span class="title">AuthorizeConfigProvider</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">config</span><span class="params">(ExpressionUrlAuthorizationConfigurer&lt;HttpSecurity&gt;.ExpressionInterceptUrlRegistry config)</span> </span>&#123;</span><br><span class="line">        config.anyRequest().access(<span class="string">"@rbacService.hasPermission(request,authentication)"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
       
     </div>
     
@@ -362,6 +490,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/09/Spring Security 18/" rel="prev" title="Spring Security | Note-18">
+                Spring Security | Note-18 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -438,7 +570,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -451,7 +583,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -484,7 +616,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Security-Note-17"><span class="nav-number">1.</span> <span class="nav-text">Spring Security Note-17</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Security授权简介"><span class="nav-number">1.0.1.</span> <span class="nav-text">Spring Security授权简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Security源码解析"><span class="nav-number">1.0.2.</span> <span class="nav-text">Spring Security源码解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#权限表达式"><span class="nav-number">1.0.3.</span> <span class="nav-text">权限表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于数据库Rbac数据模型控制权限"><span class="nav-number">1.0.4.</span> <span class="nav-text">基于数据库Rbac数据模型控制权限</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Security-Note-17"><span class="nav-number">1.</span> <span class="nav-text">Spring Security Note-17</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Security授权简介"><span class="nav-number">1.0.1.</span> <span class="nav-text">Spring Security授权简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Security授权定义"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">Spring Security授权定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#举例"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">举例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用"><span class="nav-number">1.0.1.3.</span> <span class="nav-text">应用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Security源码解析"><span class="nav-number">1.0.2.</span> <span class="nav-text">Spring Security源码解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Anonymous-Authentication-Filter"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">Anonymous Authentication Filter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Filter-Security-Interceptor"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">Filter Security Interceptor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Access-Decision-Manager"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">Access Decision Manager</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Access-Decision-Voter"><span class="nav-number">1.0.2.4.</span> <span class="nav-text">Access Decision Voter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Security-Config"><span class="nav-number">1.0.2.5.</span> <span class="nav-text">Security Config</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Security-Context-Holder"><span class="nav-number">1.0.2.6.</span> <span class="nav-text">Security Context Holder</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#权限表达式"><span class="nav-number">1.0.3.</span> <span class="nav-text">权限表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多权限表达式"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">多权限表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#配置提供者"><span class="nav-number">1.0.3.2.1.</span> <span class="nav-text">配置提供者</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#具体实现配置提供者"><span class="nav-number">1.0.3.2.2.</span> <span class="nav-text">具体实现配置提供者</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置管理器"><span class="nav-number">1.0.3.2.3.</span> <span class="nav-text">配置管理器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#具体实现配置管理器"><span class="nav-number">1.0.3.2.4.</span> <span class="nav-text">具体实现配置管理器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改浏览器安全配置"><span class="nav-number">1.0.3.2.5.</span> <span class="nav-text">修改浏览器安全配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改APP资源管理器安全配置"><span class="nav-number">1.0.3.2.6.</span> <span class="nav-text">修改APP资源管理器安全配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于数据库RBAC数据模型控制权限"><span class="nav-number">1.0.4.</span> <span class="nav-text">基于数据库RBAC数据模型控制权限</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通用RBAC数据模型"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">通用RBAC数据模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#声明权限服务"><span class="nav-number">1.0.4.2.</span> <span class="nav-text">声明权限服务</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>

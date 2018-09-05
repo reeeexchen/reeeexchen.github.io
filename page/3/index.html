@@ -252,6 +252,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/22/MicWechat Note-8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/22/MicWechat Note-8/" itemprop="url">Wechat Mini | Note-8</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T00:00:00+08:00">
+                2018-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="微信小程序开发-Note-8"><a href="#微信小程序开发-Note-8" class="headerlink" title="微信小程序开发 Note-8"></a>微信小程序开发 Note-8</h3><hr>
+<h4 id="搜索功能整合-amp-首页联调"><a href="#搜索功能整合-amp-首页联调" class="headerlink" title="搜索功能整合 &amp; 首页联调"></a>搜索功能整合 &amp; 首页联调</h4><p>通过修改index.js中对于<code>getAllVideoList</code>，加入对应的参数，搜索内容和分页记录；</p>
+<p>以达到搜索返回视频列表的目标；（上拉刷新和下拉刷新不进行刷新）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 共用方法</span></span><br><span class="line">getAllVideoList: <span class="function"><span class="keyword">function</span> (<span class="params">page, isSaveRecord</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> serverUrl = app.serverUrl;</span><br><span class="line">    wx.showLoading(&#123;</span><br><span class="line">        title: <span class="string">'视频加载中...'</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">var</span> searchContent = me.data.searchContent;</span><br><span class="line">    wx.request(&#123;</span><br><span class="line">      url: serverUrl + <span class="string">'/video/showAll?page='</span> + page + <span class="string">"&amp;isSaveRecord="</span> + isSaveRecord,</span><br><span class="line">      method: <span class="string">'POST'</span>,</span><br><span class="line">      data:&#123;</span><br><span class="line">        videoDesc:searchContent</span><br><span class="line">      &#125;,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">        wx.hideLoading();</span><br><span class="line">        wx.hideNavigationBarLoading();</span><br><span class="line">        wx.stopPullDownRefresh();</span><br><span class="line">        <span class="built_in">console</span>.log(res.data);</span><br><span class="line">        <span class="comment">// 获取数据</span></span><br><span class="line">        <span class="comment">// 判断当前页page是否为第一页，第一页则清空videoList</span></span><br><span class="line">        <span class="keyword">if</span> (page === <span class="number">1</span>) &#123;</span><br><span class="line">          me.setData(&#123;</span><br><span class="line">            videoList: []</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> videoList = res.data.data.rows;</span><br><span class="line">        <span class="keyword">var</span> newVideoList = me.data.videoList;</span><br><span class="line">        me.setData(&#123;</span><br><span class="line">          videoList: newVideoList.concat(videoList),</span><br><span class="line">          page: page,</span><br><span class="line">          totalPage: res.data.data.total,</span><br><span class="line">          serverUrl: serverUrl</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="热搜查询联调-amp-视频对象播放与暂停"><a href="#热搜查询联调-amp-视频对象播放与暂停" class="headerlink" title="热搜查询联调 &amp; 视频对象播放与暂停"></a>热搜查询联调 &amp; 视频对象播放与暂停</h4><p><strong>Q:对视频对象进行mute设置时，跳转到搜索页面和主页时，视频依然播放音乐；</strong></p>
+<p>A:在JS中进行相应的修改；</p>
+<p>步骤：    在生命周期的onLoad（），获取videoContext，onShow（）对视频进行播放，</p>
+<p>​        在跳转时，onHide（）进行视频暂停；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    cover:<span class="string">"cover"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  videoCtx:&#123;&#125;,</span><br><span class="line">  onLoad:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    me.videoCtx = wx.createVideoContext(<span class="string">"myVideo"</span>, me);</span><br><span class="line">  &#125;,</span><br><span class="line">  onShow:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    me.videoCtx.play();</span><br><span class="line">  &#125;,</span><br><span class="line">  onHide:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    me.videoCtx.pause();</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 搜索</span></span><br><span class="line">  showSearch:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    wx.navigateTo(&#123;</span><br><span class="line">      url: <span class="string">'../searchVideo/searchVideo'</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="上传视频功能复用-amp-测试"><a href="#上传视频功能复用-amp-测试" class="headerlink" title="上传视频功能复用 &amp; 测试"></a>上传视频功能复用 &amp; 测试</h4><p>在pages同级目录下，创建一个utils，videoUtil.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// videoUtil.js</span></span><br><span class="line"><span class="comment">// 视频上传-跳转至BGM选择页面</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">uploadVideo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">  wx.chooseVideo(&#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// videoUtil.js 导出</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  uploadVideo: uploadVideo</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> videoUtil = <span class="built_in">require</span>(<span class="string">'../../utils/videoUtil.js'</span>) <span class="comment">// 引用</span></span><br><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line">Page(&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 上传视频</span></span><br><span class="line">  upload:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    videoUtil.uploadVideo();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="首页进入视频展示页"><a href="#首页进入视频展示页" class="headerlink" title="首页进入视频展示页"></a>首页进入视频展示页</h4><p>从首页中的对象，获取到JSON数据，然后通过转换的形式，转换成字符串，传到videoinfo，在videoinfo中，再转换回JSON对象，进行数据的获取和赋值；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="comment">// 具体的视频信息-跳转</span></span><br><span class="line">showVideoInfo: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> videoList = me.data.videoList;</span><br><span class="line">    <span class="keyword">var</span> arrindex = e.target.dataset.arrindex;</span><br><span class="line">    <span class="keyword">var</span> videoInfo = <span class="built_in">JSON</span>.stringify(videoList[arrindex]);</span><br><span class="line">    wx.redirectTo(&#123;</span><br><span class="line">      url: <span class="string">'../videoinfo/videoinfo?videoInfo='</span> + videoInfo</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// videoinfo.js</span></span><br><span class="line">onLoad: <span class="function"><span class="keyword">function</span>(<span class="params">params</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    me.videoCtx = wx.createVideoContext(<span class="string">"myVideo"</span>, me);</span><br><span class="line">    <span class="comment">// 获取上一页面传入的参数</span></span><br><span class="line">    <span class="keyword">var</span> videoInfo = <span class="built_in">JSON</span>.parse(params.videoInfo);</span><br><span class="line">    me.setData(&#123;</span><br><span class="line">      videoId: videoInfo.id,</span><br><span class="line">      src: app.serverUrl + videoInfo.videoPath,</span><br><span class="line">      videoInfo: videoInfo</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="页面重定向"><a href="#页面重定向" class="headerlink" title="页面重定向"></a>页面重定向</h4><p>对于没有登录的用户，可以搜索，但是不能进行个人信息页面的跳转和视频的上传；</p>
+<p>所以需要对于没有登录的用户，进行页面的拦截和重定向；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">showMine: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> user = app.getGlobalUserInfo();</span><br><span class="line">    <span class="keyword">if</span> (user == <span class="literal">null</span> || user == <span class="literal">undefined</span> || user == <span class="string">""</span>) &#123;</span><br><span class="line">      wx.navigateTo(&#123;</span><br><span class="line">        url: <span class="string">'../userLogin/login'</span>,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      wx.navigateTo(&#123;</span><br><span class="line">        url: <span class="string">'../mine/mine'</span>,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在从视频详细页面跳转到登录页面之后，我们希望登录后，再次跳转回到之前的视频详细页面；</p>
+<p>那么我们需要将原视频详细页面的信息传到登录页面，再进行页面的重定向跳转；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// videoInfo.js</span></span><br><span class="line">Page(&#123;</span><br><span class="line">  <span class="comment">// 上传视频</span></span><br><span class="line">  upload: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> user = app.getGlobalUserInfo();</span><br><span class="line">    <span class="comment">// 重定向数据定义</span></span><br><span class="line">    <span class="keyword">var</span> videoInfo = <span class="built_in">JSON</span>.stringify(me.data.videoInfo);</span><br><span class="line">    <span class="keyword">var</span> realUrl = <span class="string">'../videoinfo/videoinfo#videoInfo@'</span> + videoInfo;</span><br><span class="line">    <span class="keyword">if</span> (user == <span class="literal">null</span> || user == <span class="literal">undefined</span> || user == <span class="string">""</span>) &#123;</span><br><span class="line">      wx.navigateTo(&#123;</span><br><span class="line">        url: <span class="string">'../userLogin/login?redirectUrl='</span> + realUrl,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      videoUtil.uploadVideo();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// login.js</span></span><br><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line"></span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 视频页面重定向跳转到登录页面，做参数的处理（接收与反传）</span></span><br><span class="line">  onLoad: <span class="function"><span class="keyword">function</span>(<span class="params">params</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> redirectUrl = params.redirectUrl;</span><br><span class="line">    redirectUrl = redirectUrl.replace(<span class="regexp">/#/g</span>, <span class="string">"?"</span>);</span><br><span class="line">    redirectUrl = redirectUrl.replace(<span class="regexp">/@/g</span>, <span class="string">"="</span>);</span><br><span class="line">    me.redirectUrl = redirectUrl;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 登录</span></span><br><span class="line">  doLogin: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> (username.length == <span class="number">0</span> || password.length == <span class="number">0</span>) &#123;</span><br><span class="line">      ...</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      ...</span><br><span class="line">      <span class="comment">// BackEnd</span></span><br><span class="line">      wx.request(&#123;</span><br><span class="line">        ...</span><br><span class="line">        success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">          ...</span><br><span class="line">            <span class="comment">// app.userInfo = res.data.data;</span></span><br><span class="line">            <span class="comment">// fixme 修改原有全局对象为本地缓存</span></span><br><span class="line">            app.setGlobalUserInfo(res.data.data);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 页面跳转</span></span><br><span class="line">            <span class="keyword">var</span> redirectUrl = me.redirectUrl;</span><br><span class="line">            <span class="keyword">if</span> (redirectUrl != <span class="literal">null</span> &amp;&amp; redirectUrl != <span class="literal">undefined</span> &amp;&amp; redirectUrl != <span class="string">""</span>) &#123;</span><br><span class="line">              wx.redirectTo(&#123;</span><br><span class="line">                url: redirectUrl,</span><br><span class="line">              &#125;);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              wx.redirectTo(&#123;</span><br><span class="line">                url: <span class="string">'../mine/mine'</span>,</span><br><span class="line">              &#125;);</span><br><span class="line">            &#125;</span><br><span class="line">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> (status == <span class="number">500</span>) &#123;</span><br><span class="line">            ...</span><br><span class="line">            &#125;);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="拦截器配置与注册"><a href="#拦截器配置与注册" class="headerlink" title="拦截器配置与注册"></a>拦截器配置与注册</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 模拟拦截器配置（对所有请求进行拦截）</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MiniInterceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 拦截请求判断，预处理（Controller之前）</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">			System.out.println(<span class="string">"请求拦截"</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 返回false：请求被拦截，返回</span></span><br><span class="line">		<span class="comment">// 返回true:请求允许,继续执行</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 请求Controller之后，渲染视图之前</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postHandle</span><span class="params">(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 请求和视图渲染之后</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 拦截器注册</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebMvcConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> MiniInterceptor <span class="title">miniInterceptor</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> MiniInterceptor();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 注册中心</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 对UserController进行拦截注册</span></span><br><span class="line">        registry.addInterceptor(miniInterceptor()).addPathPatterns(<span class="string">"/user/**"</span>);</span><br><span class="line">        <span class="keyword">super</span>.addInterceptors(registry);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="完善登录拦截-amp-限制单台手机登录"><a href="#完善登录拦截-amp-限制单台手机登录" class="headerlink" title="完善登录拦截 &amp; 限制单台手机登录"></a>完善登录拦截 &amp; 限制单台手机登录</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MiniInterceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> RedisOperator redis;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String USER_REDIS_SESSION = <span class="string">"user-redis-session"</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 拦截请求判断，预处理（Controller之前）</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object o)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String userId = request.getHeader(<span class="string">"userId"</span>);</span><br><span class="line">		String userToken = request.getHeader(<span class="string">"userToken"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (StringUtils.isNotBlank(userId) &amp;&amp; StringUtils.isNotBlank(userToken)) &#123;</span><br><span class="line">			String uniqueToken = redis.get(USER_REDIS_SESSION + <span class="string">":"</span> + userId);</span><br><span class="line">			<span class="comment">// Token超时限制的判断 重新登录</span></span><br><span class="line">			<span class="keyword">if</span> (StringUtils.isEmpty(uniqueToken) &amp;&amp; StringUtils.isBlank(uniqueToken)) &#123;</span><br><span class="line">				System.out.println(<span class="string">"请登录"</span>);</span><br><span class="line">				returnErrorResponse(response, IMoocJSONResult.errorTokenMsg(<span class="string">"请登录"</span>));</span><br><span class="line">				<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="comment">// 限制一台手机登录</span></span><br><span class="line">				<span class="keyword">if</span> (!uniqueToken.equals(userToken)) &#123;</span><br><span class="line">					System.out.println(<span class="string">"帐号异点登录"</span>);</span><br><span class="line">					returnErrorResponse(response, IMoocJSONResult.errorTokenMsg(<span class="string">"帐号异点登录"</span>));</span><br><span class="line">					<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			returnErrorResponse(response, IMoocJSONResult.errorTokenMsg(<span class="string">"请登录"</span>));</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 公用返回JSON格式</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">returnErrorResponse</span><span class="params">(HttpServletResponse response, IMoocJSONResult result)</span> <span class="keyword">throws</span> IOException, UnsupportedEncodingException </span>&#123;</span><br><span class="line">		OutputStream out = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			response.setCharacterEncoding(<span class="string">"utf-8"</span>);</span><br><span class="line">			response.setContentType(<span class="string">"text/json"</span>);</span><br><span class="line">			out = response.getOutputStream();</span><br><span class="line">			out.write(JsonUtils.objectToJson(result).getBytes(<span class="string">"utf-8"</span>));</span><br><span class="line">			out.flush();</span><br><span class="line">		&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> (out != <span class="keyword">null</span>) &#123;</span><br><span class="line">				out.close();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="拦截器联调"><a href="#拦截器联调" class="headerlink" title="拦截器联调"></a>拦截器联调</h4><p>对于拦截器方法中，需要获取用户的USERID以及USERTOKEN，所以在用户请求时，在header中加入相应数据，以实现拦截器的功能；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  <span class="comment">// 加载</span></span><br><span class="line">  onLoad: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// BackEnd</span></span><br><span class="line">    wx.request(&#123;</span><br><span class="line">      ...</span><br><span class="line">      header: &#123;</span><br><span class="line">        <span class="string">'content-type'</span>: <span class="string">'application/json'</span>,</span><br><span class="line">        <span class="string">'userId'</span>: user.id,</span><br><span class="line">        <span class="string">'userToken'</span>: user.userToken</span><br><span class="line">      &#125;,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (res.data.status == <span class="number">502</span>) &#123;</span><br><span class="line">          wx.showToast(&#123;</span><br><span class="line">            title: res.data.msg,</span><br><span class="line">            icon: <span class="string">'none'</span>,</span><br><span class="line">            duration: <span class="number">2000</span>,</span><br><span class="line">            success: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">              wx.redirectTo(&#123;</span><br><span class="line">                url: <span class="string">'../userLogin/login'</span>,</span><br><span class="line">              &#125;);</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="点赞接口"><a href="#点赞接口" class="headerlink" title="点赞接口"></a>点赞接口</h4><p>非常简单的接口，不加以展示；</p>
+<p>首先对Mapper进行方法的编写，然后修改对于的XML的语句；</p>
+<p>在VideoServiceImpl进行对于方法的实现即可<code>userLikeVideo</code> &amp; <code>userUnLikeVideo</code>；</p>
+<p>以及Controller的修改；</p>
+<h4 id="点赞联调"><a href="#点赞联调" class="headerlink" title="点赞联调"></a>点赞联调</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> videoUtil = <span class="built_in">require</span>(<span class="string">'../../utils/videoUtil.js'</span>)</span><br><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    cover: <span class="string">"cover"</span>,</span><br><span class="line">    videoId: <span class="string">""</span>,</span><br><span class="line">    src: <span class="string">""</span>,</span><br><span class="line">    videoInfo: &#123;&#125;,</span><br><span class="line">    userLikeVideo: <span class="literal">false</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 点赞与取消点赞</span></span><br><span class="line">  likeVideoOrNot: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> videoInfo = me.data.videoInfo;</span><br><span class="line">    <span class="keyword">var</span> user = app.getGlobalUserInfo();</span><br><span class="line">    <span class="comment">// 判断登录</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (user == <span class="literal">null</span> || user == <span class="literal">undefined</span> || user == <span class="string">""</span>) &#123;</span><br><span class="line">      wx.navigateTo(&#123;</span><br><span class="line">        url: <span class="string">'../userLogin/login'</span>,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 点赞与取消点赞的request</span></span><br><span class="line">      <span class="keyword">var</span> userLikeVideo = me.data.userLikeVideo;</span><br><span class="line">      <span class="keyword">var</span> url = <span class="string">'/video/userLike?userId='</span> + user.id + <span class="string">"&amp;videoId="</span> + videoInfo.id + <span class="string">"&amp;videoCreaterId="</span> + videoInfo.userId;</span><br><span class="line">      <span class="keyword">if</span> (userLikeVideo) &#123;</span><br><span class="line">        <span class="comment">// 取消点赞</span></span><br><span class="line">        url = <span class="string">'/video/userUnLike?userId='</span> + user.id + <span class="string">"&amp;videoId="</span> + videoInfo.id + <span class="string">"&amp;videoCreaterId="</span> + videoInfo.userId;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// request</span></span><br><span class="line">      <span class="keyword">var</span> serverUrl = app.serverUrl;</span><br><span class="line">      wx.showLoading(&#123;</span><br><span class="line">        title: <span class="string">'提交中'</span>,</span><br><span class="line">      &#125;)</span><br><span class="line">      wx.request(&#123;</span><br><span class="line">        url: serverUrl + url,</span><br><span class="line">        method: <span class="string">'POST'</span>,</span><br><span class="line">        header: &#123;</span><br><span class="line">          <span class="string">'content-type'</span>: <span class="string">'application/json'</span>,</span><br><span class="line">          <span class="string">'userId'</span>: user.id,</span><br><span class="line">          <span class="string">'userToken'</span>: user.userToken</span><br><span class="line">        &#125;,</span><br><span class="line">        success:<span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;</span><br><span class="line">          wx.hideLoading();</span><br><span class="line">          me.setData(&#123;</span><br><span class="line">            userLikeVideo: !userLikeVideo</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="视频展示页"><a href="#视频展示页" class="headerlink" title="视频展示页"></a>视频展示页</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> videoUtil = <span class="built_in">require</span>(<span class="string">'../../utils/videoUtil.js'</span>)</span><br><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    cover: <span class="string">"cover"</span>,</span><br><span class="line">    videoId: <span class="string">""</span>,</span><br><span class="line">    src: <span class="string">""</span>,</span><br><span class="line">    videoInfo: &#123;&#125;,</span><br><span class="line">    userLikeVideo: <span class="literal">false</span></span><br><span class="line">  &#125;,</span><br><span class="line">  onLoad: <span class="function"><span class="keyword">function</span>(<span class="params">params</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 获取视频发布者信息，点赞关系</span></span><br><span class="line">    <span class="keyword">var</span> serverUrl = app.serverUrl;</span><br><span class="line">    <span class="keyword">var</span> user = app.getGlobalUserInfo();</span><br><span class="line">    <span class="keyword">var</span> loginUserId = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">if</span> (user != <span class="literal">null</span> &amp;&amp; user != <span class="literal">undefined</span> &amp;&amp; user != <span class="string">""</span>) &#123;</span><br><span class="line">      loginUserId = user.id;</span><br><span class="line">    &#125;</span><br><span class="line">    wx.request(&#123;</span><br><span class="line">      url: serverUrl + <span class="string">'/user/queryPublisher?loginUserId='</span> + loginUserId + <span class="string">"&amp;videoId="</span> + videoInfo.id + <span class="string">"&amp;publishUserId="</span> + videoInfo.userId,</span><br><span class="line">      method:<span class="string">'POST'</span>,</span><br><span class="line">      success:<span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(res.data);</span><br><span class="line">        <span class="keyword">var</span> publisher = res.data.data.publisher;</span><br><span class="line">        <span class="keyword">var</span> userLikeVideo = res.data.data.userLikeVideo;</span><br><span class="line">        me.setData(&#123;</span><br><span class="line">          serverUrl: serverUrl,</span><br><span class="line">          publisher: publisher,</span><br><span class="line">          userLikeVideo: userLikeVideo</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// UserController</span></span><br><span class="line"><span class="meta">@ApiOperation</span>(value = <span class="string">"QUERY VIDEO PUBLISHER INFORMATION"</span>, notes = <span class="string">"QUERY VIDEO PUBLISHER INFORMATION API"</span>)</span><br><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"/queryPublisher"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> IMoocJSONResult <span class="title">queryPublisher</span><span class="params">(String loginUserId,String videoId,String publishUserId)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (StringUtils.isBlank(publishUserId)) &#123;</span><br><span class="line">        <span class="keyword">return</span> IMoocJSONResult.errorMsg(<span class="string">"信息不存在(无ID)"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 查询发布者用户个人信息</span></span><br><span class="line">    Users userInfo = userService.queryUserInfo(publishUserId);</span><br><span class="line">    UsersVO publisher = <span class="keyword">new</span> UsersVO();</span><br><span class="line">    BeanUtils.copyProperties(userInfo, publisher);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 查询登录用户与点赞关系</span></span><br><span class="line">    <span class="keyword">boolean</span> userLikeVideo = userService.isUserLikeVideo(loginUserId,videoId);</span><br><span class="line">    PublisherVideo bean = <span class="keyword">new</span> PublisherVideo();</span><br><span class="line">    bean.setPublisher(publisher);</span><br><span class="line">    bean.setUserLikeVideo(userLikeVideo);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> IMoocJSONResult.ok(bean);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/21/MicWechat Note-7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2842,213 +3004,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/15/Spring Cloud Note-9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="REX CHEN">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="REEEEX">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/15/Spring Cloud Note-9/" itemprop="url">Spring Cloud | Note-9</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-15T00:00:00+08:00">
-                2018-08-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Spring-Cloud微服务-Note-9"><a href="#Spring-Cloud微服务-Note-9" class="headerlink" title="Spring Cloud微服务 | Note(9)"></a>Spring Cloud微服务 | Note(9)</h3><p>@ 2018年8月15日 10:19:40</p>
-<h4 id="微服务——熔断机制"><a href="#微服务——熔断机制" class="headerlink" title="微服务——熔断机制"></a>微服务——熔断机制</h4><p>当服务过载，流量激增，超过负荷时，掐断服务，保护服务的机制；</p>
-<h5 id="什么是服务的熔断机制"><a href="#什么是服务的熔断机制" class="headerlink" title="什么是服务的熔断机制"></a>什么是服务的熔断机制</h5><p>对于系统的防护机制，不会导致服务的不响应，返回默认值，依然保持服务的响应；</p>
-<p>对该服务的调用执行熔断，对于后续的请求，不再继续调用该目标服务，而是直接返回默认值，从而快速释放资源；保护系统；</p>
-<hr>
-<h5 id="熔断的原理（服务熔断）"><a href="#熔断的原理（服务熔断）" class="headerlink" title="熔断的原理（服务熔断）"></a>熔断的原理（服务熔断）</h5><p>断路器：受保护的服务封装在断路器中，当故障达到阈值时，切断服务的响应，由断路器返回响应；</p>
-<p>断路器模式：防止应用程序执行可能失败的操作，使应用程序检测故障是否解决；</p>
-<p>Microsof Azure 断路器状态：关闭，打开，半打开；</p>
-<p>Hystrix：服务正常，服务异常（Fallback）；</p>
-<hr>
-<h5 id="熔断的意义"><a href="#熔断的意义" class="headerlink" title="熔断的意义"></a>熔断的意义</h5><p>好处：保护系统，系统稳定，减少性能损耗，及时响应（简单的响应），阀值可定制；</p>
-<p>功能：异常处理，日志记录，测试失败的操作，手动复位，并发，加速断路，重试失败请求；</p>
-<hr>
-<h5 id="熔断与降级的区别"><a href="#熔断与降级的区别" class="headerlink" title="熔断与降级的区别"></a>熔断与降级的区别</h5><p>相似：目的一致（可用性，可靠性，保护系统），表现类似（服务暂时不可达），粒度一致（服务级别，DAO）</p>
-<p>区别：</p>
-<p>​    ·触发条件不同——熔断由服务引起，降级由整体负荷引起；</p>
-<p>​    ·管理目标层次不同——熔断管理整个框架级，每个服务都需要，降级管理业务层次；</p>
-<hr>
-<h5 id="如何集成Hystrix"><a href="#如何集成Hystrix" class="headerlink" title="如何集成Hystrix"></a>如何集成Hystrix</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 依赖</span></span><br><span class="line">dependencies &#123;</span><br><span class="line">	compile(<span class="string">'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 启用</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="meta">@EnableFeignClients</span></span><br><span class="line"><span class="meta">@EnableCircuitBreaker</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HystrixApplication</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(HystrixApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 服务过载时实现</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CityController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> CityClient cityClient;</span><br><span class="line">    </span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/cities"</span>)</span><br><span class="line">	<span class="meta">@HystrixCommand</span>(fallbackMethod = <span class="string">"defaultCities"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">listCity</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 通过Feign客户端来查找</span></span><br><span class="line">		String body = cityClient.listCity();</span><br><span class="line">		<span class="keyword">return</span> body;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">defaultCities</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"服务暂不可用(City Server Is Down)"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<h5 id="实现微服务的熔断机制"><a href="#实现微服务的熔断机制" class="headerlink" title="实现微服务的熔断机制"></a>实现微服务的熔断机制</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 具体服务中实现熔断</span></span><br><span class="line"><span class="meta">@FeignClient</span>(name = <span class="string">"micro-weather-eureka-client-zuul"</span>,fallback = DataClientFallback.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DataClient</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Bean</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataClientFallback</span> <span class="keyword">implements</span> <span class="title">DataClient</span></span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;City&gt; <span class="title">listCity</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 默认响应信息</span></span><br><span class="line">        ...</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> WeatherResponse <span class="title">getDataByCityId</span><span class="params">(String cityId)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 默认响应信息</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line">spring.application.name=micro-weather-eureka-client-feign-gateway-hystrix</span><br><span class="line">feign.hystrix.enabled=<span class="keyword">true</span></span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="微服务——自动扩展"><a href="#微服务——自动扩展" class="headerlink" title="微服务——自动扩展"></a>微服务——自动扩展</h4><h5 id="什么是自动扩展"><a href="#什么是自动扩展" class="headerlink" title="什么是自动扩展"></a>什么是自动扩展</h5><p>垂直扩展（双核主机 –&gt; 四核主机）硬件升级，瓶颈在于硬件水平的技术；</p>
-<p>水平扩展（1台主机 –&gt; x台主机）能力扩展，分布式系统解决计算能力；</p>
-<p>自我注册和自我发现是自动扩展的前提条件；</p>
-<p>服务注册表（服务注册中心），客户端，微服务实例；</p>
-<p>客户端查询服务注册表，查询可用的服务；服务实例启动后，自我注册到服务注册表中，待客户端使用；</p>
-<p>按需扩展：微服务实例分为使用中和保留，当需要更多实例时，再启动保留的服务实例，按照请求的需要扩展；</p>
-<hr>
-<h5 id="自动扩展的意义"><a href="#自动扩展的意义" class="headerlink" title="自动扩展的意义"></a>自动扩展的意义</h5><p>解决应用程序为了支持长时间的运行，需要提前预留硬件、软件的功能，解决闲置资源的浪费问题；</p>
-<p>按需扩展；</p>
-<p>每个微服务实例需要独立的部署空间；</p>
-<h6 id="好处："><a href="#好处：" class="headerlink" title="好处："></a>好处：</h6><p>提供高可用性和容错能力：快速自动扩展使用新的服务实例，以满足服务的需要；</p>
-<p>增加可伸缩性：水平扩展能力的增加，允许根据流量自动选择服务的规模；</p>
-<p>具有最佳使用率，节约成本：按需扩展；</p>
-<p>优先考虑服务或服务组：通过优先级分配资源；</p>
-<hr>
-<h4 id="自动扩展的常见模式"><a href="#自动扩展的常见模式" class="headerlink" title="自动扩展的常见模式"></a>自动扩展的常见模式</h4><h5 id="应用程序级别"><a href="#应用程序级别" class="headerlink" title="应用程序级别"></a>应用程序级别</h5><p>扩展通过复制微服务实例实现，虚拟机或主机运行微服务；</p>
-<p>更换服务实例；</p>
-<h5 id="基础架构级别"><a href="#基础架构级别" class="headerlink" title="基础架构级别"></a>基础架构级别</h5><p>根据需求及时创建或消除；</p>
-<p>保留的服务实例，被创建为具有预订意义的，服务实例虚拟机镜像，当有服务A的需求时，虚拟机将服务移动到激活的状态；</p>
-<p>更换服务虚拟机，适用范围更广；</p>
-<p>缺点：基于整个虚拟机扩展，体积更大，占用更多的系统资源；</p>
-<p>解决：采用轻量级容器docker，减少资源的占用；</p>
-<h5 id="资源限制"><a href="#资源限制" class="headerlink" title="资源限制"></a>资源限制</h5><p>监控程序：实时监控CPU的使用率，当使用率大于阀值时，启动新的服务实例；</p>
-<h5 id="特定时间段"><a href="#特定时间段" class="headerlink" title="特定时间段"></a>特定时间段</h5><p>根据特定时间段、季节性、业务高峰的服务需求，启动新的服务实例，减轻服务器的负载；</p>
-<h5 id="消息长度"><a href="#消息长度" class="headerlink" title="消息长度"></a>消息长度</h5><p>监控程序监控每个服务实例的消息队列的长度，当队列长度大于设置的长度时，说明需要处理的消息超过服务可提供的能力，则新增服务实例；</p>
-<h5 id="业务参数"><a href="#业务参数" class="headerlink" title="业务参数"></a>业务参数</h5><p>添加实例基于某些业务参数，解决业务事件时，通过先新增服务实例的方法，预防即将到来的大量业务交易请求；</p>
-<h5 id="根据预测"><a href="#根据预测" class="headerlink" title="根据预测"></a>根据预测</h5><p>新型的自动扩展方式；</p>
-<p>有多种信息事务模式的组合；</p>
-<p>有助于解决硬编码和时间窗口；</p>
-<p>根据历史信息，当前趋势进行预测（更精确，更有效的解决突发情况）；</p>
-<hr>
-<h4 id="如何实现微服务的自动扩展"><a href="#如何实现微服务的自动扩展" class="headerlink" title="如何实现微服务的自动扩展"></a>如何实现微服务的自动扩展</h4><h5 id="思考的问题"><a href="#思考的问题" class="headerlink" title="思考的问题"></a>思考的问题</h5><p>如何管理数千个容器？</p>
-<p>如何监控容器？</p>
-<p>在部署工件时，如何应用规则和约束？</p>
-<p>如何利用容器获得资源效率？</p>
-<p>如何确保至少有一定数量的最小实例正在运行？</p>
-<p>如何确保依赖服务正常运行？</p>
-<p>如何进行滚动升级和优雅的迁移？</p>
-<p>如何回滚错误的部署？</p>
-<h5 id="所需功能"><a href="#所需功能" class="headerlink" title="所需功能"></a>所需功能</h5><p>依赖两个关键功能：</p>
-<p>1-一个容器抽象层，在许多物理或虚拟机上提供统一的抽象；</p>
-<p>2-容器编排和初始化系统在集群抽象之上智能管理部署</p>
-<hr>
-<h4 id="容器编排"><a href="#容器编排" class="headerlink" title="容器编排"></a>容器编排</h4><p>为开发以及架构团队，提供一个抽象层，来处理大规模集装箱式的部署；</p>
-<p>共同功能：具备发现、资源管理、监控和部署等；</p>
-<p>职责：集群管理（将虚拟机和物理机器的集群管理为一台大型机器 ）</p>
-<p>自动部署（能处理有大量及其的应用程序和容器的自动部署，支持多版本的应用程序容器，并且支持跨越大量集群机器的滚动升级和故障回滚）</p>
-<p>可伸缩性（支持服务实例的自动和手动伸缩，以性能优化为主要目标）</p>
-<p>运行状况的健康（管理集群、节点和应用程序的健康）</p>
-<p>基础架构抽象（开发人员不需要担心集群和容量等问题）</p>
-<p>资源优化（以有效的方式在可用机器上分配容器工作负载，从而减低成本，通过简单到复杂的算法有效提高利用率）</p>
-<p>资源分配（基于应用程序开发人员设置的资源可用性和约束来分配服务器）</p>
-<p>服务可用性（确保服务在集群中正常运行，机器故障的情况下，容器编排会自动通过在集群中的其他机器上重新启动这些服务来处理故障）</p>
-<p>敏捷性（敏捷性工具能够快速分配工作负载到可用资源，或在资源需求发生变化时跨机器移动工作量）</p>
-<p>隔离（提供资源隔离，即使应用程序不是容器化，也可以实现资源隔离）</p>
-<hr>
-<h4 id="资源分配常用算法"><a href="#资源分配常用算法" class="headerlink" title="资源分配常用算法"></a>资源分配常用算法</h4><p>传播（Spread）工作负载平均分配到多台主机中；</p>
-<p>装箱（Bin Packing）优先试图填满机器的最大负载，常用于按需付费的云服务；</p>
-<p>随机（Random）工作负载随机分配到多台主机中；</p>
-<h4 id="常用的容器编排技术"><a href="#常用的容器编排技术" class="headerlink" title="常用的容器编排技术"></a>常用的容器编排技术</h4><p>Docker Swarm</p>
-<p>Kubernetes</p>
-<p>Apache Mesos</p>
-<hr>
-<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p>@ 2018年8月15日 14:57:54</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/15/MicWechat Note-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3297,6 +3252,213 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/15/Spring Cloud Note-9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/15/Spring Cloud Note-9/" itemprop="url">Spring Cloud | Note-9</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-15T00:00:00+08:00">
+                2018-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Spring-Cloud微服务-Note-9"><a href="#Spring-Cloud微服务-Note-9" class="headerlink" title="Spring Cloud微服务 | Note(9)"></a>Spring Cloud微服务 | Note(9)</h3><p>@ 2018年8月15日 10:19:40</p>
+<h4 id="微服务——熔断机制"><a href="#微服务——熔断机制" class="headerlink" title="微服务——熔断机制"></a>微服务——熔断机制</h4><p>当服务过载，流量激增，超过负荷时，掐断服务，保护服务的机制；</p>
+<h5 id="什么是服务的熔断机制"><a href="#什么是服务的熔断机制" class="headerlink" title="什么是服务的熔断机制"></a>什么是服务的熔断机制</h5><p>对于系统的防护机制，不会导致服务的不响应，返回默认值，依然保持服务的响应；</p>
+<p>对该服务的调用执行熔断，对于后续的请求，不再继续调用该目标服务，而是直接返回默认值，从而快速释放资源；保护系统；</p>
+<hr>
+<h5 id="熔断的原理（服务熔断）"><a href="#熔断的原理（服务熔断）" class="headerlink" title="熔断的原理（服务熔断）"></a>熔断的原理（服务熔断）</h5><p>断路器：受保护的服务封装在断路器中，当故障达到阈值时，切断服务的响应，由断路器返回响应；</p>
+<p>断路器模式：防止应用程序执行可能失败的操作，使应用程序检测故障是否解决；</p>
+<p>Microsof Azure 断路器状态：关闭，打开，半打开；</p>
+<p>Hystrix：服务正常，服务异常（Fallback）；</p>
+<hr>
+<h5 id="熔断的意义"><a href="#熔断的意义" class="headerlink" title="熔断的意义"></a>熔断的意义</h5><p>好处：保护系统，系统稳定，减少性能损耗，及时响应（简单的响应），阀值可定制；</p>
+<p>功能：异常处理，日志记录，测试失败的操作，手动复位，并发，加速断路，重试失败请求；</p>
+<hr>
+<h5 id="熔断与降级的区别"><a href="#熔断与降级的区别" class="headerlink" title="熔断与降级的区别"></a>熔断与降级的区别</h5><p>相似：目的一致（可用性，可靠性，保护系统），表现类似（服务暂时不可达），粒度一致（服务级别，DAO）</p>
+<p>区别：</p>
+<p>​    ·触发条件不同——熔断由服务引起，降级由整体负荷引起；</p>
+<p>​    ·管理目标层次不同——熔断管理整个框架级，每个服务都需要，降级管理业务层次；</p>
+<hr>
+<h5 id="如何集成Hystrix"><a href="#如何集成Hystrix" class="headerlink" title="如何集成Hystrix"></a>如何集成Hystrix</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 依赖</span></span><br><span class="line">dependencies &#123;</span><br><span class="line">	compile(<span class="string">'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 启用</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="meta">@EnableFeignClients</span></span><br><span class="line"><span class="meta">@EnableCircuitBreaker</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HystrixApplication</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(HystrixApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 服务过载时实现</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CityController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> CityClient cityClient;</span><br><span class="line">    </span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/cities"</span>)</span><br><span class="line">	<span class="meta">@HystrixCommand</span>(fallbackMethod = <span class="string">"defaultCities"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">listCity</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 通过Feign客户端来查找</span></span><br><span class="line">		String body = cityClient.listCity();</span><br><span class="line">		<span class="keyword">return</span> body;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">defaultCities</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"服务暂不可用(City Server Is Down)"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="实现微服务的熔断机制"><a href="#实现微服务的熔断机制" class="headerlink" title="实现微服务的熔断机制"></a>实现微服务的熔断机制</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 具体服务中实现熔断</span></span><br><span class="line"><span class="meta">@FeignClient</span>(name = <span class="string">"micro-weather-eureka-client-zuul"</span>,fallback = DataClientFallback.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DataClient</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Bean</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataClientFallback</span> <span class="keyword">implements</span> <span class="title">DataClient</span></span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;City&gt; <span class="title">listCity</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 默认响应信息</span></span><br><span class="line">        ...</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> WeatherResponse <span class="title">getDataByCityId</span><span class="params">(String cityId)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 默认响应信息</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// application.properties</span></span><br><span class="line">spring.application.name=micro-weather-eureka-client-feign-gateway-hystrix</span><br><span class="line">feign.hystrix.enabled=<span class="keyword">true</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="微服务——自动扩展"><a href="#微服务——自动扩展" class="headerlink" title="微服务——自动扩展"></a>微服务——自动扩展</h4><h5 id="什么是自动扩展"><a href="#什么是自动扩展" class="headerlink" title="什么是自动扩展"></a>什么是自动扩展</h5><p>垂直扩展（双核主机 –&gt; 四核主机）硬件升级，瓶颈在于硬件水平的技术；</p>
+<p>水平扩展（1台主机 –&gt; x台主机）能力扩展，分布式系统解决计算能力；</p>
+<p>自我注册和自我发现是自动扩展的前提条件；</p>
+<p>服务注册表（服务注册中心），客户端，微服务实例；</p>
+<p>客户端查询服务注册表，查询可用的服务；服务实例启动后，自我注册到服务注册表中，待客户端使用；</p>
+<p>按需扩展：微服务实例分为使用中和保留，当需要更多实例时，再启动保留的服务实例，按照请求的需要扩展；</p>
+<hr>
+<h5 id="自动扩展的意义"><a href="#自动扩展的意义" class="headerlink" title="自动扩展的意义"></a>自动扩展的意义</h5><p>解决应用程序为了支持长时间的运行，需要提前预留硬件、软件的功能，解决闲置资源的浪费问题；</p>
+<p>按需扩展；</p>
+<p>每个微服务实例需要独立的部署空间；</p>
+<h6 id="好处："><a href="#好处：" class="headerlink" title="好处："></a>好处：</h6><p>提供高可用性和容错能力：快速自动扩展使用新的服务实例，以满足服务的需要；</p>
+<p>增加可伸缩性：水平扩展能力的增加，允许根据流量自动选择服务的规模；</p>
+<p>具有最佳使用率，节约成本：按需扩展；</p>
+<p>优先考虑服务或服务组：通过优先级分配资源；</p>
+<hr>
+<h4 id="自动扩展的常见模式"><a href="#自动扩展的常见模式" class="headerlink" title="自动扩展的常见模式"></a>自动扩展的常见模式</h4><h5 id="应用程序级别"><a href="#应用程序级别" class="headerlink" title="应用程序级别"></a>应用程序级别</h5><p>扩展通过复制微服务实例实现，虚拟机或主机运行微服务；</p>
+<p>更换服务实例；</p>
+<h5 id="基础架构级别"><a href="#基础架构级别" class="headerlink" title="基础架构级别"></a>基础架构级别</h5><p>根据需求及时创建或消除；</p>
+<p>保留的服务实例，被创建为具有预订意义的，服务实例虚拟机镜像，当有服务A的需求时，虚拟机将服务移动到激活的状态；</p>
+<p>更换服务虚拟机，适用范围更广；</p>
+<p>缺点：基于整个虚拟机扩展，体积更大，占用更多的系统资源；</p>
+<p>解决：采用轻量级容器docker，减少资源的占用；</p>
+<h5 id="资源限制"><a href="#资源限制" class="headerlink" title="资源限制"></a>资源限制</h5><p>监控程序：实时监控CPU的使用率，当使用率大于阀值时，启动新的服务实例；</p>
+<h5 id="特定时间段"><a href="#特定时间段" class="headerlink" title="特定时间段"></a>特定时间段</h5><p>根据特定时间段、季节性、业务高峰的服务需求，启动新的服务实例，减轻服务器的负载；</p>
+<h5 id="消息长度"><a href="#消息长度" class="headerlink" title="消息长度"></a>消息长度</h5><p>监控程序监控每个服务实例的消息队列的长度，当队列长度大于设置的长度时，说明需要处理的消息超过服务可提供的能力，则新增服务实例；</p>
+<h5 id="业务参数"><a href="#业务参数" class="headerlink" title="业务参数"></a>业务参数</h5><p>添加实例基于某些业务参数，解决业务事件时，通过先新增服务实例的方法，预防即将到来的大量业务交易请求；</p>
+<h5 id="根据预测"><a href="#根据预测" class="headerlink" title="根据预测"></a>根据预测</h5><p>新型的自动扩展方式；</p>
+<p>有多种信息事务模式的组合；</p>
+<p>有助于解决硬编码和时间窗口；</p>
+<p>根据历史信息，当前趋势进行预测（更精确，更有效的解决突发情况）；</p>
+<hr>
+<h4 id="如何实现微服务的自动扩展"><a href="#如何实现微服务的自动扩展" class="headerlink" title="如何实现微服务的自动扩展"></a>如何实现微服务的自动扩展</h4><h5 id="思考的问题"><a href="#思考的问题" class="headerlink" title="思考的问题"></a>思考的问题</h5><p>如何管理数千个容器？</p>
+<p>如何监控容器？</p>
+<p>在部署工件时，如何应用规则和约束？</p>
+<p>如何利用容器获得资源效率？</p>
+<p>如何确保至少有一定数量的最小实例正在运行？</p>
+<p>如何确保依赖服务正常运行？</p>
+<p>如何进行滚动升级和优雅的迁移？</p>
+<p>如何回滚错误的部署？</p>
+<h5 id="所需功能"><a href="#所需功能" class="headerlink" title="所需功能"></a>所需功能</h5><p>依赖两个关键功能：</p>
+<p>1-一个容器抽象层，在许多物理或虚拟机上提供统一的抽象；</p>
+<p>2-容器编排和初始化系统在集群抽象之上智能管理部署</p>
+<hr>
+<h4 id="容器编排"><a href="#容器编排" class="headerlink" title="容器编排"></a>容器编排</h4><p>为开发以及架构团队，提供一个抽象层，来处理大规模集装箱式的部署；</p>
+<p>共同功能：具备发现、资源管理、监控和部署等；</p>
+<p>职责：集群管理（将虚拟机和物理机器的集群管理为一台大型机器 ）</p>
+<p>自动部署（能处理有大量及其的应用程序和容器的自动部署，支持多版本的应用程序容器，并且支持跨越大量集群机器的滚动升级和故障回滚）</p>
+<p>可伸缩性（支持服务实例的自动和手动伸缩，以性能优化为主要目标）</p>
+<p>运行状况的健康（管理集群、节点和应用程序的健康）</p>
+<p>基础架构抽象（开发人员不需要担心集群和容量等问题）</p>
+<p>资源优化（以有效的方式在可用机器上分配容器工作负载，从而减低成本，通过简单到复杂的算法有效提高利用率）</p>
+<p>资源分配（基于应用程序开发人员设置的资源可用性和约束来分配服务器）</p>
+<p>服务可用性（确保服务在集群中正常运行，机器故障的情况下，容器编排会自动通过在集群中的其他机器上重新启动这些服务来处理故障）</p>
+<p>敏捷性（敏捷性工具能够快速分配工作负载到可用资源，或在资源需求发生变化时跨机器移动工作量）</p>
+<p>隔离（提供资源隔离，即使应用程序不是容器化，也可以实现资源隔离）</p>
+<hr>
+<h4 id="资源分配常用算法"><a href="#资源分配常用算法" class="headerlink" title="资源分配常用算法"></a>资源分配常用算法</h4><p>传播（Spread）工作负载平均分配到多台主机中；</p>
+<p>装箱（Bin Packing）优先试图填满机器的最大负载，常用于按需付费的云服务；</p>
+<p>随机（Random）工作负载随机分配到多台主机中；</p>
+<h4 id="常用的容器编排技术"><a href="#常用的容器编排技术" class="headerlink" title="常用的容器编排技术"></a>常用的容器编排技术</h4><p>Docker Swarm</p>
+<p>Kubernetes</p>
+<p>Apache Mesos</p>
+<hr>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p>@ 2018年8月15日 14:57:54</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/10/Spring Cloud Note-8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3428,153 +3590,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/09/Spring Cloud Note-7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="REX CHEN">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="REEEEX">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/09/Spring Cloud Note-7/" itemprop="url">Spring Cloud | Note-7</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-09T00:00:00+08:00">
-                2018-08-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Spring-Cloud微服务-Note-7"><a href="#Spring-Cloud微服务-Note-7" class="headerlink" title="Spring Cloud微服务 | Note(7)"></a>Spring Cloud微服务 | Note(7)</h3><p>@ 2018年8月9日 15:14:02</p>
-<h4 id="API网关"><a href="#API网关" class="headerlink" title="API网关"></a>API网关</h4><p>可以管理所有API，用于统一API入口；所有的客户端和消费端都通过统一的网关接入微服务，在网关层处理所有的非业务功能 ；具有功能：如身份验证、监控、负载均衡、缓存、请求分片与管理、静态响应处理；</p>
-<hr>
-<h5 id="API网关的意义"><a href="#API网关的意义" class="headerlink" title="API网关的意义"></a>API网关的意义</h5><p>集成多个API；WEB应用API网关，移动应用API网关；避免内部信息泄露；为微服务添加额外的安全层；支持混合通信协议；降低构建微服务的复杂性；微服务模拟与虚拟化；</p>
-<p>弊端：</p>
-<p>架构上需要额外考虑更多编排与管理；</p>
-<p>路由逻辑配置要进行统一的管理；可能引发单点故障；<img src="http://upload-images.jianshu.io/upload_images/2279594-6b7c148110ebc56e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt=""></p>
-<hr>
-<h5 id="API网关的实现方式"><a href="#API网关的实现方式" class="headerlink" title="API网关的实现方式"></a>API网关的实现方式</h5><p>NGINX：HTTP服务器和反向代理，可用于API网关，简单配置，高性能稳定，低资源消耗；</p>
-<p>Zuul：认证，鉴权，限流，路由，监控，弹性，安全，负载均衡，协助单点压测，静态响应等边缘服务的框架；</p>
-<p>Kong：API网关的管理平台；专注提供微服务，基于NGINX；多插件；</p>
-<hr>
-<h5 id="如何集成Zuul"><a href="#如何集成Zuul" class="headerlink" title="如何集成Zuul"></a>如何集成Zuul</h5><p>Zuul：主要作为路由转发和过滤器；</p>
-<p>路由功能是微服务的一部分，比如/api/user转发到到user服务，/api/shop转发到到shop服务；</p>
-<p>zuul默认和Ribbon结合实现了负载均衡的功能；</p>
-<p>功能：认证，压力测试，金丝雀测试，动态路由，负载削减，安全，静态响应处理，主动交换管理；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// build.gradle</span><br><span class="line">dependencies &#123;</span><br><span class="line">	// Eureka Client</span><br><span class="line">	compile(&apos;org.springframework.cloud:spring-cloud-starter-netflix-eureka-client&apos;)</span><br><span class="line">	// Zuul</span><br><span class="line">	compile(&apos;org.springframework.cloud:spring-cloud-starter-netflix-zuul&apos;)</span><br><span class="line">&#125;</span><br><span class="line">// Application.java</span><br><span class="line">@SpringBootApplication</span><br><span class="line">@EnableDiscoveryClient</span><br><span class="line">@EnableZuulProxy</span><br><span class="line">public class ZuulApplication &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		SpringApplication.run(ZuulApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">// application.properties</span><br><span class="line">spring.application.name=micro-weather-eureka-client-zuul</span><br><span class="line">eureka.client.service-url.defaultZone=http://localhost:8761/eureka/</span><br><span class="line">zuul.routes.hi.path=/hi/**</span><br><span class="line">zuul.routes.hi.serviceId=micro-weather-eureka-client</span><br></pre></td></tr></table></figure>
-<p>以上配置的意思为：</p>
-<p>启动micro-weather-eureka-client时，端口号为：8081；</p>
-<p>而启动micro-weather-eureka-client-zuul，端口号为：8080；</p>
-<p>访问<a href="http://localhost:8080/hello，请求的是client的服务；" target="_blank" rel="noopener">http://localhost:8080/hello，请求的是client的服务；</a></p>
-<p>而访问<a href="http://localhost:8081/hello，请求的是zuul的服务；" target="_blank" rel="noopener">http://localhost:8081/hello，请求的是zuul的服务；</a></p>
-<p>而访问<a href="http://localhost:8080/hi/hello，请求的是client的服务，由zuul进行了服务请求的转发；" target="_blank" rel="noopener">http://localhost:8080/hi/hello，请求的是client的服务，由zuul进行了服务请求的转发；</a></p>
-<h5 id="实现API网关"><a href="#实现API网关" class="headerlink" title="实现API网关"></a>实现API网关</h5><p>将功能微服务对于数据API与城市数据API的依赖，转化为对Zuul网关的依赖；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// application.properties(gateway)</span><br><span class="line">spring.application.name=micro-weather-eureka-client-zuul</span><br><span class="line">eureka.client.service-url.defaultZone=http://localhost:8761/eureka/</span><br><span class="line">zuul.routes.city.path=/city/**</span><br><span class="line">zuul.routes.city.serviceId=micro-weather-city-eureka</span><br><span class="line">zuul.routes.data.path=/data/**</span><br><span class="line">zuul.routes.data.serviceId=micro-weather-data-eureka</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建新的DataClient替换原本的CityClient以及WeatherDataServer</span></span><br><span class="line"><span class="meta">@FeignClient</span>(<span class="string">"micro-weather-eureka-client-zuul"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DataClient</span> </span>&#123;</span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/city/cities"</span>)</span><br><span class="line">	<span class="function">List&lt;City&gt; <span class="title">listCity</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/data/weather/cityId/&#123;cityId&#125;"</span>)</span><br><span class="line">	<span class="function">WeatherResponse <span class="title">getDataByCityId</span><span class="params">(@PathVariable(<span class="string">"cityId"</span>)</span>String cityId)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p>@ 2018年8月9日 23:08:56</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3625,7 +3640,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3638,7 +3653,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
