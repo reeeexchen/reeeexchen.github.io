@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java,Interview,Review," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Interview | Note-1网络基础知识OSI开放式模型（七层协议、参考的国际模型）先自上而下，后自下而上的处理数据的头部  物理层：解决物理介质的传输、原始比特流传输、模数转换、数模转换、网卡工作层  数据链路层：物理寻址、将比特流转变为逻辑传输线路、错误检测、确保数据传输的可靠性、交换机工作层  网络层：将网络地址翻译成对应的物理地址、并且决定数据从发送方路由到接收方、保证数据发送优先">
+<meta name="keywords" content="Java,Interview,Review">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Interview | Note-1">
+<meta property="og:url" content="http://yoursite.com/2019/03/04/INTERVIEW-1/index.html">
+<meta property="og:site_name" content="REEEEX">
+<meta property="og:description" content="Interview | Note-1网络基础知识OSI开放式模型（七层协议、参考的国际模型）先自上而下，后自下而上的处理数据的头部  物理层：解决物理介质的传输、原始比特流传输、模数转换、数模转换、网卡工作层  数据链路层：物理寻址、将比特流转变为逻辑传输线路、错误检测、确保数据传输的可靠性、交换机工作层  网络层：将网络地址翻译成对应的物理地址、并且决定数据从发送方路由到接收方、保证数据发送优先">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://images0.cnblogs.com/blog/88420/201401/291246111727359.png">
+<meta property="og:image" content="https://img-blog.csdn.net/20180717204202563?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTUwMzE2/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/04/kO1AoV.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/04/kO1jmR.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/04/kO3ptK.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/04/kO30c4.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/04/kO3gN6.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/04/kOGkdI.png">
+<meta property="og:updated_time" content="2019-03-04T03:19:03.333Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Interview | Note-1">
+<meta name="twitter:description" content="Interview | Note-1网络基础知识OSI开放式模型（七层协议、参考的国际模型）先自上而下，后自下而上的处理数据的头部  物理层：解决物理介质的传输、原始比特流传输、模数转换、数模转换、网卡工作层  数据链路层：物理寻址、将比特流转变为逻辑传输线路、错误检测、确保数据传输的可靠性、交换机工作层  网络层：将网络地址翻译成对应的物理地址、并且决定数据从发送方路由到接收方、保证数据发送优先">
+<meta name="twitter:image" content="https://images0.cnblogs.com/blog/88420/201401/291246111727359.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/04/INTERVIEW-1/"/>
+
+
+
+
+
+  <title>Interview | Note-1 | REEEEX</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">REEEEX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">KEEP GOING</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/04/INTERVIEW-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Interview | Note-1</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-04T00:00:00+08:00">
+                2019-03-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Interview-Note-1"><a href="#Interview-Note-1" class="headerlink" title="Interview | Note-1"></a>Interview | Note-1</h2><h3 id="网络基础知识"><a href="#网络基础知识" class="headerlink" title="网络基础知识"></a>网络基础知识</h3><h4 id="OSI开放式模型（七层协议、参考的国际模型）"><a href="#OSI开放式模型（七层协议、参考的国际模型）" class="headerlink" title="OSI开放式模型（七层协议、参考的国际模型）"></a>OSI开放式模型（七层协议、参考的国际模型）</h4><p>先自上而下，后自下而上的处理数据的头部</p>
+<ul>
+<li><p>物理层：解决物理介质的传输、原始比特流传输、模数转换、数模转换、网卡工作层</p>
+</li>
+<li><p>数据链路层：物理寻址、将比特流转变为逻辑传输线路、错误检测、确保数据传输的可靠性、交换机工作层</p>
+</li>
+<li>网络层：将网络地址翻译成对应的物理地址、并且决定数据从发送方路由到接收方、保证数据发送优先权、网络阻塞程度、路由器、数据包、TCP/IP协议、分组传输</li>
+<li>传输层：必要时对数据进行分割，并且交由网络层，保证数据段有效到达对端、1500字节、TCP/UDP协议</li>
+<li>会话层：自动收发包、自动寻址、建立及管理会话、解决不同系统的语法</li>
+<li>应用层：固定消息头、消息体、信息的语法语义及其关联、HTTP协议</li>
+</ul>
+<hr>
+<h4 id="TCP-IP（四层模型、OSI的实现）"><a href="#TCP-IP（四层模型、OSI的实现）" class="headerlink" title="TCP/IP（四层模型、OSI的实现）"></a>TCP/IP（四层模型、OSI的实现）</h4><p>先自上而下，后自下而上的处理数据的头部</p>
+<table>
+<thead>
+<tr>
+<th>OSI七层</th>
+<th>TCP/IP四层</th>
+<th>功能</th>
+<th>TCP/IP协议族</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>应用层</td>
+<td>应用层</td>
+<td>文件传输、EMAIL、文件、虚拟终端</td>
+<td>HTTP/FTP/SMTP/DNS/Telnet</td>
+</tr>
+<tr>
+<td>表示层</td>
+<td>\</td>
+<td>数据格式化、代码转换、数据加密</td>
+<td>\</td>
+</tr>
+<tr>
+<td>会话层</td>
+<td>\</td>
+<td>建立以及管理会话</td>
+<td>\</td>
+</tr>
+<tr>
+<td>传输层</td>
+<td>传输层</td>
+<td>提供端对端的接口</td>
+<td>TCP/UDP</td>
+</tr>
+<tr>
+<td>网络层</td>
+<td>网络层</td>
+<td>为数据包选择路由</td>
+<td>IP/ICMP/IGMP/RIP</td>
+</tr>
+<tr>
+<td>数据链路层</td>
+<td>链路层</td>
+<td>传输有地址的帧、错误检测</td>
+<td>PPP/MTU</td>
+</tr>
+<tr>
+<td>物理层</td>
+<td>\</td>
+<td>二进制形式在物理媒体传输</td>
+<td>ISO02110/IEEE802/IEEE802.2</td>
+</tr>
+</tbody>
+</table>
+<p>TCP/IP重点在于，实际应用中应该开发的应用和协议</p>
+<hr>
+<p>参考链接：<a href="https://blog.csdn.net/qq_38950316/article/details/81087809" target="_blank" rel="noopener">https://blog.csdn.net/qq_38950316/article/details/81087809</a></p>
+<h4 id="TCP三次握手"><a href="#TCP三次握手" class="headerlink" title="TCP三次握手"></a>TCP三次握手</h4><p>TCP 传输控制协议</p>
+<ul>
+<li>面向连接的、可靠的、基于字节流的传输层通信协议</li>
+<li>将应用层的数据分割成适当长度的报文段（MTU）并且发送给目标节点的TCP层</li>
+<li>数据包有序号Sequence Number，对象收到则发送ACK确认，未收到则重传</li>
+<li>使用奇偶校验和检验数据在传输过程中是否有误</li>
+</ul>
+<p><img src="https://images0.cnblogs.com/blog/88420/201401/291246111727359.png" alt=""></p>
+<ol>
+<li>URG：紧急指针 1-有效 0-忽略</li>
+<li>ACK：确认序号 1-有效 0-不包含确认信息<ol>
+<li>确认号：其数值等于发送方的发送序号 +1(即接收方期望接收的下一个序列号)</li>
+</ol>
+</li>
+<li>PSH：push标志 尽快提交到应用层，而不是在缓存中</li>
+<li>RST：重置连接 重置崩溃</li>
+<li>SYN：同步序号，用于建立连接过程</li>
+<li>FIN：finish，用于释放连接</li>
+</ol>
+<h5 id="三次握手流程"><a href="#三次握手流程" class="headerlink" title="三次握手流程"></a>三次握手流程</h5><ul>
+<li>第一次握手：建立连接时，客户端发送SYN包（SYN=J）到服务器，并且进入SYN_SEND状态，等待服务器Query</li>
+<li>第二次握手：服务器收到SYN包，必须确认客户的SYN（ACK=J+1），同时自己也发送一个SYN包（SYN=K），即SYN+ACK包，此时服务器进入SYN_RECV状态</li>
+<li>第三次握手：客户端收到服务器的SYN+ACK包，向服务器发送确认ACK（ACK=K+1），此包发送完毕，客户端和服务器进入ESTABLISHED状态，完成</li>
+</ul>
+<h5 id="为什么需要三次握手"><a href="#为什么需要三次握手" class="headerlink" title="为什么需要三次握手"></a>为什么需要三次握手</h5><ul>
+<li>为了初始化Sequence Number的初始值，作为往后的通讯序号</li>
+</ul>
+<h5 id="首次握手的隐患——SYN超时"><a href="#首次握手的隐患——SYN超时" class="headerlink" title="首次握手的隐患——SYN超时"></a>首次握手的隐患——SYN超时</h5><ul>
+<li>Server收到Client的SYN，回复SYN+ACK的时候，Server未收到ACK确认</li>
+<li>Server不断重试至超时（Linux默认等待63秒断开）</li>
+<li>可能导致服务器遭受SYN Flood的风险<ul>
+<li>针对SYN Flood的防护措施<ul>
+<li>SYN队列满后，通过tcp_syncookies参数回发SYN Cookie</li>
+<li>若为正常连接，则Client会回发SYN Cookie，直接建立连接</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="建立连接后，Client出现故障"><a href="#建立连接后，Client出现故障" class="headerlink" title="建立连接后，Client出现故障"></a>建立连接后，Client出现故障</h5><ul>
+<li>保活机制<ul>
+<li>向对方发送保活检测报文，如果未收到响应则继续发送</li>
+<li>尝试次数达到保活检测数仍未收到响应则中断连接</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="TCP四次挥手"><a href="#TCP四次挥手" class="headerlink" title="TCP四次挥手"></a>TCP四次挥手</h4><p>用于TCP连接是全双工，每个方向都必须单独进行关闭，发送方和接收方都需要FIN报文和ACK报文，首先进行关闭的一方主动关闭，另一方则被动关闭。</p>
+<p>任何一方执行close()操作即可产生挥手（经过时间2MSL才真正释放）</p>
+<p><img src="https://img-blog.csdn.net/20180717204202563?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTUwMzE2/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt=""></p>
+<h5 id="为什么有TIME-WAIT"><a href="#为什么有TIME-WAIT" class="headerlink" title="为什么有TIME_WAIT"></a>为什么有TIME_WAIT</h5><ul>
+<li>确保有足够时间让对端收到ACK包</li>
+<li>避免新旧连接混淆</li>
+</ul>
+<h5 id="服务器出现大量CLOSE-WAIT状态"><a href="#服务器出现大量CLOSE-WAIT状态" class="headerlink" title="服务器出现大量CLOSE_WAIT状态"></a>服务器出现大量CLOSE_WAIT状态</h5><p>CLOSE_WAIT：被动关闭的一端收到FIN后，但未发出ACK的TCP状态</p>
+<ul>
+<li>对方关闭socket连接，我方忙于读或写，没有及时关闭连接<ul>
+<li>检查代码：被动关闭一端的代码，尤其是释放资源的</li>
+<li>检查配置：处理请求的线程配置</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="TCP-amp-UDP区别"><a href="#TCP-amp-UDP区别" class="headerlink" title="TCP &amp; UDP区别"></a>TCP &amp; UDP区别</h4><h5 id="UDP特点"><a href="#UDP特点" class="headerlink" title="UDP特点"></a>UDP特点</h5><ul>
+<li>面向非连接</li>
+<li>不维护连接状态，支持同时向多个客户端传输相同的消息</li>
+<li>数据包报头只有8个字节，额外开销较小</li>
+<li>吞吐量只受限于数据生成速率、传输速率以及机器性能</li>
+<li>尽最大努力交付，不保证可靠交付，不需要维持复杂的链接状态表</li>
+<li>面向报文，不对应用程序提交的报文信息进行拆分或合并</li>
+</ul>
+<h5 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h5><ul>
+<li>面向连接 &amp; 无连接</li>
+<li>可靠性（TCP）</li>
+<li>有序性（TCP-序列号，到达无序）</li>
+<li>速度（UDP更快）</li>
+<li>量级（TCP-重量级、UDP-轻量级）</li>
+</ul>
+<hr>
+<h4 id="TCP滑动窗口"><a href="#TCP滑动窗口" class="headerlink" title="TCP滑动窗口"></a>TCP滑动窗口</h4><p>RTT：发送一个数据包到收到对应ACK所花费的时间</p>
+<p>RTO：重传时间间隔</p>
+<p>TCP使用滑动窗口做流量控制与乱序重排</p>
+<ul>
+<li>保证TCP可靠性和流控特性</li>
+</ul>
+<p><strong>AdvertisedWindow = MaxRcvBuffer - (LastByteRcvd - LastByteRead)</strong></p>
+<p><strong>EffectiveWindow = AdvertisedWindow - (LastByteSent - LastByteAcked)</strong></p>
+<p><img src="https://s2.ax1x.com/2019/03/04/kO1AoV.png" alt="kO1AoV.png"></p>
+<h5 id="TCP会话的发送方"><a href="#TCP会话的发送方" class="headerlink" title="TCP会话的发送方"></a>TCP会话的发送方</h5><p><img src="https://s2.ax1x.com/2019/03/04/kO1jmR.png" alt="kO1jmR.png"></p>
+<h5 id="TCP会话的接收方"><a href="#TCP会话的接收方" class="headerlink" title="TCP会话的接收方"></a>TCP会话的接收方</h5><p><img src="https://s2.ax1x.com/2019/03/04/kO3ptK.png" alt="kO3ptK.png"></p>
+<hr>
+<h4 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h4><h5 id="HTTP特点"><a href="#HTTP特点" class="headerlink" title="HTTP特点"></a>HTTP特点</h5><ul>
+<li>支持C(Client)/S(Server)模式</li>
+<li>简单快速</li>
+<li>灵活（任意类型数据对象）</li>
+<li>无连接（限制每次只处理一个请求）</li>
+<li>无状态（处理事务没有记忆）</li>
+</ul>
+<p><strong>HTTP请求结构</strong></p>
+<p><img src="https://s2.ax1x.com/2019/03/04/kO30c4.png" alt="kO30c4.png"></p>
+<p><strong>HTTP响应结构</strong></p>
+<p><img src="https://s2.ax1x.com/2019/03/04/kO3gN6.png" alt="kO3gN6.png"></p>
+<h5 id="请求-响应的步骤"><a href="#请求-响应的步骤" class="headerlink" title="请求/响应的步骤"></a>请求/响应的步骤</h5><ul>
+<li>客户端连接到Web服务器</li>
+<li>发送HTTP请求</li>
+<li>服务器接受请求并且返回HTTP响应</li>
+<li>释放TCP连接</li>
+<li>客户端解析HTML内容</li>
+</ul>
+<h5 id="在浏览器输入URL，键入回车的流程"><a href="#在浏览器输入URL，键入回车的流程" class="headerlink" title="在浏览器输入URL，键入回车的流程"></a>在浏览器输入URL，键入回车的流程</h5><ul>
+<li>DNS解析</li>
+<li>根据IP地址和Port建立TCP连接</li>
+<li>发送HTTP请求</li>
+<li>服务器处理请求并且返回HTTP报文</li>
+<li>浏览器解析HTML</li>
+<li>连接接受</li>
+</ul>
+<h5 id="HTTP常见状态码"><a href="#HTTP常见状态码" class="headerlink" title="HTTP常见状态码"></a>HTTP常见状态码</h5><ul>
+<li>1xx 指示信息 - 请求已接收，继续处理</li>
+<li>2xx 成功 - 请求已被成功接收、理解、接受</li>
+<li>3xx 重定向 - 要完成请求必须进行更进一步的操作</li>
+<li>4xx 客户端错误 - 请求有语法错误或请求无法实现</li>
+<li>5xx 服务端错误 - 服务器未能实现合法的请求 </li>
+</ul>
+<h4 id="GET-POST"><a href="#GET-POST" class="headerlink" title="GET / POST"></a>GET / POST</h4><h5 id="区别-1"><a href="#区别-1" class="headerlink" title="区别"></a>区别</h5><ul>
+<li>HTTP报文：GET将请求信息放在URL，POST放在报文体中</li>
+<li>数据库：GET符合幂等性和安全性，POST不符合（每次请求都不同）</li>
+<li>GET可以被缓存，POST不行</li>
+</ul>
+<h4 id="Cookie-Session"><a href="#Cookie-Session" class="headerlink" title="Cookie / Session"></a>Cookie / Session</h4><h5 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h5><ul>
+<li>Cookie由服务器发给客户端的特殊信息，以文本的形式存放在客户端</li>
+<li>客户端再次请求时，会把Cookie回发</li>
+<li>服务器接收到Cookie，会解析与客户端相对应的内容</li>
+</ul>
+<h5 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h5><ul>
+<li>服务器端的机制，在服务器上保存的信息</li>
+<li>解析客户端请求并操作session id，按需保存状态信息</li>
+<li>实现方式<ul>
+<li>Cookie - JSESSIONID = xxx</li>
+<li>URL回写</li>
+</ul>
+</li>
+</ul>
+<h5 id="区别-2"><a href="#区别-2" class="headerlink" title="区别"></a>区别</h5><ul>
+<li>Cookie数据存放在客户端的浏览器，Session数据存放在服务器</li>
+<li>Session相对于Cookie更安全</li>
+<li>考虑减少服务器负担，应使用Cookie</li>
+</ul>
+<hr>
+<h4 id="HTTP-HTTPS"><a href="#HTTP-HTTPS" class="headerlink" title="HTTP / HTTPS"></a>HTTP / HTTPS</h4><p><img src="https://s2.ax1x.com/2019/03/04/kOGkdI.png" alt="kOGkdI.png"></p>
+<h5 id="SSL（Security-Sockets-Layer）"><a href="#SSL（Security-Sockets-Layer）" class="headerlink" title="SSL（Security Sockets Layer）"></a>SSL（Security Sockets Layer）</h5><ul>
+<li>为网络通信提供安全及数据完整性的一种安全协议</li>
+<li>操作系统对外的API(SSL3.0更名TLS)</li>
+<li>采用身份验证和数据加密，保证网络通信的安全和数据的完整性</li>
+</ul>
+<h5 id="加密的方式"><a href="#加密的方式" class="headerlink" title="加密的方式"></a>加密的方式</h5><ul>
+<li>对称加密、非对称加密、哈希算法（算法不可逆-MD5）、数字签名</li>
+</ul>
+<h5 id="HTTPS数据传输流程"><a href="#HTTPS数据传输流程" class="headerlink" title="HTTPS数据传输流程"></a>HTTPS数据传输流程</h5><ul>
+<li>浏览器将支持的加密算法信息发送给服务器</li>
+<li>服务器选择支持的加密算法，以证书的形式回发浏览器</li>
+<li>浏览器校验证书合法性，并且结合证书公钥加密信息发送给服务器</li>
+<li>服务器使用私钥解密信息，验证哈希，加密响应消息回发浏览器</li>
+<li>浏览器解密响应消息，并对消息进行验真，进行加密交互数据</li>
+</ul>
+<h5 id="区别-3"><a href="#区别-3" class="headerlink" title="区别"></a>区别</h5><ul>
+<li>HTTPS需要CA申请证书</li>
+<li>HTTPS密文传输，HTTP明文传输</li>
+<li>连接方式不同，HTTPS默认443，HTTP默认80</li>
+<li>HTTPS = HTTP + 加密 + 认证 + 完整性保护</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Interview/" rel="tag"># Interview</a>
+          
+            <a href="/tags/Review/" rel="tag"># Review</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/09/Spring Security 18/" rel="next" title="Spring Security | Note-18">
+                <i class="fa fa-chevron-left"></i> Spring Security | Note-18
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">REX CHEN</p>
+              <p class="site-description motion-element" itemprop="description">日常记录</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Interview-Note-1"><span class="nav-number">1.</span> <span class="nav-text">Interview | Note-1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络基础知识"><span class="nav-number">1.1.</span> <span class="nav-text">网络基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#OSI开放式模型（七层协议、参考的国际模型）"><span class="nav-number">1.1.1.</span> <span class="nav-text">OSI开放式模型（七层协议、参考的国际模型）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-IP（四层模型、OSI的实现）"><span class="nav-number">1.1.2.</span> <span class="nav-text">TCP/IP（四层模型、OSI的实现）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP三次握手"><span class="nav-number">1.1.3.</span> <span class="nav-text">TCP三次握手</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#三次握手流程"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">三次握手流程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么需要三次握手"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">为什么需要三次握手</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#首次握手的隐患——SYN超时"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">首次握手的隐患——SYN超时</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#建立连接后，Client出现故障"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">建立连接后，Client出现故障</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP四次挥手"><span class="nav-number">1.1.4.</span> <span class="nav-text">TCP四次挥手</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么有TIME-WAIT"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">为什么有TIME_WAIT</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务器出现大量CLOSE-WAIT状态"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">服务器出现大量CLOSE_WAIT状态</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-amp-UDP区别"><span class="nav-number">1.1.5.</span> <span class="nav-text">TCP &amp; UDP区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#UDP特点"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">UDP特点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#区别"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">区别</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP滑动窗口"><span class="nav-number">1.1.6.</span> <span class="nav-text">TCP滑动窗口</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#TCP会话的发送方"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">TCP会话的发送方</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TCP会话的接收方"><span class="nav-number">1.1.6.2.</span> <span class="nav-text">TCP会话的接收方</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP"><span class="nav-number">1.1.7.</span> <span class="nav-text">HTTP</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#HTTP特点"><span class="nav-number">1.1.7.1.</span> <span class="nav-text">HTTP特点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#请求-响应的步骤"><span class="nav-number">1.1.7.2.</span> <span class="nav-text">请求/响应的步骤</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在浏览器输入URL，键入回车的流程"><span class="nav-number">1.1.7.3.</span> <span class="nav-text">在浏览器输入URL，键入回车的流程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HTTP常见状态码"><span class="nav-number">1.1.7.4.</span> <span class="nav-text">HTTP常见状态码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GET-POST"><span class="nav-number">1.1.8.</span> <span class="nav-text">GET / POST</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#区别-1"><span class="nav-number">1.1.8.1.</span> <span class="nav-text">区别</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cookie-Session"><span class="nav-number">1.1.9.</span> <span class="nav-text">Cookie / Session</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Cookie"><span class="nav-number">1.1.9.1.</span> <span class="nav-text">Cookie</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Session"><span class="nav-number">1.1.9.2.</span> <span class="nav-text">Session</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#区别-2"><span class="nav-number">1.1.9.3.</span> <span class="nav-text">区别</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-HTTPS"><span class="nav-number">1.1.10.</span> <span class="nav-text">HTTP / HTTPS</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#SSL（Security-Sockets-Layer）"><span class="nav-number">1.1.10.1.</span> <span class="nav-text">SSL（Security Sockets Layer）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#加密的方式"><span class="nav-number">1.1.10.2.</span> <span class="nav-text">加密的方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HTTPS数据传输流程"><span class="nav-number">1.1.10.3.</span> <span class="nav-text">HTTPS数据传输流程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#区别-3"><span class="nav-number">1.1.10.4.</span> <span class="nav-text">区别</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">REX CHEN</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
