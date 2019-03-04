@@ -564,6 +564,20 @@
 <li>连接方式不同，HTTPS默认443，HTTP默认80</li>
 <li>HTTPS = HTTP + 加密 + 认证 + 完整性保护</li>
 </ul>
+<hr>
+<h4 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h4><ul>
+<li>Socket是对TCP/IP协议的抽象，是操作系统对外开放的接口</li>
+<li>IP + PID</li>
+</ul>
+<h5 id="Socket通信流程"><a href="#Socket通信流程" class="headerlink" title="Socket通信流程"></a>Socket通信流程</h5><p><img src="https://s2.ax1x.com/2019/03/04/kXCjMD.png" alt="kXCjMD.png"></p>
+<h5 id="面试题"><a href="#面试题" class="headerlink" title="面试题"></a>面试题</h5><ul>
+<li>客户端向服务器发送一个字符串，服务器收到该字符串后将其打印到命令行上，然后向客户端返回该字符串的长度，最后，客户端输出服务器端返回的该字符串的长度，分别用TCP和UDP实现</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LengthCalculator</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Socket socket;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LengthCalculator</span><span class="params">(Socket socket)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.socket = socket;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 获取socket的输出流</span></span><br><span class="line">            OutputStream os = socket.getOutputStream();</span><br><span class="line">            <span class="comment">// 获取socket的输入流</span></span><br><span class="line">            InputStream is = socket.getInputStream();</span><br><span class="line">            <span class="keyword">int</span> ch = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">byte</span>[] buff = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">            ch = is.read(buff);</span><br><span class="line">            String content = <span class="keyword">new</span> String(buff, <span class="number">0</span>, ch);</span><br><span class="line">            System.out.println(content);</span><br><span class="line">            <span class="comment">// 往输出流写入获得的字符串，回发客户端</span></span><br><span class="line">            os.write(String.valueOf(content.length()).getBytes());</span><br><span class="line">            <span class="comment">// 关闭流</span></span><br><span class="line">            is.close();</span><br><span class="line">            os.close();</span><br><span class="line">            socket.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TCPServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">// 创建socket，绑定端口</span></span><br><span class="line">        ServerSocket serverSocket = <span class="keyword">new</span> ServerSocket(<span class="number">65000</span>);</span><br><span class="line">        <span class="comment">// 死循环，一直等待并且处理Client发送的请求</span></span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>)&#123;</span><br><span class="line">            <span class="comment">// 监听端口，知道客户端返回连接信息才返回</span></span><br><span class="line">            Socket socket = serverSocket.accept();</span><br><span class="line">            <span class="comment">// 获取客户端的请求信息后，执行相关业务逻辑</span></span><br><span class="line">            <span class="keyword">new</span> LengthCalculator(socket).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TCPClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">// 创建socket，指定连接65000端口的服务器socket</span></span><br><span class="line">        Socket socket = <span class="keyword">new</span> Socket(<span class="string">"127.0.0.1"</span>,<span class="number">65000</span>);</span><br><span class="line">        <span class="comment">// 获取输出流</span></span><br><span class="line">        OutputStream os = socket.getOutputStream();</span><br><span class="line">        <span class="comment">// 获取输入流</span></span><br><span class="line">        InputStream is = socket.getInputStream();</span><br><span class="line">        <span class="comment">// 字符串转换byte,并且写入到输出流中</span></span><br><span class="line">        os.write(<span class="string">"hello world"</span>.getBytes());</span><br><span class="line">        <span class="keyword">int</span> ch = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">byte</span>[] buff = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">        ch = is.read(buff);</span><br><span class="line">        <span class="comment">// 将接收流的byte数组转换为字符串(从服务器端发回的字符串长度数据)</span></span><br><span class="line">        String content = <span class="keyword">new</span> String(buff,<span class="number">0</span>,ch);</span><br><span class="line">        System.out.println(content);</span><br><span class="line">        <span class="comment">// 关闭流</span></span><br><span class="line">        is.close();</span><br><span class="line">        os.close();</span><br><span class="line">        socket.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UDPServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 服务端接受客户端发送的数据报</span></span><br><span class="line">        DatagramSocket socket = <span class="keyword">new</span> DatagramSocket(<span class="number">65001</span>);</span><br><span class="line">        <span class="keyword">byte</span>[] buff = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">128</span>];</span><br><span class="line">        DatagramPacket packet = <span class="keyword">new</span> DatagramPacket(buff, buff.length);</span><br><span class="line">        <span class="comment">// 接受客户端发送过来的内容,并且将内容封装到DatagramPacket中</span></span><br><span class="line">        socket.receive(packet);</span><br><span class="line">        <span class="comment">// 从DatagramPacket对象中获取真正存储的数据</span></span><br><span class="line">        <span class="keyword">byte</span>[] data = packet.getData();</span><br><span class="line">        <span class="comment">// 将数据从二进制转换成字符串</span></span><br><span class="line">        String content = <span class="keyword">new</span> String(data,<span class="number">0</span>,packet.getLength());</span><br><span class="line">        System.out.println(content);</span><br><span class="line">        <span class="comment">// 将要发送给客户端的数据转换成二进制</span></span><br><span class="line">        <span class="keyword">byte</span>[] sendedContent = String.valueOf(content.length()).getBytes();</span><br><span class="line">        <span class="comment">// 服务端给客户端发送数据报</span></span><br><span class="line">        DatagramPacket packetToClient = <span class="keyword">new</span> DatagramPacket(sendedContent,sendedContent.length,packet.getAddress(),packet.getPort());</span><br><span class="line">        <span class="comment">// 发送数据给客户端</span></span><br><span class="line">        socket.send(packetToClient);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UDPClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 客户端发送数据给服务端</span></span><br><span class="line">        DatagramSocket socket = <span class="keyword">new</span> DatagramSocket();</span><br><span class="line">        <span class="comment">// 要发送给服务端的数据</span></span><br><span class="line">        <span class="keyword">byte</span>[] buff = <span class="string">"hello world"</span>.getBytes();</span><br><span class="line">        <span class="comment">// 将IP地址封装</span></span><br><span class="line">        InetAddress address = InetAddress.getByName(<span class="string">"127.0.0.1"</span>);</span><br><span class="line">        <span class="comment">// 将要发送的数据封装</span></span><br><span class="line">        DatagramPacket packet = <span class="keyword">new</span> DatagramPacket(buff, buff.length, address, <span class="number">65001</span>);</span><br><span class="line">        <span class="comment">// 发送</span></span><br><span class="line">        socket.send(packet);</span><br><span class="line">        <span class="comment">// 客户端接收服务端发来的数据报</span></span><br><span class="line">        <span class="keyword">byte</span>[] data = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">128</span>];</span><br><span class="line">        <span class="comment">// 创建DatagramPacket对象存储服务端发送的数据</span></span><br><span class="line">        DatagramPacket receivedPacket = <span class="keyword">new</span> DatagramPacket(data, data.length);</span><br><span class="line">        <span class="comment">// 将接收到的数据存储到DatagramPacket对象中</span></span><br><span class="line">        socket.receive(receivedPacket);</span><br><span class="line">        <span class="comment">// 将服务端发送的数据打印</span></span><br><span class="line">        String content = <span class="keyword">new</span> String(receivedPacket.getData(), <span class="number">0</span>, receivedPacket.getLength());</span><br><span class="line">        System.out.println(content);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1575,136 +1589,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/04/Spring Security 12/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="REX CHEN">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="REEEEX">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/04/Spring Security 12/" itemprop="url">Spring Security | Note-12</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-04T00:00:00+08:00">
-                2018-09-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Spring-Security-Note-12"><a href="#Spring-Security-Note-12" class="headerlink" title="Spring Security Note-12"></a>Spring Security Note-12</h3><hr>
-<h4 id="退出登录"><a href="#退出登录" class="headerlink" title="退出登录"></a>退出登录</h4><h5 id="如何退出登录"><a href="#如何退出登录" class="headerlink" title="如何退出登录"></a>如何退出登录</h5><p>退出登录，需要访问一个特定的服务，默认情况下，服务的路径是/logout；</p>
-<p>并且退出成功后跳转的URL是登录URL + ?logout的路径；</p>
-<h5 id="Spring-Security默认的退出处理逻辑"><a href="#Spring-Security默认的退出处理逻辑" class="headerlink" title="Spring Security默认的退出处理逻辑"></a>Spring Security默认的退出处理逻辑</h5><p>使当前session失效；</p>
-<p>清除与当前用户相关的remember-me记录；</p>
-<p>清空当前的SecurityContext；</p>
-<p>重定向到登录页；</p>
-<h5 id="与退出登录相关的配置"><a href="#与退出登录相关的配置" class="headerlink" title="与退出登录相关的配置"></a>与退出登录相关的配置</h5><h6 id="自定义成功退出的逻辑处理"><a href="#自定义成功退出的逻辑处理" class="headerlink" title="自定义成功退出的逻辑处理"></a>自定义成功退出的逻辑处理</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocLogoutSuccessHandler</span> <span class="keyword">implements</span> <span class="title">LogoutSuccessHandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line">    <span class="keyword">private</span> String signOutUrl;</span><br><span class="line">    <span class="keyword">private</span> ObjectMapper objectMapper = <span class="keyword">new</span> ObjectMapper();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ImoocLogoutSuccessHandler</span><span class="params">(String signOutUrl)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.signOutUrl = signOutUrl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLogoutSuccess</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Authentication authentication)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"退出成功"</span>);</span><br><span class="line">        <span class="comment">// 自定义退出成功的逻辑</span></span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isBlank(signOutUrl)) &#123;</span><br><span class="line">            <span class="comment">// 无页面，返回JSON</span></span><br><span class="line">            response.setContentType(<span class="string">"application/json;charset=UTF-8"</span>);</span><br><span class="line">            response.getWriter().write(objectMapper.writeValueAsString(<span class="keyword">new</span> SimpleResponse(<span class="string">"退出成功"</span>)));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            response.sendRedirect(signOutUrl);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h6 id="注入Bean"><a href="#注入Bean" class="headerlink" title="注入Bean"></a>注入Bean</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserSecurityBeanConfig</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> SecurityProperties securityProperties;</span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="meta">@ConditionalOnMissingBean</span>(LogoutSuccessHandler.class)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> LogoutSuccessHandler <span class="title">logoutSuccessHandler</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> ImoocLogoutSuccessHandler(securityProperties.getBrowser().getSignOutUrl());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h6 id="BrowserProperties配置URL"><a href="#BrowserProperties配置URL" class="headerlink" title="BrowserProperties配置URL"></a>BrowserProperties配置URL</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserProperties</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String signOutUrl = <span class="string">"/logout.html"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h6 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    applyPasswordAuthenticationConfig(http);</span><br><span class="line">    http.</span><br><span class="line">        ...</span><br><span class="line">        <span class="comment">// 默认</span></span><br><span class="line">        .and()</span><br><span class="line">        .logout().logoutUrl(<span class="string">"/signOut"</span>)</span><br><span class="line">        <span class="comment">// 成功退出的自定义URL</span></span><br><span class="line">        <span class="comment">// .logoutSuccessUrl("/imooc-logout.html")</span></span><br><span class="line">        <span class="comment">// 成功退出的自定义逻辑（与URL冲突）</span></span><br><span class="line">        .logoutSuccessHandler(logoutSuccessHandler)</span><br><span class="line">        <span class="comment">// 删除Cookies</span></span><br><span class="line">        .deleteCookies(<span class="string">"JSESSIONID"</span>)</span><br><span class="line">        .and()</span><br><span class="line">        <span class="comment">// 都需要认证</span></span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/04/Spring Security 13/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1840,6 +1724,136 @@
 <h6 id="200"><a href="#200" class="headerlink" title="200"></a>200</h6><p>当我们获取到access_token之后，就可以通过access_token &amp; token_type获取用户信息；</p>
 <p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuw8ew5fsyj20nv085wf2.jpg" alt=""></p>
 <p><img src="https://ws1.sinaimg.cn/large/675bae34gy1fuw8f9qwwej20ts0dt3zl.jpg" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/04/Spring Security 12/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/04/Spring Security 12/" itemprop="url">Spring Security | Note-12</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-04T00:00:00+08:00">
+                2018-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Spring-Security-Note-12"><a href="#Spring-Security-Note-12" class="headerlink" title="Spring Security Note-12"></a>Spring Security Note-12</h3><hr>
+<h4 id="退出登录"><a href="#退出登录" class="headerlink" title="退出登录"></a>退出登录</h4><h5 id="如何退出登录"><a href="#如何退出登录" class="headerlink" title="如何退出登录"></a>如何退出登录</h5><p>退出登录，需要访问一个特定的服务，默认情况下，服务的路径是/logout；</p>
+<p>并且退出成功后跳转的URL是登录URL + ?logout的路径；</p>
+<h5 id="Spring-Security默认的退出处理逻辑"><a href="#Spring-Security默认的退出处理逻辑" class="headerlink" title="Spring Security默认的退出处理逻辑"></a>Spring Security默认的退出处理逻辑</h5><p>使当前session失效；</p>
+<p>清除与当前用户相关的remember-me记录；</p>
+<p>清空当前的SecurityContext；</p>
+<p>重定向到登录页；</p>
+<h5 id="与退出登录相关的配置"><a href="#与退出登录相关的配置" class="headerlink" title="与退出登录相关的配置"></a>与退出登录相关的配置</h5><h6 id="自定义成功退出的逻辑处理"><a href="#自定义成功退出的逻辑处理" class="headerlink" title="自定义成功退出的逻辑处理"></a>自定义成功退出的逻辑处理</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocLogoutSuccessHandler</span> <span class="keyword">implements</span> <span class="title">LogoutSuccessHandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line">    <span class="keyword">private</span> String signOutUrl;</span><br><span class="line">    <span class="keyword">private</span> ObjectMapper objectMapper = <span class="keyword">new</span> ObjectMapper();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ImoocLogoutSuccessHandler</span><span class="params">(String signOutUrl)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.signOutUrl = signOutUrl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLogoutSuccess</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Authentication authentication)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"退出成功"</span>);</span><br><span class="line">        <span class="comment">// 自定义退出成功的逻辑</span></span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isBlank(signOutUrl)) &#123;</span><br><span class="line">            <span class="comment">// 无页面，返回JSON</span></span><br><span class="line">            response.setContentType(<span class="string">"application/json;charset=UTF-8"</span>);</span><br><span class="line">            response.getWriter().write(objectMapper.writeValueAsString(<span class="keyword">new</span> SimpleResponse(<span class="string">"退出成功"</span>)));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            response.sendRedirect(signOutUrl);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="注入Bean"><a href="#注入Bean" class="headerlink" title="注入Bean"></a>注入Bean</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserSecurityBeanConfig</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> SecurityProperties securityProperties;</span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="meta">@ConditionalOnMissingBean</span>(LogoutSuccessHandler.class)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> LogoutSuccessHandler <span class="title">logoutSuccessHandler</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> ImoocLogoutSuccessHandler(securityProperties.getBrowser().getSignOutUrl());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="BrowserProperties配置URL"><a href="#BrowserProperties配置URL" class="headerlink" title="BrowserProperties配置URL"></a>BrowserProperties配置URL</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrowserProperties</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String signOutUrl = <span class="string">"/logout.html"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    applyPasswordAuthenticationConfig(http);</span><br><span class="line">    http.</span><br><span class="line">        ...</span><br><span class="line">        <span class="comment">// 默认</span></span><br><span class="line">        .and()</span><br><span class="line">        .logout().logoutUrl(<span class="string">"/signOut"</span>)</span><br><span class="line">        <span class="comment">// 成功退出的自定义URL</span></span><br><span class="line">        <span class="comment">// .logoutSuccessUrl("/imooc-logout.html")</span></span><br><span class="line">        <span class="comment">// 成功退出的自定义逻辑（与URL冲突）</span></span><br><span class="line">        .logoutSuccessHandler(logoutSuccessHandler)</span><br><span class="line">        <span class="comment">// 删除Cookies</span></span><br><span class="line">        .deleteCookies(<span class="string">"JSESSIONID"</span>)</span><br><span class="line">        .and()</span><br><span class="line">        <span class="comment">// 都需要认证</span></span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
