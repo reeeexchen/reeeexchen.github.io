@@ -252,6 +252,153 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/02/Spring Security 10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/02/Spring Security 10/" itemprop="url">Spring Security | Note-10</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-02T00:00:00+08:00">
+                2018-09-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Spring-Security-Note-10"><a href="#Spring-Security-Note-10" class="headerlink" title="Spring Security Note-10"></a>Spring Security Note-10</h3><hr>
+<h4 id="微信登录开发"><a href="#微信登录开发" class="headerlink" title="微信登录开发"></a>微信登录开发</h4><p>微信开发的整个流程，原理和QQ是几乎一致；</p>
+<p><code>api</code> 定义api绑定的公共接口</p>
+<p><code>config</code> 微信的一些配置信息</p>
+<p><code>connect</code>与服务提供商建立连接所需的一些类</p>
+<p>代码过多且雷同，详见GITHUB；</p>
+<hr>
+<h4 id="社交帐号绑定与解绑"><a href="#社交帐号绑定与解绑" class="headerlink" title="社交帐号绑定与解绑"></a>社交帐号绑定与解绑</h4><p>实现绑定与解绑，需要知道社交账号的绑定状态，绑定就是重新经历<code>OAuth2</code>流程,关联当前登录用户；</p>
+<p>解绑就是删除<code>UserConnection</code>表中的数据；</p>
+<p><code>Spring Social</code>默认在<code>ConnectController</code>类上已经实现了以上需求；</p>
+<h5 id="获取状态"><a href="#获取状态" class="headerlink" title="获取状态"></a>获取状态</h5><p><code>/connect</code>获取状态</p>
+<p>ConnectController中的方法只提供了数据并没有提供视图；</p>
+<p>实现<code>connect/status</code>视图即可获得社交账号的绑定状态；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(method=RequestMethod.GET)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">connectionStatus</span><span class="params">(NativeWebRequest request, Model model)</span> </span>&#123;</span><br><span class="line">    setNoCache(request);</span><br><span class="line">    processFlash(request, model);</span><br><span class="line">    <span class="comment">// 根据userId查询UserConnection表</span></span><br><span class="line">    Map&lt;String, List&lt;Connection&lt;?&gt;&gt;&gt; connections = connectionRepository.findAllConnections();</span><br><span class="line">    <span class="comment">// 系统中已经注册的服务提供商</span></span><br><span class="line">    model.addAttribute(<span class="string">"providerIds"</span>, connectionFactoryLocator.registeredProviderIds());     </span><br><span class="line">    model.addAttribute(<span class="string">"connectionMap"</span>, connections);</span><br><span class="line">    <span class="comment">// 返回connectView()</span></span><br><span class="line">    <span class="keyword">return</span> connectView();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">protected</span> String <span class="title">connectView</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// connect/status </span></span><br><span class="line">    <span class="keyword">return</span> getViewPath() + <span class="string">"status"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="实现connect-status"><a href="#实现connect-status" class="headerlink" title="实现connect/status"></a>实现connect/status</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(<span class="string">"connect/status"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocConnectionStatusView</span> <span class="keyword">extends</span> <span class="title">AbstractView</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ObjectMapper objectMapper;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">renderMergedOutputModel</span><span class="params">(Map&lt;String, Object&gt; model, HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Map&lt;String, List&lt;Connection&lt;?&gt;&gt;&gt; connections = (Map&lt;String, List&lt;Connection&lt;?&gt;&gt;&gt;) model.get(<span class="string">"connectionMap"</span>);</span><br><span class="line">        Map&lt;String, Boolean&gt; result = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (String key : connections.keySet()) &#123;</span><br><span class="line">            result.put(key, CollectionUtils.isNotEmpty(connections.get(key)));</span><br><span class="line">        &#125;</span><br><span class="line">        response.setContentType(<span class="string">"application/json;charset=UTF-8"</span>);</span><br><span class="line">        response.getWriter().write(objectMapper.writeValueAsString(result));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="绑定的实现"><a href="#绑定的实现" class="headerlink" title="绑定的实现"></a>绑定的实现</h4><p>ConnectController中的方法 /connect/{providerId} 绑定社交帐号</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">////跳转到授权的页面</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(value=<span class="string">"/&#123;providerId&#125;"</span>, method=RequestMethod.POST)</span><br><span class="line"><span class="function"><span class="keyword">public</span> RedirectView <span class="title">connect</span><span class="params">(@PathVariable String providerId, NativeWebRequest request)</span> </span>&#123;</span><br><span class="line">    ConnectionFactory&lt;?&gt; connectionFactory = connectionFactoryLocator.getConnectionFactory(providerId);</span><br><span class="line">    MultiValueMap&lt;String, String&gt; parameters = <span class="keyword">new</span> LinkedMultiValueMap&lt;String, String&gt;(); </span><br><span class="line">    preConnect(connectionFactory, parameters, request);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RedirectView(connectSupport.buildOAuthUrl(connectionFactory, request, parameters));</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        sessionStrategy.setAttribute(request, PROVIDER_ERROR_ATTRIBUTE, e);</span><br><span class="line">        <span class="keyword">return</span> connectionStatusRedirect(providerId, request);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="授权成功的回调地址"><a href="#授权成功的回调地址" class="headerlink" title="授权成功的回调地址"></a>授权成功的回调地址</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将当前的登录账户与社交账号绑定（写入到UserConnection表）</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(value=<span class="string">"/&#123;providerId&#125;"</span>, method=RequestMethod.GET, params=<span class="string">"code"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> RedirectView <span class="title">oauth2Callback</span><span class="params">(@PathVariable String providerId, NativeWebRequest request)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        OAuth2ConnectionFactory&lt;?&gt; connectionFactory = (OAuth2ConnectionFactory&lt;?&gt;) connectionFactoryLocator.getConnectionFactory(providerId);</span><br><span class="line">        Connection&lt;?&gt; connection = connectSupport.completeConnection(connectionFactory, request);</span><br><span class="line">        addConnection(connection, connectionFactory, request);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        sessionStrategy.setAttribute(request, PROVIDER_ERROR_ATTRIBUTE, e);</span><br><span class="line">        logger.warn(<span class="string">"Exception while handling OAuth2 callback ("</span> + e.getMessage() + <span class="string">"). Redirecting to "</span> + providerId +<span class="string">" connection status page."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> connectionStatusRedirect(providerId, request);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回/connext/qqed视图</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> RedirectView <span class="title">connectionStatusRedirect</span><span class="params">(String providerId, NativeWebRequest request)</span> </span>&#123;</span><br><span class="line">    HttpServletRequest servletRequest = request.getNativeRequest(HttpServletRequest.class);</span><br><span class="line">    String path = <span class="string">"/connect/"</span> + providerId + getPathExtension(servletRequest);</span><br><span class="line">    <span class="keyword">if</span> (prependServletPath(servletRequest)) &#123;</span><br><span class="line">        path = servletRequest.getServletPath() + path;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> RedirectView(path, <span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="绑定结果的视图"><a href="#绑定结果的视图" class="headerlink" title="绑定结果的视图"></a>绑定结果的视图</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocConnectView</span> <span class="keyword">extends</span> <span class="title">AbstractView</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">renderMergedOutputModel</span><span class="params">(Map&lt;String, Object&gt; model, HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        response.setContentType(<span class="string">"text/html;charset=UTF-8"</span>);</span><br><span class="line">        <span class="keyword">if</span> (model.get(<span class="string">"connections"</span>) == <span class="keyword">null</span>) &#123;</span><br><span class="line">            response.getWriter().write(<span class="string">"&lt;h3&gt;解绑成功&lt;/h3&gt;"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            response.getWriter().write(<span class="string">"&lt;h3&gt;绑定成功&lt;/h3&gt;"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="注入绑定结果的视图"><a href="#注入绑定结果的视图" class="headerlink" title="注入绑定结果的视图"></a>注入绑定结果的视图</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty</span>(prefix = <span class="string">"imooc.security.social.weixin"</span>, name = <span class="string">"app-id"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeixinAutoConfiguration</span> <span class="keyword">extends</span> <span class="title">SocialAutoConfigurerAdapter</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Bean</span>(<span class="string">"connect/weixinConnected"</span>)</span><br><span class="line">	<span class="meta">@ConditionalOnMissingBean</span>(name = <span class="string">"weixinConnectedView"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> View <span class="title">weixinConnectedView</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> ImoocConnectView();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="解除绑定的实现"><a href="#解除绑定的实现" class="headerlink" title="解除绑定的实现"></a>解除绑定的实现</h4><p>解除绑定的操作其实与绑定是一样的，只是发出请求的方式是DELETE，而不是POST；</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">http://localhost/connect/weixin</span></span><br><span class="line"><span class="attribute">Method:DELETE</span></span><br></pre></td></tr></table></figure>
+<p>发送请求后，虽然返回的响应结果是302，但是实际上在数据库中，已经完成了记录的删除；</p>
+<p>补充一下解绑的视图；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span>(&#123;<span class="string">"connect/weixinConnect"</span>,<span class="string">"connect/weixinConnected"</span>&#125;)</span><br><span class="line"><span class="meta">@ConditionalOnMissingBean</span>(name = <span class="string">"weixinConnectedView"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> View <span class="title">weixinConnectedView</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ImoocConnectView();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/01/Spring Security 9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1946,167 +2093,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/24/Spring Security 1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="REX CHEN">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="REEEEX">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/24/Spring Security 1/" itemprop="url">Spring Security | Note-1</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T00:00:00+08:00">
-                2018-08-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Spring-Security-Note-1"><a href="#Spring-Security-Note-1" class="headerlink" title="Spring Security Note-1"></a>Spring Security Note-1</h3><hr>
-<h4 id="认证和授权"><a href="#认证和授权" class="headerlink" title="认证和授权"></a>认证和授权</h4><p>对于服务的安全考虑，认证和授权是一个非常重要，并且有难度的点；</p>
-<p>它的最终表现形式之一是登录；</p>
-<h5 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h5><p>同时支持多种认证方式（传统，手机短信，微信，QQ等）；</p>
-<p>同时支持多种前端渠道（浏览器，APP）；</p>
-<p>支持集群环境，跨应用工作，SESSION控制，控制用户权限，防护与身份认证相关的攻击；</p>
-<h5 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h5><p>打造可重用的，企业级的，认证和授权模块；</p>
-<h5 id="涉及技术"><a href="#涉及技术" class="headerlink" title="涉及技术"></a>涉及技术</h5><p>Spring Security，Spring Social，Spring Security OAuth；</p>
-<h5 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h5><p>理解Spring Security以及相关框架的原理、功能；</p>
-<p>基于Spring Security以及相关框架独立开发认证授权相关功能；</p>
-<p>掌握抽象和封装的常用技巧，编写可重用的模块；</p>
-<hr>
-<h4 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h4><p>security：主模块（统一执行命令）</p>
-<p>security-core：核心业务逻辑（实现基本安全的方式）</p>
-<p>security-browser：浏览器安全逻辑</p>
-<p>security-app：app安全逻辑</p>
-<p>security-demo：样例程序</p>
-<hr>
-<h4 id="工程搭建"><a href="#工程搭建" class="headerlink" title="工程搭建"></a>工程搭建</h4><p>在创建完所有的过程后；</p>
-<p>首先对security的pom进行配置，引入dependencyManagement管理Maven项目的版本（自动管理其他依赖的版本，只需要告诉项目什么依赖即可，不需要指定版本，保证互相兼容）；</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.spring.platform<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>platform-bom<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>Brussels-SR12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--引入插件，maven的编译工具，指定JDK和编译的版本为1.8--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-complier-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">source</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">source</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">target</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">target</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">encoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">encoding</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">modules</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>../security-app<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>../security-browser<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>../security-core<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>../security-demo<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">modules</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>接下来，在core项目中，添加pom依赖，依赖过多，不与展示；</p>
-<p>添加：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--不需要添加version，由主项目的dependencyManagement控制版本，保证互相兼容--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--Spring Security &amp; OAuth2认证--&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--Redis缓存--&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--JDBC数据库--&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--MYSQL驱动--&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--Spring Social--&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--commons工具包--&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>接下来，在app和browser项目中，添加core依赖即可；</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.imooc.security<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>imooc-security-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;imooc.security.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>browser项目与app有略微不同，是一个web项目，所以需要添加spring-session依赖；</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.session<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-session<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>demo项目则引用browser依赖；</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.imooc.security<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>imooc-security-browser<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;imooc.security.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="Hello项目"><a href="#Hello项目" class="headerlink" title="Hello项目"></a>Hello项目</h4><p>首先依赖的有关数据库的包，需要先对数据库连接进行配置；</p>
-<p>暂时先对spring-session的配置，暂时关闭；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># datasource</span><br><span class="line">spring.datasource.driver-class-name=com.mysql.jdbc.Driver</span><br><span class="line">spring.datasource.url=jdbc:mysql://127.0.0.1:3306/xxx?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useSSL=false</span><br><span class="line">spring.datasource.username=root</span><br><span class="line">spring.datasource.password=xxxx</span><br><span class="line"># session</span><br><span class="line">spring.session.store-type=none</span><br><span class="line"># spring-security</span><br><span class="line">security.basic.enabled=false</span><br></pre></td></tr></table></figure>
-<p>此时访问<a href="http://localhost:8081/hello" target="_blank" rel="noopener">http://localhost:8081/hello</a> 需要帐号密码才能访问；</p>
-<p>这是由于spring-security的默认配置，这里我们先暂时关闭；</p>
-<p>如果我们需要将项目打包成可上线的包的形式，则需要在demo的pom文件中，添加一个插件；</p>
-<p>用作打包的插件，按照Spring Boot的特有方式，进行打包；</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.3.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">goal</span>&gt;</span>repackage<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">finalName</span>&gt;</span>demo<span class="tag">&lt;/<span class="name">finalName</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>此时maven进行 clean package的命令；</p>
-<p>在demo文件下的target的目录下，有两个人jar包；</p>
-<p>一个叫demo.jar（可执行jar包），一个demo.jar.original（原始文件）；</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2157,7 +2143,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2170,7 +2156,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -400,7 +400,7 @@
 <li>数据包有序号Sequence Number，对象收到则发送ACK确认，未收到则重传</li>
 <li>使用奇偶校验和检验数据在传输过程中是否有误</li>
 </ul>
-<p><img src="https://images0.cnblogs.com/blog/88420/201401/291246111727359.png" alt=""></p>
+<p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/interview1/291246111727359.png" alt=""></p>
 <ol>
 <li>URG：紧急指针 1-有效 0-忽略</li>
 <li>ACK：确认序号 1-有效 0-不包含确认信息<ol>
@@ -442,7 +442,7 @@
 <hr>
 <h4 id="TCP四次挥手"><a href="#TCP四次挥手" class="headerlink" title="TCP四次挥手"></a>TCP四次挥手</h4><p>用于TCP连接是全双工，每个方向都必须单独进行关闭，发送方和接收方都需要FIN报文和ACK报文，首先进行关闭的一方主动关闭，另一方则被动关闭。</p>
 <p>任何一方执行close()操作即可产生挥手（经过时间2MSL才真正释放）</p>
-<p><img src="https://img-blog.csdn.net/20180717204202563?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTUwMzE2/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt=""></p>
+<p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/interview1/20180717204202563.png" alt=""></p>
 <h5 id="为什么有TIME-WAIT"><a href="#为什么有TIME-WAIT" class="headerlink" title="为什么有TIME_WAIT"></a>为什么有TIME_WAIT</h5><ul>
 <li>确保有足够时间让对端收到ACK包</li>
 <li>避免新旧连接混淆</li>
@@ -480,8 +480,8 @@
 </ul>
 <p><strong>AdvertisedWindow = MaxRcvBuffer - (LastByteRcvd - LastByteRead)</strong></p>
 <p><strong>EffectiveWindow = AdvertisedWindow - (LastByteSent - LastByteAcked)</strong></p>
-<p><img src="https://s2.ax1x.com/2019/03/04/kO1AoV.png" alt="kO1AoV.png"></p>
-<h5 id="TCP会话的发送方"><a href="#TCP会话的发送方" class="headerlink" title="TCP会话的发送方"></a>TCP会话的发送方</h5><p><img src="https://s2.ax1x.com/2019/03/04/kO1jmR.png" alt="kO1jmR.png"></p>
+<p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/interview1/kO1AoV.png" alt="kO1AoV.png"></p>
+<h5 id="TCP会话的发送方"><a href="#TCP会话的发送方" class="headerlink" title="TCP会话的发送方"></a>TCP会话的发送方</h5><p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/interview1/kO1jmR.png" alt="kO1jmR.png"></p>
 <h5 id="TCP会话的接收方"><a href="#TCP会话的接收方" class="headerlink" title="TCP会话的接收方"></a>TCP会话的接收方</h5><p><img src="https://s2.ax1x.com/2019/03/04/kO3ptK.png" alt="kO3ptK.png"></p>
 <hr>
 <h4 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h4><h5 id="HTTP特点"><a href="#HTTP特点" class="headerlink" title="HTTP特点"></a>HTTP特点</h5><ul>
@@ -578,6 +578,516 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TCPClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">// 创建socket，指定连接65000端口的服务器socket</span></span><br><span class="line">        Socket socket = <span class="keyword">new</span> Socket(<span class="string">"127.0.0.1"</span>,<span class="number">65000</span>);</span><br><span class="line">        <span class="comment">// 获取输出流</span></span><br><span class="line">        OutputStream os = socket.getOutputStream();</span><br><span class="line">        <span class="comment">// 获取输入流</span></span><br><span class="line">        InputStream is = socket.getInputStream();</span><br><span class="line">        <span class="comment">// 字符串转换byte,并且写入到输出流中</span></span><br><span class="line">        os.write(<span class="string">"hello world"</span>.getBytes());</span><br><span class="line">        <span class="keyword">int</span> ch = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">byte</span>[] buff = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">        ch = is.read(buff);</span><br><span class="line">        <span class="comment">// 将接收流的byte数组转换为字符串(从服务器端发回的字符串长度数据)</span></span><br><span class="line">        String content = <span class="keyword">new</span> String(buff,<span class="number">0</span>,ch);</span><br><span class="line">        System.out.println(content);</span><br><span class="line">        <span class="comment">// 关闭流</span></span><br><span class="line">        is.close();</span><br><span class="line">        os.close();</span><br><span class="line">        socket.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h5 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UDPServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 服务端接受客户端发送的数据报</span></span><br><span class="line">        DatagramSocket socket = <span class="keyword">new</span> DatagramSocket(<span class="number">65001</span>);</span><br><span class="line">        <span class="keyword">byte</span>[] buff = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">128</span>];</span><br><span class="line">        DatagramPacket packet = <span class="keyword">new</span> DatagramPacket(buff, buff.length);</span><br><span class="line">        <span class="comment">// 接受客户端发送过来的内容,并且将内容封装到DatagramPacket中</span></span><br><span class="line">        socket.receive(packet);</span><br><span class="line">        <span class="comment">// 从DatagramPacket对象中获取真正存储的数据</span></span><br><span class="line">        <span class="keyword">byte</span>[] data = packet.getData();</span><br><span class="line">        <span class="comment">// 将数据从二进制转换成字符串</span></span><br><span class="line">        String content = <span class="keyword">new</span> String(data,<span class="number">0</span>,packet.getLength());</span><br><span class="line">        System.out.println(content);</span><br><span class="line">        <span class="comment">// 将要发送给客户端的数据转换成二进制</span></span><br><span class="line">        <span class="keyword">byte</span>[] sendedContent = String.valueOf(content.length()).getBytes();</span><br><span class="line">        <span class="comment">// 服务端给客户端发送数据报</span></span><br><span class="line">        DatagramPacket packetToClient = <span class="keyword">new</span> DatagramPacket(sendedContent,sendedContent.length,packet.getAddress(),packet.getPort());</span><br><span class="line">        <span class="comment">// 发送数据给客户端</span></span><br><span class="line">        socket.send(packetToClient);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UDPClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 客户端发送数据给服务端</span></span><br><span class="line">        DatagramSocket socket = <span class="keyword">new</span> DatagramSocket();</span><br><span class="line">        <span class="comment">// 要发送给服务端的数据</span></span><br><span class="line">        <span class="keyword">byte</span>[] buff = <span class="string">"hello world"</span>.getBytes();</span><br><span class="line">        <span class="comment">// 将IP地址封装</span></span><br><span class="line">        InetAddress address = InetAddress.getByName(<span class="string">"127.0.0.1"</span>);</span><br><span class="line">        <span class="comment">// 将要发送的数据封装</span></span><br><span class="line">        DatagramPacket packet = <span class="keyword">new</span> DatagramPacket(buff, buff.length, address, <span class="number">65001</span>);</span><br><span class="line">        <span class="comment">// 发送</span></span><br><span class="line">        socket.send(packet);</span><br><span class="line">        <span class="comment">// 客户端接收服务端发来的数据报</span></span><br><span class="line">        <span class="keyword">byte</span>[] data = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">128</span>];</span><br><span class="line">        <span class="comment">// 创建DatagramPacket对象存储服务端发送的数据</span></span><br><span class="line">        DatagramPacket receivedPacket = <span class="keyword">new</span> DatagramPacket(data, data.length);</span><br><span class="line">        <span class="comment">// 将接收到的数据存储到DatagramPacket对象中</span></span><br><span class="line">        socket.receive(receivedPacket);</span><br><span class="line">        <span class="comment">// 将服务端发送的数据打印</span></span><br><span class="line">        String content = <span class="keyword">new</span> String(receivedPacket.getData(), <span class="number">0</span>, receivedPacket.getLength());</span><br><span class="line">        System.out.println(content);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/04/INTERVIEW-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="REX CHEN">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="REEEEX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/04/INTERVIEW-2/" itemprop="url">Interview | Note-2</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-04T00:00:00+08:00">
+                2019-03-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Interview-Note-2-数据库"><a href="#Interview-Note-2-数据库" class="headerlink" title="Interview | Note-2 数据库"></a>Interview | Note-2 数据库</h2><h3 id="Q：如何设计一个关系型数据库？"><a href="#Q：如何设计一个关系型数据库？" class="headerlink" title="Q：如何设计一个关系型数据库？"></a>Q：如何设计一个关系型数据库？</h3><ul>
+<li>RDBMS<ul>
+<li>存储模块</li>
+<li>程序实例（用逻辑结构映射物理结构）<ul>
+<li>存储管理<ul>
+<li>数据的格式和分隔进行统一的管理，即把数据通过逻辑的形式给组织和表示出来</li>
+<li>多行数据组成块、页，减少逐行读取浪费的效率</li>
+</ul>
+</li>
+<li>缓存机制<ul>
+<li>直接从内存中取出已使用过的高频数据，减少I/O</li>
+<li>优化访问速率（数据多行组成块或页）</li>
+</ul>
+</li>
+<li>SQL解析<ul>
+<li>将SQL编译解析成机器可识别的语言</li>
+<li>缓存到内存中，提升SQL执行的效率（已编译好）</li>
+</ul>
+</li>
+<li>日志管理<ul>
+<li>对操作做记录</li>
+</ul>
+</li>
+<li>权限划分</li>
+<li>容灾机制<ul>
+<li>考虑异常情况的处理、恢复、恢复的程度</li>
+</ul>
+</li>
+<li>索引管理、锁管理<ul>
+<li>提高数据库查询的速度，支持并发</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://s2.ax1x.com/2019/03/05/kjdMg1.png" alt="kjdMg1.png"></p>
+<h4 id="索引模块"><a href="#索引模块" class="headerlink" title="索引模块"></a>索引模块</h4><h5 id="为什么要使用索引？"><a href="#为什么要使用索引？" class="headerlink" title="为什么要使用索引？"></a>为什么要使用索引？</h5><ul>
+<li><p>块/页：由多行数据组成</p>
+</li>
+<li><p>全表扫描</p>
+<ul>
+<li>将全表的数据一次性全部或分批次的加载到数据当中</li>
+<li>将块、页轮询查找</li>
+</ul>
+</li>
+<li>数据之间挑选关键信息，依据字典的设计思路，将相关数据分类，按照特定的关键信息进行索引查询，以提高查询速度</li>
+</ul>
+<h5 id="什么样的信息能成为索引？"><a href="#什么样的信息能成为索引？" class="headerlink" title="什么样的信息能成为索引？"></a>什么样的信息能成为索引？</h5><ul>
+<li>能够将查询限定在一定查找范围内的字段（主键、唯一键、普通键）</li>
+</ul>
+<h5 id="索引的数据结构"><a href="#索引的数据结构" class="headerlink" title="索引的数据结构"></a>索引的数据结构</h5><ul>
+<li>生成索引、建立二叉查找树进行二分查找</li>
+<li>建立B-Tree、红黑树、B+-Tree（MySQL）、Hash、BitMap</li>
+</ul>
+<hr>
+<h4 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h4><ul>
+<li>每一次的数据操作，都与I/O有关，随着数据增多，树的高度也增加，随之I/O增加</li>
+</ul>
+<p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/1551799980915.png" alt=""></p>
+<h4 id="B-Tree"><a href="#B-Tree" class="headerlink" title="B-Tree"></a>B-Tree</h4><p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/1552043089150.png" alt="1552043089150"></p>
+<ul>
+<li>定义<ul>
+<li>根节点至少包括两个孩子</li>
+<li>树中每个节点最多含有m个孩子</li>
+<li>除根节点和叶节点外，其他每个节点至少由ceil(m/2)个孩子</li>
+<li>所有叶子节点都在同一层</li>
+<li>假设每个非终端结点中包含有n个关键字（蓝色）信息，其中<ul>
+<li>Ki为关键字，且关键字按顺序升序</li>
+<li>关键字的个数n必须满足，[ceil(m/2)-1] &lt;= n &lt;= m-1</li>
+<li>非叶子结点的指针，左指针子树的关键字都小于该左关键字，右指针子树的关键字都大于该右关键字，其余在该范围子树内</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>目的<ul>
+<li>使得每个索引块存储更多的信息、树的高度尽可能矮，减少I/O次数</li>
+<li>拒绝变为线性情况</li>
+</ul>
+</li>
+<li>时间效率<ul>
+<li>O(logn)</li>
+</ul>
+</li>
+</ul>
+<h4 id="B-Tree-1"><a href="#B-Tree-1" class="headerlink" title="B+-Tree"></a>B+-Tree</h4><p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/1552043866565.png" alt="1552043866565"></p>
+<ul>
+<li>B+树是B树的变体，定义基本与B树相同，还包括<ul>
+<li>非叶子节点的子树与关键字个数相同<ul>
+<li>可以存储较B树更多的关键字</li>
+</ul>
+</li>
+<li>非叶子界面的子树指针P[i]，指向关键字值[K[i] , K[i+1])的子树<ul>
+<li>例如10，最后一个关键字的大小18，一定小于20；或者18可以是该子树的关键字值</li>
+</ul>
+</li>
+<li>非叶子节点仅用于索引，数据都保存在叶子节点中<ul>
+<li>所有检索从根开始，到叶子结束</li>
+<li>非叶子节点不存储数据，所有可以存储更多的关键字，更矮，更快</li>
+</ul>
+</li>
+<li>所有叶子节点均有一个链指针指向下一个叶子节点，按升序<ul>
+<li>例如5-8-9，10-15-18</li>
+<li>方便做范围统计</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>B+树，更适合用来做存储索引<ul>
+<li>磁盘读写代价更低（不存放数据，只存放索引）</li>
+<li>查询效率更加稳定（必须从根到叶子，长度相同）</li>
+<li>更利于对数据库的扫描（遍历叶子节点即可完成对全部关键字信息的扫描）</li>
+</ul>
+</li>
+</ul>
+<h4 id="Hash-amp-BitMap"><a href="#Hash-amp-BitMap" class="headerlink" title="Hash &amp; BitMap"></a>Hash &amp; BitMap</h4><p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/1552044462517.png" alt="1552044462517"></p>
+<ul>
+<li>Hash索引，根据Hash函数的计算，一次定位找到所需数据所在的bucket<ul>
+<li>例如，对Sandra Dee的keys进行一次Hash运算，便能找到所在的buckets</li>
+<li>将152的entries全部加载到内存当中</li>
+<li>由于该entries是一个链表，顺着指针找到Sandra Dee</li>
+</ul>
+</li>
+<li>Hash索引的缺点在于<ul>
+<li>仅能等值查询，不能使用范围查询</li>
+<li>无法被用来避免数据的排序操作</li>
+<li>不能利用部分索引键查询（组合索引键计算的Hash值，而不是单独计算）</li>
+<li>不能避免表扫描</li>
+<li>遇到大量Hash值相等的情况下，性能不一定高于B树<ul>
+<li>大量记录指针信息存放在同一个buckets的情况，导致整体性能低下</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/1552044844178.png" alt="1552044844178"></p>
+<ul>
+<li>BitMap位图索引<ul>
+<li>当表中的某个字段，只有几种值的时候（性别-男/女）</li>
+<li>位图表示行是否存在该值</li>
+<li>锁的粒度非常大（适合并发少、统计多的系统）</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="密集索引和稀疏索引"><a href="#密集索引和稀疏索引" class="headerlink" title="密集索引和稀疏索引"></a>密集索引和稀疏索引</h4><p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/1552045037555.png" alt="1552045037555"></p>
+<ul>
+<li>区别<ul>
+<li>密集索引文件中的每个搜索码值都对应一个索引值<ul>
+<li>叶子节点不仅保存键值，还保存位于同一行其它列的信息，用于密集索引决定了表的物理排列顺序；一个表只能有一个物理排列顺序（即只能有一个密集索引）</li>
+</ul>
+</li>
+<li>稀疏索引文件只为索引码的某些值建立索引项<ul>
+<li>叶子节点仅保存了键位信息（或主键信息），以及该行数据的地址</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/1552045444604.png" alt="1552045444604"></p>
+<ul>
+<li>举例MySQL的存储引擎<ul>
+<li>MyIsam<ul>
+<li>其索引均属于稀疏索引</li>
+</ul>
+</li>
+<li>InnoDB<ul>
+<li>有且仅有一个密集索引（选取规则如下）<ul>
+<li>若一个主键被定义，该主键则作为密集索引</li>
+<li>若没有主键被定义，该表的第一个唯一非空索引则作为密集索引</li>
+<li>若不满足以上条件，innodb内部会生成一个隐藏主键（密集索引）</li>
+<li>非主键索引存储相关键位和其对应的主键值，包含两次查找（一次是次级索引自身，再查找主键）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>表的结构信息存储在.frm文件内</li>
+<li>Innodb的.ibd文件，存储数据和索引</li>
+<li>MyIsam的.MYI存储索引、.MYD存储数据</li>
+</ul>
+<hr>
+<h3 id="调优SQL"><a href="#调优SQL" class="headerlink" title="调优SQL"></a>调优SQL</h3><h4 id="定位并优化慢查询SQL"><a href="#定位并优化慢查询SQL" class="headerlink" title="定位并优化慢查询SQL"></a>定位并优化慢查询SQL</h4><h5 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h5><ul>
+<li>根据慢日志定位慢查询SQL</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> variablies <span class="keyword">like</span> <span class="string">'%query%'</span>;</span><br><span class="line"># 慢查询是否开启</span><br><span class="line">show_query_log;</span><br><span class="line">-&gt; set global slow_query_log = on;</span><br><span class="line"># 慢查询时间</span><br><span class="line">long_query_time;</span><br><span class="line">-&gt; set global long_query_time = 1;</span><br><span class="line"># 慢查询输入日志地址</span><br><span class="line">show_query_log_file;</span><br><span class="line"># 慢查询SQL的数量</span><br><span class="line"><span class="keyword">show</span> <span class="keyword">status</span> <span class="keyword">like</span> <span class="string">'%slow_queries%'</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 例200W条数据</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> person <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">name</span> <span class="keyword">desc</span>;</span><br><span class="line"># 查询使用时间3.36s</span><br><span class="line"><span class="keyword">show</span> <span class="keyword">status</span> <span class="keyword">like</span> <span class="string">'%slow_queries%'</span>;</span><br><span class="line"># 结果为1，查看慢查询日志，记录到SQL</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用explain等工具分析SQL</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> person <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">name</span> <span class="keyword">desc</span>;</span><br><span class="line"># id(越大越先执行)</span><br><span class="line"># 关键字段type index &gt; all  执行的全表扫描</span><br><span class="line"># 关键字段extra </span><br><span class="line">	# Using filesort(对结果使用一个外部索引排序，而不是从表里按索引次序读取相关内容)</span><br><span class="line">	# Using temporary(对查询结果排序时使用临时表)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改SQL或尽量让SQL使用索引</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 查询其他更具有唯一性的字段</span><br><span class="line"># 查询含有索引的字段</span><br><span class="line"># 给某个字段添加索引</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> <span class="keyword">count</span>(<span class="keyword">id</span>) <span class="keyword">from</span> person;</span><br><span class="line"># 解释器使用的type是index、key是account</span><br><span class="line"># 不使用主键的原因是，MySQL的查询优化器做决定的</span><br><span class="line"># 最重要的目标是：尽可能使用索引，并且是最严格的索引，来消除尽可能多的数据行</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="联合索引的最左匹配原则的成因"><a href="#联合索引的最左匹配原则的成因" class="headerlink" title="联合索引的最左匹配原则的成因"></a>联合索引的最左匹配原则的成因</h4><p>联合索引：由多列组成的索引</p>
+<p>最左匹配原则：对A、B两列设置联合索引，使用语句where a = b 或 where a时，会使用该联合索引进行查询；但是使用where b的时候则不会使用该联合索引进行查询</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">KEY 'index_area_title'('area','title')；</span><br><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> person <span class="keyword">where</span> area = <span class="string">'X'</span> <span class="keyword">and</span> title = <span class="string">'Y'</span>;</span><br><span class="line"># 调用联合索引 type = ref key = index_area_title</span><br><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> person <span class="keyword">where</span> area = <span class="string">'X'</span>;</span><br><span class="line"># 调用联合索引 type = ref key = index_area_title</span><br><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> person <span class="keyword">where</span> title = <span class="string">'Y'</span>;</span><br><span class="line"># key = null type = all(全表扫描)</span><br><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> person <span class="keyword">where</span> title = <span class="string">'Y'</span> <span class="keyword">and</span> area = <span class="string">'X'</span>;</span><br><span class="line"># 调用联合索引 type = ref key = index_area_title</span><br></pre></td></tr></table></figure>
+<ul>
+<li>最左匹配原则<ul>
+<li>MySQL会一直向右匹配直到遇到范围查询（&gt;、&lt;、between、like）就停止匹配</li>
+<li>例如a = 3 and b = 4 and c &gt; 5 and d = 6<ul>
+<li>如果建立(a,b,c,d)顺序的索引，d是用不到索引的</li>
+<li>如果建立(a,b,d,c)顺序的索引，则全部都可以用到索引，a，b，d的顺序可以任意调整</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>=和in可以乱序<ul>
+<li>比如a = 1 and b = 2 and c = 3 建立(a,b,c)索引可以任意顺序，MySQL的查询优化器可以优化索引可以识别的形式</li>
+</ul>
+</li>
+</ul>
+<h5 id="成因"><a href="#成因" class="headerlink" title="成因"></a>成因</h5><p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/1552099317770.png" alt="1552099317770"></p>
+<ul>
+<li>MySQL建立联合索引的规则是首先会对联合索引的最左侧（即索引的第一个字段进行排序）<ul>
+<li>在第一个字段排序的基础上，再对索引上第二个字段进行排序（类似order by col1,col2）</li>
+<li>那么第一个字段是绝对有序的，而第二个字段则是无序的</li>
+<li>因此在一般情况下，直接只用第二个字段判断是使用不到索引的</li>
+</ul>
+</li>
+</ul>
+<h4 id="索引是越多越好吗"><a href="#索引是越多越好吗" class="headerlink" title="索引是越多越好吗"></a>索引是越多越好吗</h4><ul>
+<li>数据量小的表不需要建立索引，建立会增加额外的索引开销</li>
+<li>数据变更需要维护索引，更多的索引意味更多的维护成本</li>
+<li>更多的索引意味更多的存储空间</li>
+</ul>
+<hr>
+<h3 id="锁模块"><a href="#锁模块" class="headerlink" title="锁模块"></a>锁模块</h3><h4 id="MyISAM与InnoDB关于锁的区别"><a href="#MyISAM与InnoDB关于锁的区别" class="headerlink" title="MyISAM与InnoDB关于锁的区别"></a>MyISAM与InnoDB关于锁的区别</h4><ul>
+<li>MyISAM默认表级锁，不支持行级锁</li>
+<li>InnoDB默认用行级锁，也支持表级锁</li>
+<li>读锁（共享锁）、写锁（排它锁）</li>
+</ul>
+<h5 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h5><ul>
+<li>MyISAM在进行查询的时候，会自动给表加上一个读锁，而对数据进行增删改的时候，会加上表级的写锁<ul>
+<li>当读锁没有被释放的时候，另外一个session想要对同一个表加上写锁，就会被阻塞，直到所有的读锁被释放为止</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 显式添加读锁</span><br><span class="line"><span class="keyword">lock</span> <span class="keyword">tables</span> person_myisam <span class="keyword">read</span>;</span><br><span class="line"># 释放锁</span><br><span class="line"><span class="keyword">unlock</span> <span class="keyword">tables</span>;</span><br><span class="line"># 对于select语句显式上排它锁</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> person_myisam <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">between</span> <span class="number">1</span> <span class="keyword">and</span> <span class="number">2000000</span> <span class="keyword">for</span> <span class="keyword">update</span>;</span><br></pre></td></tr></table></figure>
+<h5 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h5><ul>
+<li>支持事务，可以通过session获取锁，暂时不自动提交的方式，模拟并发访问的过程</li>
+<li>不走索引的操作，会执行表级锁</li>
+<li>MySQL默认自动提交事务</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 两个session对同一行数据进行修改</span><br><span class="line"><span class="keyword">update</span> person <span class="keyword">set</span> title = <span class="string">'test'</span> <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>结果发现，并没有出现第二个session在执行时出现阻塞的情况<ul>
+<li>InnoDB使用的是二段锁，即加锁和解锁两个步骤，即先对同一个事务里的一批操作分别进行加锁，然后commit的时候，再对事务里的加锁统一进行解锁，而当前的commit是自动操作</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 关闭session的自动提交</span><br><span class="line"><span class="keyword">set</span> autocommit = <span class="number">0</span>;</span><br><span class="line"># 其中一个session上共享锁</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> person <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">3</span>;</span><br><span class="line"># 另一个session对同一行进行update操作</span><br><span class="line"><span class="keyword">update</span> person <span class="keyword">set</span> title = <span class="string">'test3'</span> <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">3</span>;</span><br><span class="line"># 结果第二个session的修改数据成功</span><br><span class="line"># 再分别对两个session</span><br><span class="line"><span class="keyword">commit</span>;</span><br><span class="line"># 发现数据已经修改成功 title = 'test3'</span><br><span class="line"># 显式的给select加共享锁</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> person <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">3</span> <span class="keyword">lock</span> <span class="keyword">in</span> <span class="keyword">share</span> <span class="keyword">mode</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>因为InnoDB对select进行了改进，第一个session中的select操作并没有对该行上锁，所以导致更新成功</li>
+<li>检验InnoDB支持行级锁</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># session1对id=3的数据加共享锁</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> person <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">3</span> <span class="keyword">lock</span> <span class="keyword">in</span> <span class="keyword">share</span> <span class="keyword">mode</span>;</span><br><span class="line"># session2对id=4的数据做更新</span><br><span class="line"><span class="keyword">update</span> person <span class="keyword">set</span> title = <span class="string">'test4'</span> <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">4</span>;</span><br><span class="line"># 该语句并没有被阻塞</span><br></pre></td></tr></table></figure>
+<h5 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h5><ul>
+<li>MyISAM<ul>
+<li>频繁执行全表count语句</li>
+<li>对数据进行增删改的频率不高，查询非常频繁</li>
+<li>没有事务</li>
+</ul>
+</li>
+<li>InnoDB<ul>
+<li>数据CRUD频繁</li>
+<li>可靠性要求比较高，要求支持事务</li>
+</ul>
+</li>
+</ul>
+<h4 id="数据库锁的分类"><a href="#数据库锁的分类" class="headerlink" title="数据库锁的分类"></a>数据库锁的分类</h4><ul>
+<li>按锁的粒度：表级锁、行级锁、页级锁</li>
+<li>按锁的级别：共享锁、排它锁</li>
+<li>按加锁的方式：自动锁、显式锁</li>
+<li>按操作划分：DML锁、DDL锁</li>
+<li>按使用方式：乐观锁、悲观锁（<a href="https://www.imooc.com/article/details/id/44217）" target="_blank" rel="noopener">https://www.imooc.com/article/details/id/44217）</a></li>
+</ul>
+<h4 id="数据库事务的四大特性ACID"><a href="#数据库事务的四大特性ACID" class="headerlink" title="数据库事务的四大特性ACID"></a>数据库事务的四大特性ACID</h4><ul>
+<li>原子性：要么全做，要么全不做</li>
+<li>一致性：数据库应保证从一个一致性状态到另一个一致性状态（数据间的完整性约束）</li>
+<li>隔离性：多个事务并发执行时，一个事务的执行，不能影响另一个事务的执行</li>
+<li>持久性：一个事务一旦提交，对数据库数据的修改应该是永久影响</li>
+</ul>
+<hr>
+<h4 id="事务隔离级别以及各级别下的并发访问问题"><a href="#事务隔离级别以及各级别下的并发访问问题" class="headerlink" title="事务隔离级别以及各级别下的并发访问问题"></a>事务隔离级别以及各级别下的并发访问问题</h4><p>ORACLE（READ-COMMITED）/ MYSQL(REPETABLE-READ)</p>
+<h5 id="更新丢失"><a href="#更新丢失" class="headerlink" title="更新丢失"></a>更新丢失</h5><ul>
+<li><p>MySQL所有事务隔离级别在数据库层面上均可避免</p>
+</li>
+<li><p>定义：事务的更新，覆盖了另一个事务的更新</p>
+</li>
+<li><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/1552122048065.png" alt="1552122048065"></li>
+</ul>
+<h5 id="脏读"><a href="#脏读" class="headerlink" title="脏读"></a>脏读</h5><ul>
+<li><p>READ-COMMITED事务隔离级别以上可避免</p>
+</li>
+<li><p>定义：一个事务读取到另一个未提交事务的数据（即：读到了别的事务回滚前的脏数据）</p>
+</li>
+<li>导致：网络原因修改失败失败情况下，回滚会失败，数据修改错误</li>
+</ul>
+<h5 id="不可重复读"><a href="#不可重复读" class="headerlink" title="不可重复读"></a>不可重复读</h5><ul>
+<li><p>REPETABLE-READ事务隔离级别以上可避免</p>
+</li>
+<li><p>定义：事务A首先读取一条数据，然后执行事务逻辑时，事务B将该数据改变，然后事务A再次读取，发现数据不匹配</p>
+</li>
+<li>导致：多次数据不同的情况下，进行某次获取数据的结果进行修改，则会造成数据紊乱的问题</li>
+</ul>
+<h5 id="幻读"><a href="#幻读" class="headerlink" title="幻读"></a>幻读</h5><ul>
+<li>SERIALIZABLE事务隔离级别可避免</li>
+<li>定义：事务A首先根据条件索引得到N条数据，然后事务B改变了这N条数据之外的M条或者增添了M条符合事务A搜索条件的数据，导致事务A再次搜索发现有N+M条数据（即：当前事务读第一次取到的数据比后来读取到数据条目少）</li>
+</ul>
+<p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/1552123889777.png" alt="1552123889777"></p>
+<hr>
+<h4 id="InnoDB可重复读隔离级别下如何避免幻读"><a href="#InnoDB可重复读隔离级别下如何避免幻读" class="headerlink" title="InnoDB可重复读隔离级别下如何避免幻读"></a>InnoDB可重复读隔离级别下如何避免幻读</h4><h5 id="当前读和快照读"><a href="#当前读和快照读" class="headerlink" title="当前读和快照读"></a>当前读和快照读</h5><ul>
+<li>当前读<ul>
+<li>读取当前记录，而且读取之后还需要保证其他并发事务不能修改当前记录，对读取的记录加锁</li>
+<li>select … lock in share mode;</li>
+<li>select … for update;</li>
+<li>update,delete,insert</li>
+</ul>
+</li>
+<li>快照读<ul>
+<li>不加锁的非阻塞读，select</li>
+<li>有可能读取的数据不是最新版本</li>
+</ul>
+</li>
+</ul>
+<h4 id="RC级别下的InnoDB的非阻塞读如何实现"><a href="#RC级别下的InnoDB的非阻塞读如何实现" class="headerlink" title="RC级别下的InnoDB的非阻塞读如何实现"></a>RC级别下的InnoDB的非阻塞读如何实现</h4><ul>
+<li>数据行里的DB_TRX_ID、DB_ROLL_PTR、DB_ROW_ID字段<ul>
+<li>DB_TRX_ID：表示最后一个事务的更新和插入</li>
+<li>DB_ROLL_PTR：指向当前记录项undo log信息</li>
+<li>DB_ROW_ID：标识插入的新数据行的ID</li>
+</ul>
+</li>
+<li>undo日志<ul>
+<li><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/1552125758042.png" alt="1552125758042"></li>
+<li>insert-undo-log<ul>
+<li>事务对新记录的undo-log，只在事务回滚时需要，在事务提交后可以立即丢弃</li>
+</ul>
+</li>
+<li>update-undo-log<ul>
+<li>事务进行delete或者update操作，不仅在事务回滚时需要，快照读也需要，不可随意删除；只有数据库的快照读不涉及该undo-log时，才可删除</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>read view</li>
+</ul>
+<h4 id="RR级别下的InnoDB的非阻塞读如何实现——使用next-key锁"><a href="#RR级别下的InnoDB的非阻塞读如何实现——使用next-key锁" class="headerlink" title="RR级别下的InnoDB的非阻塞读如何实现——使用next-key锁"></a>RR级别下的InnoDB的非阻塞读如何实现——使用next-key锁</h4><ul>
+<li>表象：快照读（非阻塞读）——伪MVCC(行级锁的变种)</li>
+<li>内在：next-key锁（行锁 + Gap锁）<ul>
+<li>行锁：对单个行记录上锁</li>
+<li>Gap锁：索引树中，插入记录的空隙，锁定一定范围，但不包括记录本身；防止同一事务的两次当前读，出现幻读的情况</li>
+</ul>
+</li>
+</ul>
+<h5 id="对主键索引或唯一索引会用到Gap锁吗"><a href="#对主键索引或唯一索引会用到Gap锁吗" class="headerlink" title="对主键索引或唯一索引会用到Gap锁吗"></a>对主键索引或唯一索引会用到Gap锁吗</h5><ul>
+<li>如果where条件全部命中，则不用Gap锁，只会加记录锁</li>
+<li>如果where条件部分命中或者全都不命中，则会加Gap锁<ul>
+<li>部分命中情况下，Gap锁的范围，则是条件的最小和最大情况的范围</li>
+</ul>
+</li>
+</ul>
+<h5 id="Gap锁会用在非唯一索引或者不走索引的当前读中"><a href="#Gap锁会用在非唯一索引或者不走索引的当前读中" class="headerlink" title="Gap锁会用在非唯一索引或者不走索引的当前读中"></a>Gap锁会用在非唯一索引或者不走索引的当前读中</h5><ul>
+<li>非唯一索引（左开右闭区间）<ul>
+<li><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/1552126635765.png" alt="1552126635765"></li>
+</ul>
+</li>
+<li>不走索引<ul>
+<li><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/1552126846557.png" alt="1552126846557"></li>
+<li>当前读不走索引的时候，都所有的Gap都上锁（类似锁表），防止幻读的效果</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="关键语法"><a href="#关键语法" class="headerlink" title="关键语法"></a>关键语法</h3><h4 id="GROUP-BY"><a href="#GROUP-BY" class="headerlink" title="GROUP BY"></a>GROUP BY</h4><ul>
+<li>满足SELECT子句中的列名必须为分组列或列函数（要么是GROUP BY需要用到的列；要么是统计关键字的列）</li>
+<li>列函数对于GROUP BY子句定义的每个组各返回一个结果</li>
+</ul>
+<p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/1552144173879.png" alt="1552144173879"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 查询所有同学的学号、选课数、总成绩</span><br><span class="line"><span class="keyword">select</span> student_id,<span class="keyword">count</span>(course_id),<span class="keyword">sum</span>(score)</span><br><span class="line"><span class="keyword">from</span> score</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> student_id;</span><br><span class="line"></span><br><span class="line"># 查询所有同学的学号、姓名、选课数、总成绩</span><br><span class="line"><span class="keyword">select</span> s.student_id,stu.name,<span class="keyword">count</span>(s.course_id),<span class="keyword">sum</span>(s.score)</span><br><span class="line"><span class="keyword">from</span> </span><br><span class="line">	score s,</span><br><span class="line">	student stu</span><br><span class="line"><span class="keyword">where</span> </span><br><span class="line">	s.student_id = stu.student_id</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> s.student_id;</span><br></pre></td></tr></table></figure>
+<h4 id="HAVING"><a href="#HAVING" class="headerlink" title="HAVING"></a>HAVING</h4><ul>
+<li>通常与GROUP BY子句一起使用（指对GROUP BY的内容再筛选）</li>
+<li>WHERE过滤行，HAVING过滤组</li>
+<li>出现在同一SQL的顺序：WHERE &gt; GROUP BY &gt; HAVING</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># 查询平均成绩大于60分的学号和平均成绩</span><br><span class="line"><span class="keyword">select</span> student_id,<span class="keyword">avg</span>(score)</span><br><span class="line"><span class="keyword">from</span> score</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> student_id</span><br><span class="line"><span class="keyword">having</span> <span class="keyword">avg</span>(score) &gt; <span class="number">60</span>;</span><br><span class="line"></span><br><span class="line"># 查询没有学全所有课的同学的学号、姓名</span><br><span class="line"><span class="keyword">select</span> </span><br><span class="line">	stu.student_id,stu.name</span><br><span class="line"><span class="keyword">from</span> </span><br><span class="line">	student stu,score s</span><br><span class="line"><span class="keyword">where</span> </span><br><span class="line">	stu.student_id = s.student_id</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> </span><br><span class="line">	stu.student_id</span><br><span class="line"><span class="keyword">having</span></span><br><span class="line">	<span class="keyword">count</span>(*) &lt; (</span><br><span class="line">    	<span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> course</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
 
           
         
@@ -2041,153 +2551,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/02/Spring Security 10/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="REX CHEN">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="REEEEX">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/02/Spring Security 10/" itemprop="url">Spring Security | Note-10</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-02T00:00:00+08:00">
-                2018-09-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Spring-Security-Note-10"><a href="#Spring-Security-Note-10" class="headerlink" title="Spring Security Note-10"></a>Spring Security Note-10</h3><hr>
-<h4 id="微信登录开发"><a href="#微信登录开发" class="headerlink" title="微信登录开发"></a>微信登录开发</h4><p>微信开发的整个流程，原理和QQ是几乎一致；</p>
-<p><code>api</code> 定义api绑定的公共接口</p>
-<p><code>config</code> 微信的一些配置信息</p>
-<p><code>connect</code>与服务提供商建立连接所需的一些类</p>
-<p>代码过多且雷同，详见GITHUB；</p>
-<hr>
-<h4 id="社交帐号绑定与解绑"><a href="#社交帐号绑定与解绑" class="headerlink" title="社交帐号绑定与解绑"></a>社交帐号绑定与解绑</h4><p>实现绑定与解绑，需要知道社交账号的绑定状态，绑定就是重新经历<code>OAuth2</code>流程,关联当前登录用户；</p>
-<p>解绑就是删除<code>UserConnection</code>表中的数据；</p>
-<p><code>Spring Social</code>默认在<code>ConnectController</code>类上已经实现了以上需求；</p>
-<h5 id="获取状态"><a href="#获取状态" class="headerlink" title="获取状态"></a>获取状态</h5><p><code>/connect</code>获取状态</p>
-<p>ConnectController中的方法只提供了数据并没有提供视图；</p>
-<p>实现<code>connect/status</code>视图即可获得社交账号的绑定状态；</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(method=RequestMethod.GET)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">connectionStatus</span><span class="params">(NativeWebRequest request, Model model)</span> </span>&#123;</span><br><span class="line">    setNoCache(request);</span><br><span class="line">    processFlash(request, model);</span><br><span class="line">    <span class="comment">// 根据userId查询UserConnection表</span></span><br><span class="line">    Map&lt;String, List&lt;Connection&lt;?&gt;&gt;&gt; connections = connectionRepository.findAllConnections();</span><br><span class="line">    <span class="comment">// 系统中已经注册的服务提供商</span></span><br><span class="line">    model.addAttribute(<span class="string">"providerIds"</span>, connectionFactoryLocator.registeredProviderIds());     </span><br><span class="line">    model.addAttribute(<span class="string">"connectionMap"</span>, connections);</span><br><span class="line">    <span class="comment">// 返回connectView()</span></span><br><span class="line">    <span class="keyword">return</span> connectView();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">protected</span> String <span class="title">connectView</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// connect/status </span></span><br><span class="line">    <span class="keyword">return</span> getViewPath() + <span class="string">"status"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="实现connect-status"><a href="#实现connect-status" class="headerlink" title="实现connect/status"></a>实现connect/status</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(<span class="string">"connect/status"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocConnectionStatusView</span> <span class="keyword">extends</span> <span class="title">AbstractView</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ObjectMapper objectMapper;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">renderMergedOutputModel</span><span class="params">(Map&lt;String, Object&gt; model, HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Map&lt;String, List&lt;Connection&lt;?&gt;&gt;&gt; connections = (Map&lt;String, List&lt;Connection&lt;?&gt;&gt;&gt;) model.get(<span class="string">"connectionMap"</span>);</span><br><span class="line">        Map&lt;String, Boolean&gt; result = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (String key : connections.keySet()) &#123;</span><br><span class="line">            result.put(key, CollectionUtils.isNotEmpty(connections.get(key)));</span><br><span class="line">        &#125;</span><br><span class="line">        response.setContentType(<span class="string">"application/json;charset=UTF-8"</span>);</span><br><span class="line">        response.getWriter().write(objectMapper.writeValueAsString(result));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="绑定的实现"><a href="#绑定的实现" class="headerlink" title="绑定的实现"></a>绑定的实现</h4><p>ConnectController中的方法 /connect/{providerId} 绑定社交帐号</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">////跳转到授权的页面</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(value=<span class="string">"/&#123;providerId&#125;"</span>, method=RequestMethod.POST)</span><br><span class="line"><span class="function"><span class="keyword">public</span> RedirectView <span class="title">connect</span><span class="params">(@PathVariable String providerId, NativeWebRequest request)</span> </span>&#123;</span><br><span class="line">    ConnectionFactory&lt;?&gt; connectionFactory = connectionFactoryLocator.getConnectionFactory(providerId);</span><br><span class="line">    MultiValueMap&lt;String, String&gt; parameters = <span class="keyword">new</span> LinkedMultiValueMap&lt;String, String&gt;(); </span><br><span class="line">    preConnect(connectionFactory, parameters, request);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RedirectView(connectSupport.buildOAuthUrl(connectionFactory, request, parameters));</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        sessionStrategy.setAttribute(request, PROVIDER_ERROR_ATTRIBUTE, e);</span><br><span class="line">        <span class="keyword">return</span> connectionStatusRedirect(providerId, request);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="授权成功的回调地址"><a href="#授权成功的回调地址" class="headerlink" title="授权成功的回调地址"></a>授权成功的回调地址</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将当前的登录账户与社交账号绑定（写入到UserConnection表）</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(value=<span class="string">"/&#123;providerId&#125;"</span>, method=RequestMethod.GET, params=<span class="string">"code"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> RedirectView <span class="title">oauth2Callback</span><span class="params">(@PathVariable String providerId, NativeWebRequest request)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        OAuth2ConnectionFactory&lt;?&gt; connectionFactory = (OAuth2ConnectionFactory&lt;?&gt;) connectionFactoryLocator.getConnectionFactory(providerId);</span><br><span class="line">        Connection&lt;?&gt; connection = connectSupport.completeConnection(connectionFactory, request);</span><br><span class="line">        addConnection(connection, connectionFactory, request);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        sessionStrategy.setAttribute(request, PROVIDER_ERROR_ATTRIBUTE, e);</span><br><span class="line">        logger.warn(<span class="string">"Exception while handling OAuth2 callback ("</span> + e.getMessage() + <span class="string">"). Redirecting to "</span> + providerId +<span class="string">" connection status page."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> connectionStatusRedirect(providerId, request);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回/connext/qqed视图</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> RedirectView <span class="title">connectionStatusRedirect</span><span class="params">(String providerId, NativeWebRequest request)</span> </span>&#123;</span><br><span class="line">    HttpServletRequest servletRequest = request.getNativeRequest(HttpServletRequest.class);</span><br><span class="line">    String path = <span class="string">"/connect/"</span> + providerId + getPathExtension(servletRequest);</span><br><span class="line">    <span class="keyword">if</span> (prependServletPath(servletRequest)) &#123;</span><br><span class="line">        path = servletRequest.getServletPath() + path;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> RedirectView(path, <span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="绑定结果的视图"><a href="#绑定结果的视图" class="headerlink" title="绑定结果的视图"></a>绑定结果的视图</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImoocConnectView</span> <span class="keyword">extends</span> <span class="title">AbstractView</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">renderMergedOutputModel</span><span class="params">(Map&lt;String, Object&gt; model, HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        response.setContentType(<span class="string">"text/html;charset=UTF-8"</span>);</span><br><span class="line">        <span class="keyword">if</span> (model.get(<span class="string">"connections"</span>) == <span class="keyword">null</span>) &#123;</span><br><span class="line">            response.getWriter().write(<span class="string">"&lt;h3&gt;解绑成功&lt;/h3&gt;"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            response.getWriter().write(<span class="string">"&lt;h3&gt;绑定成功&lt;/h3&gt;"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="注入绑定结果的视图"><a href="#注入绑定结果的视图" class="headerlink" title="注入绑定结果的视图"></a>注入绑定结果的视图</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty</span>(prefix = <span class="string">"imooc.security.social.weixin"</span>, name = <span class="string">"app-id"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeixinAutoConfiguration</span> <span class="keyword">extends</span> <span class="title">SocialAutoConfigurerAdapter</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Bean</span>(<span class="string">"connect/weixinConnected"</span>)</span><br><span class="line">	<span class="meta">@ConditionalOnMissingBean</span>(name = <span class="string">"weixinConnectedView"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> View <span class="title">weixinConnectedView</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> ImoocConnectView();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="解除绑定的实现"><a href="#解除绑定的实现" class="headerlink" title="解除绑定的实现"></a>解除绑定的实现</h4><p>解除绑定的操作其实与绑定是一样的，只是发出请求的方式是DELETE，而不是POST；</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">http://localhost/connect/weixin</span></span><br><span class="line"><span class="attribute">Method:DELETE</span></span><br></pre></td></tr></table></figure>
-<p>发送请求后，虽然返回的响应结果是302，但是实际上在数据库中，已经完成了记录的删除；</p>
-<p>补充一下解绑的视图；</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span>(&#123;<span class="string">"connect/weixinConnect"</span>,<span class="string">"connect/weixinConnected"</span>&#125;)</span><br><span class="line"><span class="meta">@ConditionalOnMissingBean</span>(name = <span class="string">"weixinConnectedView"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> View <span class="title">weixinConnectedView</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ImoocConnectView();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2238,7 +2601,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2251,7 +2614,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

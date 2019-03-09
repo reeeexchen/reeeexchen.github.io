@@ -87,20 +87,20 @@
 <meta property="og:site_name" content="REEEEX">
 <meta property="og:description" content="Interview | Note-1网络基础知识OSI开放式模型（七层协议、参考的国际模型）先自上而下，后自下而上的处理数据的头部  物理层：解决物理介质的传输、原始比特流传输、模数转换、数模转换、网卡工作层  数据链路层：物理寻址、将比特流转变为逻辑传输线路、错误检测、确保数据传输的可靠性、交换机工作层  网络层：将网络地址翻译成对应的物理地址、并且决定数据从发送方路由到接收方、保证数据发送优先">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://images0.cnblogs.com/blog/88420/201401/291246111727359.png">
-<meta property="og:image" content="https://img-blog.csdn.net/20180717204202563?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTUwMzE2/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
-<meta property="og:image" content="https://s2.ax1x.com/2019/03/04/kO1AoV.png">
-<meta property="og:image" content="https://s2.ax1x.com/2019/03/04/kO1jmR.png">
+<meta property="og:image" content="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/interview1/291246111727359.png">
+<meta property="og:image" content="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/interview1/20180717204202563.png">
+<meta property="og:image" content="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/interview1/kO1AoV.png">
+<meta property="og:image" content="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/interview1/kO1jmR.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/03/04/kO3ptK.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/03/04/kO30c4.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/03/04/kO3gN6.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/03/04/kOGkdI.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/03/04/kXCjMD.png">
-<meta property="og:updated_time" content="2019-03-04T14:23:28.398Z">
+<meta property="og:updated_time" content="2019-03-09T15:46:42.712Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Interview | Note-1">
 <meta name="twitter:description" content="Interview | Note-1网络基础知识OSI开放式模型（七层协议、参考的国际模型）先自上而下，后自下而上的处理数据的头部  物理层：解决物理介质的传输、原始比特流传输、模数转换、数模转换、网卡工作层  数据链路层：物理寻址、将比特流转变为逻辑传输线路、错误检测、确保数据传输的可靠性、交换机工作层  网络层：将网络地址翻译成对应的物理地址、并且决定数据从发送方路由到接收方、保证数据发送优先">
-<meta name="twitter:image" content="https://images0.cnblogs.com/blog/88420/201401/291246111727359.png">
+<meta name="twitter:image" content="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/interview1/291246111727359.png">
 
 
 
@@ -407,7 +407,7 @@
 <li>数据包有序号Sequence Number，对象收到则发送ACK确认，未收到则重传</li>
 <li>使用奇偶校验和检验数据在传输过程中是否有误</li>
 </ul>
-<p><img src="https://images0.cnblogs.com/blog/88420/201401/291246111727359.png" alt=""></p>
+<p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/interview1/291246111727359.png" alt=""></p>
 <ol>
 <li>URG：紧急指针 1-有效 0-忽略</li>
 <li>ACK：确认序号 1-有效 0-不包含确认信息<ol>
@@ -449,7 +449,7 @@
 <hr>
 <h4 id="TCP四次挥手"><a href="#TCP四次挥手" class="headerlink" title="TCP四次挥手"></a>TCP四次挥手</h4><p>用于TCP连接是全双工，每个方向都必须单独进行关闭，发送方和接收方都需要FIN报文和ACK报文，首先进行关闭的一方主动关闭，另一方则被动关闭。</p>
 <p>任何一方执行close()操作即可产生挥手（经过时间2MSL才真正释放）</p>
-<p><img src="https://img-blog.csdn.net/20180717204202563?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTUwMzE2/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt=""></p>
+<p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/interview1/20180717204202563.png" alt=""></p>
 <h5 id="为什么有TIME-WAIT"><a href="#为什么有TIME-WAIT" class="headerlink" title="为什么有TIME_WAIT"></a>为什么有TIME_WAIT</h5><ul>
 <li>确保有足够时间让对端收到ACK包</li>
 <li>避免新旧连接混淆</li>
@@ -487,8 +487,8 @@
 </ul>
 <p><strong>AdvertisedWindow = MaxRcvBuffer - (LastByteRcvd - LastByteRead)</strong></p>
 <p><strong>EffectiveWindow = AdvertisedWindow - (LastByteSent - LastByteAcked)</strong></p>
-<p><img src="https://s2.ax1x.com/2019/03/04/kO1AoV.png" alt="kO1AoV.png"></p>
-<h5 id="TCP会话的发送方"><a href="#TCP会话的发送方" class="headerlink" title="TCP会话的发送方"></a>TCP会话的发送方</h5><p><img src="https://s2.ax1x.com/2019/03/04/kO1jmR.png" alt="kO1jmR.png"></p>
+<p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/interview1/kO1AoV.png" alt="kO1AoV.png"></p>
+<h5 id="TCP会话的发送方"><a href="#TCP会话的发送方" class="headerlink" title="TCP会话的发送方"></a>TCP会话的发送方</h5><p><img src="https://web-1252833636.cos.ap-guangzhou.myqcloud.com/markdown/interview1/kO1jmR.png" alt="kO1jmR.png"></p>
 <h5 id="TCP会话的接收方"><a href="#TCP会话的接收方" class="headerlink" title="TCP会话的接收方"></a>TCP会话的接收方</h5><p><img src="https://s2.ax1x.com/2019/03/04/kO3ptK.png" alt="kO3ptK.png"></p>
 <hr>
 <h4 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h4><h5 id="HTTP特点"><a href="#HTTP特点" class="headerlink" title="HTTP特点"></a>HTTP特点</h5><ul>
@@ -619,8 +619,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/09/09/Spring Security 18/" rel="next" title="Spring Security | Note-18">
-                <i class="fa fa-chevron-left"></i> Spring Security | Note-18
+              <a href="/2019/03/04/INTERVIEW-2/" rel="next" title="Interview | Note-2">
+                <i class="fa fa-chevron-left"></i> Interview | Note-2
               </a>
             
           </div>
@@ -704,7 +704,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -717,7 +717,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
